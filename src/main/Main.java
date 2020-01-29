@@ -18,7 +18,7 @@ public class Main {
 	final static boolean PRINT_BOARD = true;
 	final static boolean PAUSE = false;
 	final static boolean PLAY_BROWSER = false;
-	final static boolean TRAIN = true;
+	final static boolean TRAIN = false;
 	final static int THREAD_COUNT = 1;
 	
 	public static void main(String[] args) {

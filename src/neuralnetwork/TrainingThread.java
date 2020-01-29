@@ -33,6 +33,23 @@ public class TrainingThread implements Runnable {
 	static Queue<ArrayList<Pair<INDArray, INDArray>>> queue = new LinkedList<ArrayList<Pair<INDArray, INDArray>> >();
 	public static boolean pause = false;
 	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
 	public TrainingThread(Board board, int epochs, double gamma, double epsilon){
 		//System.out.println("made class");
 		
@@ -225,7 +242,7 @@ public class TrainingThread implements Runnable {
 						System.out.println("Looped action");
 						break trainingloop;
 					}*/
-					
+					/*
 					int initialFlagCount = trainingGame.getFlagCount();
 					int initialSquareRevealedCount = trainingGame.getSquaresRevealedCount();
 					
@@ -421,6 +438,6 @@ public class TrainingThread implements Runnable {
 
 	
 	
-	
+	*/
 	
 }

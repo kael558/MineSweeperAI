@@ -39,7 +39,7 @@ public class AI_Player extends Agent implements StatusConstants{
 	
 	int epochs = 10000;
 	double gamma = 0;
-	double epsilon = 0.1;
+	double epsilon = 0;
 	int threadcount;
 	
 	public AI_Player(boolean train, int threadcount){
@@ -64,7 +64,6 @@ public class AI_Player extends Agent implements StatusConstants{
 	}
 	
 	public int chooseAction(ObservableBoard board){
-		
         INDArray state = Nd4j.create(board.getState());
         
 		INDArray qval = model.output(state);
@@ -97,29 +96,35 @@ public class AI_Player extends Agent implements StatusConstants{
 				int action = 0;
 				INDArray allowedActions = getAllowedActions(qval, trainingBoard);
 				
+				/*
 				if (randomDouble(1)<epsilon){
 					ArrayList<Integer> availableActions = getAvailableActions(allowedActions);
 					action = availableActions.get(randomInt(availableActions.size())); 
 				} else {
 					action =  Nd4j.argMax(allowedActions,1).getInt(0);
 				}
+				*/
+				action =  Nd4j.argMax(allowedActions,1).getInt(0);
 				
 				int initialFlagCount = trainingBoard.getFlagCount();
 				int initialSquareRevealedCount = trainingBoard.getSquaresRevealedCount();
 				
 				trainingBoard.playMove(action);
+				//trainingBoard.drawObservableBoard();
 				
-			
-				double update = getReward(trainingBoard, initialSquareRevealedCount, initialFlagCount);
-			
-				INDArray y = qval.dup();
-				y.putScalar(action, update);
-			
+				if (!trainingBoard.isRunning()){
+					double update = getReward(trainingBoard, initialSquareRevealedCount, initialFlagCount);
 				
-		//		Pair p = new Pair(state, y);
-		//		iter.add(p);
-	
-				model.fit(state, y);
+					INDArray y = qval.dup();
+					y.putScalar(action, update);
+				
+					
+			//		Pair p = new Pair(state, y);
+			//		iter.add(p);
+		
+					//System.out.println("FIT");
+					model.fit(state, y);
+				}
 				//model.fit(iterator);
 
 			}
