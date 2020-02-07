@@ -29,38 +29,43 @@ public class PlayGame implements StatusConstants{
 	boolean printBoard;
 	boolean pause;
 	boolean play_browser;
+	boolean stochastic;
 	
-	public PlayGame(int agentType, boolean printBoard, boolean pause, boolean play_browser, boolean train, int threadcount){
+	public PlayGame(int agentType, boolean printBoard, boolean pause, boolean play_browser, boolean train, int threadcount, boolean stochastic){
 		this.pause = pause;
 		this.printBoard = printBoard;
 		this.play_browser = play_browser;
+		this.stochastic = stochastic;
 			
 		if (play_browser){
 			board = new ScreenReader();
 		} else {
-			ObjectInputStream in;
-			try {
-				in = new ObjectInputStream(new FileInputStream("board.txt"));
-				board  = (Board) in.readObject();
-				
-			} catch (IOException | ClassNotFoundException e) {
-				System.out.println("Could not find board");
-				board = new Board(); //contains mechanics of game
-				board.clickCellInitial(10, 10);
-				System.out.println("Writing new board...");
-				ObjectOutputStream out;
+			if (stochastic){ //stochastic board
+				board = new Board();
+			} else { //deterministic board 
+				ObjectInputStream in;
 				try {
-					out = new ObjectOutputStream(new FileOutputStream("board.txt"));
-					out.writeObject(board);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			} 
+					in = new ObjectInputStream(new FileInputStream("board.txt"));
+					board  = (Board) in.readObject();
+					
+				} catch (IOException | ClassNotFoundException e) {
+					System.out.println("Could not find board");
+					board = new Board(); //contains mechanics of game
+					board.clickCellInitial(10, 10);
+					System.out.println("Writing new board...");
+					ObjectOutputStream out;
+					try {
+						out = new ObjectOutputStream(new FileOutputStream("board.txt"));
+						out.writeObject(board);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				} 
+			}
 		}
 		
 		if (agentType == 0){
-			//agent = new AI_Player(train, threadcount);
-			agent = new AI_Player((Board)board, train);
+			agent = new AI_Player(train, threadcount, stochastic);
 		} else if (agentType == 1){
 			agent = new ManualPlayer(); 
 		} else {
@@ -69,6 +74,8 @@ public class PlayGame implements StatusConstants{
 	}
 	
 	public void start() {
+		long start = System.currentTimeMillis();
+		
 		if (printBoard)
 			board.drawObservableBoard();
 
@@ -85,8 +92,9 @@ public class PlayGame implements StatusConstants{
 			
 			if (printBoard)
 				printBoard(action);
-		}	
+		}
 		System.out.println(board.getGameCondition());
+		System.out.println("Time: " + ((System.currentTimeMillis() - start)/1000) + " seconds.");
 	}
 	
 	public void reset(){

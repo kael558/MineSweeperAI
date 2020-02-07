@@ -9,6 +9,7 @@ import java.util.IntSummaryStatistics;
 
 import java.util.Random;
 
+import org.deeplearning4j.datasets.iterator.INDArrayDataSetIterator;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
@@ -30,21 +31,26 @@ import org.nd4j.linalg.primitives.Pair;
 import interfaces.StatusConstants;
 import mechanics.Board;
 import mechanics.ObservableBoard;
+import neuralnetwork.ActionValueIndex;
 import neuralnetwork.TrainingThread;
 
 public class AI_Player extends Agent implements StatusConstants{
-
-	private static MultiLayerNetwork model;
-	private Board initialBoard;
 	
-	int epochs = 10000;
-	double gamma = 0;
-	double epsilon = 0;
+	private static MultiLayerNetwork model;
+	int epochs = 100000;
+	
+	double epsilon = 1.0;
+	
 	int threadcount;
 	
-	public AI_Player(boolean train, int threadcount){
+	boolean stochastic;
+	
+	Random r;
+	
+	public AI_Player(boolean train, int threadcount, boolean stochastic){
 		modelInitialization();
 		this.threadcount = threadcount;
+		r = new Random();
 		//long stat = System.nanoTime();
 		if (train){
 			train();
@@ -54,23 +60,14 @@ public class AI_Player extends Agent implements StatusConstants{
 	}
 
 	
-	
-	public AI_Player(Board board, boolean train) { //for training with specific board
-		modelInitialization();
-		initialBoard = board.cloneInitializedBoard();
-		//new TrainingThread(board, epochs, gamma, epsilon);
-		if (train)
-			train();
-	}
-	
 	public int chooseAction(ObservableBoard board){
         INDArray state = Nd4j.create(board.getState());
         
 		INDArray qval = model.output(state);
-		INDArray allowedActions = getAllowedActions(qval, board);
-	
-		int actionIndex = Nd4j.argMax(allowedActions,1).getInt(0);
-		return actionIndex;
+		ArrayList<ActionValueIndex> allowedActions = getAllowedActions(qval, board);
+		
+		int action = argmax(allowedActions);
+		return action;
 	}
 	
 	/*implement catastrophic failure for different boards*/
@@ -79,67 +76,67 @@ public class AI_Player extends Agent implements StatusConstants{
 		IntSummaryStatistics averageSquaresRevealedCount = new IntSummaryStatistics();
 		System.out.println("Begin Training");
 		
-		Board trainingBoard = initialBoard.cloneInitializedBoard();
-		int firstValue = 1;
+		int prevAction = 0;
+		int loopcounter = 0;
+		
 		for (int epoch = 1; epoch <= epochs; epoch++){
-			trainingBoard.resetObservableBoard();
-			
+			Board trainingBoard = new Board(16, 30, 250);
 			long epochStartTime = System.nanoTime();
-			
-			
-			//ArrayList<Pair<INDArray, INDArray>> iter = new ArrayList<Pair<INDArray, INDArray>>();
+			ArrayList<Pair<INDArray, INDArray>> iter = new ArrayList<Pair<INDArray, INDArray>>();
 			
 			while (!trainingBoard.isBoardInitialized() || trainingBoard.isRunning()){
 		        INDArray state = Nd4j.create(trainingBoard.getState());
 				INDArray qval = model.output(state); 
 		       
 				int action = 0;
-				INDArray allowedActions = getAllowedActions(qval, trainingBoard);
-				
-				/*
-				if (randomDouble(1)<epsilon){
-					ArrayList<Integer> availableActions = getAvailableActions(allowedActions);
-					action = availableActions.get(randomInt(availableActions.size())); 
+				ArrayList<ActionValueIndex> allowedActions = getAllowedActions(qval, trainingBoard);
+			
+				if (r.nextDouble()<epsilon){
+					action = allowedActions.get(r.nextInt(allowedActions.size())).getIndex(); 
 				} else {
-					action =  Nd4j.argMax(allowedActions,1).getInt(0);
+					action = argmax(allowedActions);
 				}
-				*/
-				action =  Nd4j.argMax(allowedActions,1).getInt(0);
+				
+				/* Looped action checker*/
+				if (prevAction == action){
+					loopcounter++;
+				} else {
+					prevAction = action;
+					loopcounter = 0;
+				}
+				
+				if (loopcounter>20){
+					System.out.println("LOOPED ACTION");
+					System.exit(0);
+				}
+				/* Looped action checker*/
+				
 				
 				int initialFlagCount = trainingBoard.getFlagCount();
 				int initialSquareRevealedCount = trainingBoard.getSquaresRevealedCount();
 				
 				trainingBoard.playMove(action);
 				//trainingBoard.drawObservableBoard();
-				
-				if (!trainingBoard.isRunning()){
-					double update = getReward(trainingBoard, initialSquareRevealedCount, initialFlagCount);
-				
-					INDArray y = qval.dup();
-					y.putScalar(action, update);
-				
-					
-			//		Pair p = new Pair(state, y);
-			//		iter.add(p);
-		
-					//System.out.println("FIT");
-					model.fit(state, y);
-				}
-				//model.fit(iterator);
 
+				double update = getReward(trainingBoard, initialSquareRevealedCount, initialFlagCount);
+			
+				INDArray y = qval.dup();
+				y.putScalar(action, update);
+			
+				
+				Pair<INDArray, INDArray> p = new Pair<INDArray, INDArray>(state, y);
+				iter.add(p);
+		
+				//model.fit(state, y);
 			}
+			DataSetIterator iterator = new INDArrayDataSetIterator(iter, iter.size());
+			model.fit(iterator);
+			iter.clear();
 			
-			//DataSetIterator iterator = new INDArrayDataSetIterator(iter, iter.size());
-		//	model.fit(iterator);
-		//	iter.clear();
+			long epochEndTime = System.nanoTime();
 			
-			long epochEndTime   = System.nanoTime();
-			
-			if (epoch == 1){
-				firstValue = trainingBoard.getSquaresRevealedCount();
-			}
 			averageSquaresRevealedCount.accept(trainingBoard.getSquaresRevealedCount());
-			System.out.printf("Epoch: %-4d	Time Taken: %-3d	Squares Revealed: %-3d	Average: %-3.2f	Highest: %-3d	AverageROC: %-3.2f%n" , epoch, (epochEndTime-epochStartTime)/1000000000, trainingBoard.getSquaresRevealedCount(), averageSquaresRevealedCount.getAverage(), averageSquaresRevealedCount.getMax(), ((double)trainingBoard.getSquaresRevealedCount()-(double)firstValue)/(double)epoch );
+			System.out.printf("Epoch: %-4d	Time Taken: %-3d	Squares Revealed: %-3d	Average: %-3.2f	Highest: %-3d%n" , epoch, (epochEndTime-epochStartTime)/1000000000, trainingBoard.getSquaresRevealedCount(), averageSquaresRevealedCount.getAverage(), averageSquaresRevealedCount.getMax() );
 
 			if (epoch%250==0 || epoch == epochs || epoch%1000==0){
 				System.out.println("Saving model. Do not close.");
@@ -148,57 +145,51 @@ public class AI_Player extends Agent implements StatusConstants{
 			}
 			
 			if (epsilon > 0.1){
-				epsilon -= ((double)1/(double)epochs);
+				epsilon -= ((double)1000/(double)epochs);
 			}
 		}
 		
 		System.out.println("End Training");
-		
 	}
 	
-	private ArrayList<Integer> getAvailableActions(INDArray allowed){
-		ArrayList<Integer> availableActions = new ArrayList<Integer>();
+	private int argmax(ArrayList<ActionValueIndex> allowedActions) {
+		int index = 0;
+		double highest = Integer.MIN_VALUE;
 		
-		for (int i = 0; i < allowed.length(); i++){
-			if (allowed.getInt(i) != Integer.MIN_VALUE){
-				availableActions.add(i);
+		for (ActionValueIndex avi: allowedActions){
+			if (avi.getValue() > highest){
+				highest = avi.getValue();
+				index = avi.getIndex();
 			}
 		}
-		return availableActions;
+		
+		return index;
 	}
 
-	private INDArray getAllowedActions(INDArray qval, ObservableBoard board) {
-		INDArray allowedActions = qval.dup();
+	private ArrayList<ActionValueIndex> getAllowedActions(INDArray qval, ObservableBoard board) {
 		int count = 0;
+
+		ArrayList<ActionValueIndex> availableActions = new ArrayList<ActionValueIndex>();
 		
-		
-		for (int row = 0; row < board.ROWS; row++){
+		for (int row = 0; row < board.ROWS ; row++){
 			for (int  col = 0; col < board.COLUMNS; col++){
-				
-				if (board.getObservableCell(row, col).getStatus()!=STATUS_HIDDEN){ //numbered or flagged
-					allowedActions.putScalar(count, Integer.MIN_VALUE);	//For click
-				
-					if (board.getObservableCell(row, col).getStatus()!=STATUS_FLAGGED){ //just numbered
-						allowedActions.putScalar(count+480, Integer.MIN_VALUE); // for flagged
-					}
+				if (board.getObservableCell(row, col).getStatus()==STATUS_HIDDEN){ //clickable
+					ActionValueIndex avi = new ActionValueIndex(qval.getDouble(0, count), count);
+					availableActions.add(avi);
+					//System.out.print(avi.getIndex() + " " + avi.getValue() + "  ");
 				}
+				
 				count++;
 			}
 		}
-		
-		/*REMOVE*/
-		//TODO
-		for (int i = 480; i < 960; i++){
-			allowedActions.putScalar(i, Integer.MIN_VALUE);
-		}
-		
-		return allowedActions;
+		//System.out.println();
+
+		return availableActions;
 	}
 
 	public void print(INDArray arr, String str){
         System.out.println(str + " " + arr);
 	}
-	
 	
 	private int getReward(ObservableBoard trainingBoard, int initialSquareRevealedCount, int initialFlagCount) {
 		if (trainingBoard.getGameCondition().equals("Loser")){
@@ -218,22 +209,12 @@ public class AI_Player extends Agent implements StatusConstants{
 		}
 	}
 
-	
-
-	public double evaluateState(Board board){	
+/*
+	public double evaluateStates(Board board){	
         INDArray allXYPoints = Nd4j.create(board.getState());
 		return model.output(allXYPoints).getDouble(0);
 	}
-	
-	private int randomInt(int maxExclusive) {
-		Random r = new Random();
-		return r.nextInt(maxExclusive);
-	} 
-	
-	private double randomDouble(double max) {
-		Random r = new Random();
-		return r.nextDouble()*max;
-	}
+	*/
 	
 	private void saveModel() {
 	/*	try {
@@ -260,9 +241,13 @@ public class AI_Player extends Agent implements StatusConstants{
 		
 		
 		*/
+		File locationToSave;
+		if (stochastic){
+			locationToSave = new File("Stochastic.zip");     
+		} else {
+			locationToSave = new File("Deterministic.zip");    
+		}
 		
-		
-		File locationToSave = new File("Deterministic.zip");      
         boolean saveUpdater = true;                                            
         try {
 			model.save(locationToSave, saveUpdater);
@@ -273,10 +258,14 @@ public class AI_Player extends Agent implements StatusConstants{
 	}
 
 	private void modelInitialization() {
-		File file = new File("Deterministic.zip");
-		//File file = new File("test.zip");
-		//File configFile = new File("configuration.json");
 		
+		File file;
+		if (stochastic){
+			file = new File("Stochastic.zip");     
+		} else {
+			file = new File("Deterministic.zip");    
+		}
+
 		try {
 			if (file.createNewFile()){ 
 				//File paramFile = new File("parameters.json");
@@ -287,7 +276,7 @@ public class AI_Player extends Agent implements StatusConstants{
 				double learningRate = 0.1;
 				int numInputs = 5761;
 				int numHiddenNodes = 8000;
-				int numOutputs = 960;
+				int numOutputs = 480;
 
 				MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
 			            .seed(seed)
