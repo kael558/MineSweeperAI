@@ -17,8 +17,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Drivers/selenium/selenium-java-3.141.59/client-combined-3.141.59-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Drivers/selenium/selenium-java-3.141.59/client-combined-3.141.59.jar"/>
-	<classpathentry kind="lib" path="C:/Drivers/json/json-simple-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/client-combined-3.141.59-sources.jar"/>
+	<classpathentry kind="lib" path="lib/client-combined-3.141.59.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

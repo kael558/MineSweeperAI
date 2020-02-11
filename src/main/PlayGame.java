@@ -101,6 +101,7 @@ public class PlayGame implements StatusConstants{
 		board.resetObservableBoard();
 	}
 
+	@SuppressWarnings("unused")
 	private void sleep() {
 		try {
 			Thread.sleep(1000);

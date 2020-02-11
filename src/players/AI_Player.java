@@ -47,6 +47,10 @@ public class AI_Player extends Agent implements StatusConstants{
 	
 	Random r;
 	
+	/* Should more weight be assigned to actions chosen optimally? As opposed to randomly?
+	 * 
+	 */
+	
 	public AI_Player(boolean train, int threadcount, boolean stochastic){
 		modelInitialization();
 		this.threadcount = threadcount;
@@ -76,18 +80,15 @@ public class AI_Player extends Agent implements StatusConstants{
 		IntSummaryStatistics averageSquaresRevealedCount = new IntSummaryStatistics();
 		System.out.println("Begin Training");
 		
-		int prevAction = 0;
-		int loopcounter = 0;
-		
 		for (int epoch = 1; epoch <= epochs; epoch++){
-			Board trainingBoard = new Board(16, 30, 250);
+			Board trainingBoard = new Board();
 			long epochStartTime = System.nanoTime();
 			ArrayList<Pair<INDArray, INDArray>> iter = new ArrayList<Pair<INDArray, INDArray>>();
 			
 			while (!trainingBoard.isBoardInitialized() || trainingBoard.isRunning()){
 		        INDArray state = Nd4j.create(trainingBoard.getState());
 				INDArray qval = model.output(state); 
-		       
+		     		
 				int action = 0;
 				ArrayList<ActionValueIndex> allowedActions = getAllowedActions(qval, trainingBoard);
 			
@@ -95,22 +96,7 @@ public class AI_Player extends Agent implements StatusConstants{
 					action = allowedActions.get(r.nextInt(allowedActions.size())).getIndex(); 
 				} else {
 					action = argmax(allowedActions);
-				}
-				
-				/* Looped action checker*/
-				if (prevAction == action){
-					loopcounter++;
-				} else {
-					prevAction = action;
-					loopcounter = 0;
-				}
-				
-				if (loopcounter>20){
-					System.out.println("LOOPED ACTION");
-					System.exit(0);
-				}
-				/* Looped action checker*/
-				
+				}		
 				
 				int initialFlagCount = trainingBoard.getFlagCount();
 				int initialSquareRevealedCount = trainingBoard.getSquaresRevealedCount();
@@ -176,7 +162,7 @@ public class AI_Player extends Agent implements StatusConstants{
 				if (board.getObservableCell(row, col).getStatus()==STATUS_HIDDEN){ //clickable
 					ActionValueIndex avi = new ActionValueIndex(qval.getDouble(0, count), count);
 					availableActions.add(avi);
-					//System.out.print(avi.getIndex() + " " + avi.getValue() + "  ");
+				//	System.out.print(avi.getIndex() + " " + avi.getValue() + "  ");
 				}
 				
 				count++;
