@@ -7,6 +7,14 @@ package main;
  * git push origin master
  */
 
+
+/*TODO
+ * add multithreading
+ * set-up test game
+ * 	- save game state
+ *  - play game state
+ *  - model.output of previous game state to see whether an impact was made.
+ */
 public class Main {
 	
 	/*PLAYERS*/

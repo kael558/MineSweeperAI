@@ -83,7 +83,7 @@ public class AI_Player extends Agent implements StatusConstants{
 		for (int epoch = 1; epoch <= epochs; epoch++){
 			Board trainingBoard = new Board();
 			long epochStartTime = System.nanoTime();
-			ArrayList<Pair<INDArray, INDArray>> iter = new ArrayList<Pair<INDArray, INDArray>>();
+			//ArrayList<Pair<INDArray, INDArray>> iter = new ArrayList<Pair<INDArray, INDArray>>();
 			
 			while (!trainingBoard.isBoardInitialized() || trainingBoard.isRunning()){
 		        INDArray state = Nd4j.create(trainingBoard.getState());
@@ -110,14 +110,14 @@ public class AI_Player extends Agent implements StatusConstants{
 				y.putScalar(action, update);
 			
 				
-				Pair<INDArray, INDArray> p = new Pair<INDArray, INDArray>(state, y);
-				iter.add(p);
+				//Pair<INDArray, INDArray> p = new Pair<INDArray, INDArray>(state, y);
+				//iter.add(p);
 		
-				//model.fit(state, y);
+				model.fit(state, y);
 			}
-			DataSetIterator iterator = new INDArrayDataSetIterator(iter, iter.size());
-			model.fit(iterator);
-			iter.clear();
+			//DataSetIterator iterator = new INDArrayDataSetIterator(iter, iter.size());
+			//model.fit(iterator);
+			//iter.clear();
 			
 			long epochEndTime = System.nanoTime();
 			
