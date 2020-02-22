@@ -1,44 +1,14 @@
 package neuralnetwork;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.IntSummaryStatistics;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
 
-import org.apache.http.annotation.ThreadingBehavior;
-import org.deeplearning4j.datasets.iterator.INDArrayDataSetIterator;
-import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
-import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
-import org.deeplearning4j.nn.conf.layers.DenseLayer;
-import org.deeplearning4j.nn.conf.layers.OutputLayer;
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.deeplearning4j.nn.weights.WeightInit;
-import org.nd4j.linalg.activations.Activation;
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
-import org.nd4j.linalg.factory.Nd4j;
-import org.nd4j.linalg.learning.config.Adam;
-import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
-import org.nd4j.linalg.primitives.Pair;
+public class TrainingThread{
 
-import main.PlayGame;
-import mechanics.Board;
-import mechanics.ObservableBoard;
+	//static Queue<ArrayList<Pair<INDArray, INDArray>>> queue = new LinkedList<ArrayList<Pair<INDArray, INDArray>> >();
+	//public static boolean pause = false;
 
-public class TrainingThread implements Runnable {
-
-	static Queue<ArrayList<Pair<INDArray, INDArray>>> queue = new LinkedList<ArrayList<Pair<INDArray, INDArray>> >();
-	public static boolean pause = false;
-	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
+	public TrainingThread(){
 		
 	}
-	
 	
 	
 	

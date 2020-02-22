@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.IntSummaryStatistics;
 
 import java.util.Random;
+import java.util.zip.ZipException;
 
 import org.deeplearning4j.datasets.iterator.INDArrayDataSetIterator;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
@@ -37,7 +38,7 @@ import neuralnetwork.TrainingThread;
 public class AI_Player extends Agent implements StatusConstants{
 	
 	private static MultiLayerNetwork model;
-	int epochs = 100000;
+	int epochs = 1000;
 	
 	double epsilon = 1.0;
 	
@@ -52,9 +53,11 @@ public class AI_Player extends Agent implements StatusConstants{
 	 */
 	
 	public AI_Player(boolean train, int threadcount, boolean stochastic){
-		modelInitialization();
+		
 		this.threadcount = threadcount;
 		r = new Random();
+		this.stochastic = stochastic;
+		modelInitialization();
 		//long stat = System.nanoTime();
 		if (train){
 			train();
@@ -81,7 +84,7 @@ public class AI_Player extends Agent implements StatusConstants{
 		System.out.println("Begin Training");
 		
 		for (int epoch = 1; epoch <= epochs; epoch++){
-			Board trainingBoard = new Board();
+			Board trainingBoard = new Board(9 ,9 , 10);
 			long epochStartTime = System.nanoTime();
 			//ArrayList<Pair<INDArray, INDArray>> iter = new ArrayList<Pair<INDArray, INDArray>>();
 			
@@ -131,7 +134,9 @@ public class AI_Player extends Agent implements StatusConstants{
 			}
 			
 			if (epsilon > 0.1){
-				epsilon -= ((double)1000/(double)epochs);
+				epsilon -= 1/(double)epochs;
+				
+				//epsilon -= ((double)1000/(double)epochs);
 			}
 		}
 		
@@ -229,7 +234,7 @@ public class AI_Player extends Agent implements StatusConstants{
 		*/
 		File locationToSave;
 		if (stochastic){
-			locationToSave = new File("Stochastic.zip");     
+			locationToSave = new File("Stochastic9x9.zip");     
 		} else {
 			locationToSave = new File("Deterministic.zip");    
 		}
@@ -244,10 +249,9 @@ public class AI_Player extends Agent implements StatusConstants{
 	}
 
 	private void modelInitialization() {
-		
 		File file;
 		if (stochastic){
-			file = new File("Stochastic.zip");     
+			file = new File("Stochastic9x9.zip");     
 		} else {
 			file = new File("Deterministic.zip");    
 		}
@@ -260,9 +264,12 @@ public class AI_Player extends Agent implements StatusConstants{
 				
 				int seed = 3;
 				double learningRate = 0.1;
-				int numInputs = 5761;
-				int numHiddenNodes = 8000;
-				int numOutputs = 480;
+				int numInputs = 9*9*12+1;
+				//int numInputs = 5761;
+				//int numHiddenNodes = 8000;
+				int numHiddenNodes = 1000;
+				//int numOutputs = 480;
+				int numOutputs = 81;
 
 				MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
 			            .seed(seed)
@@ -281,8 +288,7 @@ public class AI_Player extends Agent implements StatusConstants{
 				model = new MultiLayerNetwork(conf);
 			    model.init();
 			    System.out.println("New model created.");
-			    
-		
+	
 			} else {
 				
 				
@@ -307,7 +313,9 @@ public class AI_Player extends Agent implements StatusConstants{
 				
 				
 				boolean loadUpdater = true;
+			
 				model = MultiLayerNetwork.load(file, loadUpdater);
+				
 				
 				
 				System.out.println("Model loaded.");
@@ -317,7 +325,6 @@ public class AI_Player extends Agent implements StatusConstants{
 			e.printStackTrace();
 		}
 	}
-
 
 	
 	/*private void pause() {

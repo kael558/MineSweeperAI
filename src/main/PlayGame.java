@@ -41,7 +41,7 @@ public class PlayGame implements StatusConstants{
 			board = new ScreenReader();
 		} else {
 			if (stochastic){ //stochastic board
-				board = new Board();
+				board = new Board(9 , 9, 10);
 			} else { //deterministic board 
 				ObjectInputStream in;
 				try {
@@ -75,10 +75,10 @@ public class PlayGame implements StatusConstants{
 	
 	public void start() {
 		long start = System.currentTimeMillis();
-		
+
 		if (printBoard)
 			board.drawObservableBoard();
-
+			
 		while (board.isRunning()){
 			if (pause){
 				pause();
@@ -89,7 +89,7 @@ public class PlayGame implements StatusConstants{
 			int action = agent.chooseAction(board);
 
 			board.playMove(action);
-			
+		
 			if (printBoard)
 				printBoard(action);
 		}

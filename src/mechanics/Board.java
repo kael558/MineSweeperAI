@@ -1,6 +1,7 @@
 package mechanics;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 //Environment
 public class Board extends ObservableBoard implements Serializable{
@@ -29,10 +30,22 @@ public class Board extends ObservableBoard implements Serializable{
 	public void initializeBoard(int selectedRow, int selectedCol){ //initalized after first click
 		int bombCount = 0;
 		
+		//ArrayList <Integer> indexes = new ArrayList<Integer>(super.ROWS*super.COLUMNS);
+		//for (int i = 0; i < super.ROWS*super.COLUMNS; i++){
+		//	indexes.add(i);
+		//}
+		
 		while (bombCount<super.getNumberOfBombs()){
+			//int bombIndex = (int) (Math.random()*indexes.size());
 			int row = (int) (Math.random()*ROWS);
 			int col = (int) (Math.random()*COLUMNS);
 		
+			//int row = indexes.get(bombIndex)/COLUMNS;
+			//int col = indexes.get(bombIndex)%COLUMNS;
+			
+			
+			
+			
 			if (board[row][col] == null && !(row >= selectedRow-1 && row <= selectedRow+1 && col >= selectedCol-1 && col <= selectedCol+1)){
 				board[row][col] = new Cell(SECRET_STATUS_BOMB);
 				bombCount++;
