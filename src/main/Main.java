@@ -1,5 +1,6 @@
 package main;
 
+import neuralnetwork.TestModel;
 
 /* cd /c/Users/Rahel/workspace/MineSweeperAI
  * git add .
@@ -23,16 +24,17 @@ public class Main {
 	final static int RANDOM_PLAYER = 2;
 	
 	/*PARAMETERS*/
-	final static boolean PRINT_BOARD = true;
+	final static boolean PRINT_IN_CONSOLE = true;
 	final static boolean PAUSE = false;
 	final static boolean PLAY_BROWSER = false;
-	final static boolean TRAIN = true;
-	final static boolean STOCHASTIC = true;
-	final static int THREAD_COUNT = 1;
 	
+	final static int ROWS = 9;
+	final static int COLUMNS = 9;
+	final static int NUMBER_OF_BOMBS = 10;
 	
 	public static void main(String[] args) {
-		PlayGame game = new PlayGame(AI_PLAYER, PRINT_BOARD, PAUSE, PLAY_BROWSER, TRAIN, THREAD_COUNT, STOCHASTIC);
+		//new TestModel();
+		PlayGame game = new PlayGame(AI_PLAYER, PRINT_IN_CONSOLE, PAUSE, PLAY_BROWSER, ROWS, COLUMNS, NUMBER_OF_BOMBS);
 		game.start();
 
 		/*
