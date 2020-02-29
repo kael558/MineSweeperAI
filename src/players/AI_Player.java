@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.IntSummaryStatistics;
 
 import java.util.Random;
-import java.util.zip.ZipException;
 
-import org.deeplearning4j.datasets.iterator.INDArrayDataSetIterator;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
@@ -33,12 +31,11 @@ import interfaces.StatusConstants;
 import mechanics.Board;
 import mechanics.ObservableBoard;
 import neuralnetwork.ActionValueIndex;
-import neuralnetwork.TrainingThread;
 
 public class AI_Player extends Agent implements StatusConstants{
 	
 	private static MultiLayerNetwork model;
-	int epochs = 1000;
+	int epochs =10000;
 	
 	double epsilon = 1.0;
 	
@@ -127,7 +124,7 @@ public class AI_Player extends Agent implements StatusConstants{
 			averageSquaresRevealedCount.accept(trainingBoard.getSquaresRevealedCount());
 			System.out.printf("Epoch: %-4d	Time Taken: %-3d	Squares Revealed: %-3d	Average: %-3.2f	Highest: %-3d%n" , epoch, (epochEndTime-epochStartTime)/1000000000, trainingBoard.getSquaresRevealedCount(), averageSquaresRevealedCount.getAverage(), averageSquaresRevealedCount.getMax() );
 
-			if (epoch%250==0 || epoch == epochs || epoch%1000==0){
+			if (epoch == epochs || epoch%10000==0){
 				System.out.println("Saving model. Do not close.");
 				saveModel();
 				System.out.println("Model Saved");
@@ -234,7 +231,7 @@ public class AI_Player extends Agent implements StatusConstants{
 		*/
 		File locationToSave;
 		if (stochastic){
-			locationToSave = new File("Stochastic9x9.zip");     
+			locationToSave = new File("Stochastic9x9x10-8000-001.zip");     
 		} else {
 			locationToSave = new File("Deterministic.zip");    
 		}
@@ -251,7 +248,7 @@ public class AI_Player extends Agent implements StatusConstants{
 	private void modelInitialization() {
 		File file;
 		if (stochastic){
-			file = new File("Stochastic9x9.zip");     
+			file = new File("Stochastic9x9x10-8000-001.zip");     
 		} else {
 			file = new File("Deterministic.zip");    
 		}
@@ -263,11 +260,11 @@ public class AI_Player extends Agent implements StatusConstants{
 				System.out.println("New Files created.");
 				
 				int seed = 3;
-				double learningRate = 0.1;
+				double learningRate = 0.001;
 				int numInputs = 9*9*12+1;
 				//int numInputs = 5761;
 				//int numHiddenNodes = 8000;
-				int numHiddenNodes = 1000;
+				int numHiddenNodes = 8000;
 				//int numOutputs = 480;
 				int numOutputs = 81;
 
