@@ -7,6 +7,7 @@ import mechanics.Board;
 import mechanics.ObservableBoard;
 import players.AI_Player;
 import players.Agent;
+import players.AlgorithmPlayer;
 import players.ManualPlayer;
 import screenMechanics.ScreenReader;
 
@@ -17,8 +18,16 @@ public class PlayGame implements StatusConstants {
 	boolean printBoard = true;
 	boolean pause = true;
 
-	public PlayGame(int rows, int columns, int bombs) {
-		agent = new AI_Player(rows, columns, bombs, "no train");
+	public PlayGame(int rows, int columns, int bombs, int agentType) {
+		if (agentType == 0) {
+			agent = new AI_Player(rows, columns, bombs, "no train");
+		} else if (agentType == 1) {
+			agent = new ManualPlayer();
+		} else if (agentType == 2){
+			agent = new AlgorithmPlayer(); // default is random agent
+		} else {
+			agent = new Agent(); // default is random agent
+		}
 	}
 	
 
@@ -38,6 +47,8 @@ public class PlayGame implements StatusConstants {
 			agent = new AI_Player(rows, columns, numBombs);
 		} else if (agentType == 1) {
 			agent = new ManualPlayer();
+		} else if (agentType == 2){
+			agent = new AlgorithmPlayer(); // default is random agent
 		} else {
 			agent = new Agent(); // default is random agent
 		}
@@ -45,7 +56,6 @@ public class PlayGame implements StatusConstants {
 
 	public void start() {
 		long start = System.currentTimeMillis();
-
 		if (printBoard)
 			board.drawObservableBoard();
 
@@ -53,7 +63,7 @@ public class PlayGame implements StatusConstants {
 			if (pause) {
 				pause();
 			} else {
-				// sleep();
+				sleep();
 			}
 
 			int action = agent.chooseAction(board);
@@ -67,7 +77,6 @@ public class PlayGame implements StatusConstants {
 		System.out.println("Time: " + ((System.currentTimeMillis() - start) / 1000) + " seconds.");
 	}
 
-	@SuppressWarnings("unused")
 	private void sleep() {
 		try {
 			Thread.sleep(1000);

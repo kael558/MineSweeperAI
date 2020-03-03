@@ -1,6 +1,9 @@
 package main;
 
+import java.util.ArrayList;
+
 import neuralnetwork.TestModel;
+import players.AlgorithmPlayer.HiddenCell;
 
 /* cd /c/Users/Rahel/workspace/MineSweeperAI
  * git add .
@@ -21,22 +24,28 @@ public class Main {
 	/*PLAYERS*/
 	final static int AI_PLAYER = 0;
 	final static int MANUAL_PLAYER = 1;
-	final static int RANDOM_PLAYER = 2;
+	final static int ALGORITHM_PLAYER = 2;
+	final static int RANDOM_PLAYER = 3;
 	
 	/*PARAMETERS*/
 	final static boolean PRINT_IN_CONSOLE = true;
-	final static boolean PAUSE = false;
+	final static boolean PAUSE = true;
 	final static boolean PLAY_BROWSER = false;
 	
-	final static int ROWS = 9;
-	final static int COLUMNS = 9;
-	final static int NUMBER_OF_BOMBS = 10;
+	final static int ROWS = 16;
+	final static int COLUMNS = 30;
+	final static int NUMBER_OF_BOMBS = 99;
 	
 	public static void main(String[] args) {
-		//new TestModel();
-		PlayGame game = new PlayGame(AI_PLAYER, PRINT_IN_CONSOLE, PAUSE, PLAY_BROWSER, ROWS, COLUMNS, NUMBER_OF_BOMBS);
-		game.start();
-
+		new TestModel(ROWS, COLUMNS, NUMBER_OF_BOMBS, ALGORITHM_PLAYER);
+	
+		//PlayGame game = new PlayGame(ALGORITHM_PLAYER, PRINT_IN_CONSOLE, PAUSE, PLAY_BROWSER, ROWS, COLUMNS, NUMBER_OF_BOMBS);
+		//game.start();
+		
+		
+		//new Main();
+		
+		
 		/*
 		int wins = 0;
 		for (int i = 0; i < 100; i++){
@@ -48,6 +57,52 @@ public class Main {
 			game.reset();
 		}
 		System.out.println("Won " + wins + "/100");*/
+	}
+	public Main(){
+		ArrayList<HiddenCell> hiddenCellPerimeter = new ArrayList<HiddenCell>();
+		HiddenCell hc = new HiddenCell(1, 1);
+		hiddenCellPerimeter.add(hc);
+		
+		System.out.println(hiddenCellPerimeter);
+		
+		
+		for (HiddenCell HC: hiddenCellPerimeter){
+			if (hc.getRow() == HC.getRow() && hc.getColumn() == HC.getColumn()){
+				System.out.println("It contains it");
+			}
+		}
+			
+	}
+	
+	
+	public class HiddenCell{
+		int row, column, count;
+		
+		public HiddenCell(int row, int column){
+			this.row = row;
+			this.column = column;
+			count = 0;
+		}
+		
+		public int getRow(){
+			return row;
+		}
+		
+		public int getColumn(){
+			return column;
+		}
+		
+		public int getCount(){
+			return count;
+		}
+		
+		public void incrementCount(){
+			count++;
+		}
+		
+		public String toString(){
+			return  row + ", " + column + ", " + count;
+		} 
 	}
 }
 /*
