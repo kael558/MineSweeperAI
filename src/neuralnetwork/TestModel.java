@@ -17,31 +17,17 @@ public class TestModel {
 	PlayGame play;
 
 	int ROWS, COLUMNS, TOTAL_NUMBER_OF_BOMBS;
-
-	public TestModel() {
-		ROWS = 9;
-		COLUMNS = 9;
-		TOTAL_NUMBER_OF_BOMBS = 10;
-
-		// makeTestCases();
-
+	int agentType;
+	
+	
+	public TestModel(int rows, int cols, int bombs, int agentType) {
+		ROWS = rows;
+		COLUMNS = cols;
+		TOTAL_NUMBER_OF_BOMBS = bombs;
+		this.agentType = agentType;
+		
+		//makeTestCases();
 		testTestCases();
-	}
-
-	private void testTestCases() {
-		play = new PlayGame(ROWS, COLUMNS, TOTAL_NUMBER_OF_BOMBS);
-		for (int i = 1; i <= 10; i++) {
-			ObjectInputStream in;
-
-			try {
-				in = new ObjectInputStream(new FileInputStream("testcases//" + i + ".txt"));
-				board = (Board) in.readObject();
-				play.setBoard(board);
-				play.start();
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private void makeTestCases() {
@@ -50,15 +36,11 @@ public class TestModel {
 
 		for (int i = 1; i <= 10; i++) {
 			Board temp = new Board(ROWS, COLUMNS, TOTAL_NUMBER_OF_BOMBS);
-			temp.drawObservableBoard();
 			temp.clickCellInitial(r.nextInt(ROWS), r.nextInt(COLUMNS));
-			temp.drawObservableBoard();
-			temp.drawSecretBoard();
-
 			ObjectOutputStream out;
 
 			try {
-				out = new ObjectOutputStream(new FileOutputStream("testcases//" + i + ".txt"));
+				out = new ObjectOutputStream(new FileOutputStream("testcases//" + ROWS + "x" + COLUMNS + "b" + TOTAL_NUMBER_OF_BOMBS + "_" + i + ".txt"));
 				out.writeObject(temp);
 				out.close();
 			} catch (IOException e) {
@@ -68,6 +50,23 @@ public class TestModel {
 
 		}
 
+	}
+	
+	private void testTestCases() {
+		play = new PlayGame(ROWS, COLUMNS, TOTAL_NUMBER_OF_BOMBS, agentType);
+		for (int i = 1; i <= 10; i++) {
+			ObjectInputStream in;
+
+			try {
+				in = new ObjectInputStream(new FileInputStream("testcases//" + ROWS + "x" + COLUMNS + "b" + TOTAL_NUMBER_OF_BOMBS + "_" + i + ".txt"));
+				board = (Board) in.readObject();
+				board.drawSecretBoard();
+				play.setBoard(board);
+				play.start();
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
