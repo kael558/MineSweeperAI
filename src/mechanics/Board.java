@@ -149,22 +149,6 @@ public class Board extends ObservableBoard implements Serializable{
 		updateGameCondition();
 	}
 	
-	
-	public void flagCell(int selectedRow, int selectedCol){
-		if (getObservableCell(selectedRow, selectedCol).getStatus()==STATUS_HIDDEN){
-			getObservableCell(selectedRow, selectedCol).setStatus(STATUS_FLAGGED);
-			decrementFlagCount();
-
-		} else if (getObservableCell(selectedRow, selectedCol).getStatus()==STATUS_FLAGGED){
-			getObservableCell(selectedRow, selectedCol).setStatus(STATUS_HIDDEN);
-			incrementFlagCount();
-
-		} else{
-			//System.out.println("Cannot flag a revealed cell");
-
-		}
-	}
-	
 	public void clickCellInitial(int selectedRow, int selectedCol){
 		if (!isBoardInitialized()){
 			initializeBoard(selectedRow, selectedCol);

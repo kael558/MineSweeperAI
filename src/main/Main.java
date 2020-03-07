@@ -28,19 +28,19 @@ public class Main {
 	final static int RANDOM_PLAYER = 3;
 	
 	/*PARAMETERS*/
-	final static boolean PRINT_IN_CONSOLE = true;
-	final static boolean PAUSE = true;
-	final static boolean PLAY_BROWSER = false;
+	final static boolean PRINT_IN_CONSOLE = false;
+	final static boolean PAUSE = false;
+	final static boolean PLAY_BROWSER = true;
 	
 	final static int ROWS = 16;
 	final static int COLUMNS = 30;
 	final static int NUMBER_OF_BOMBS = 99;
 	
 	public static void main(String[] args) {
-		new TestModel(ROWS, COLUMNS, NUMBER_OF_BOMBS, ALGORITHM_PLAYER);
+	//	new TestModel(ROWS, COLUMNS, NUMBER_OF_BOMBS, ALGORITHM_PLAYER);
 	
-		//PlayGame game = new PlayGame(ALGORITHM_PLAYER, PRINT_IN_CONSOLE, PAUSE, PLAY_BROWSER, ROWS, COLUMNS, NUMBER_OF_BOMBS);
-		//game.start();
+		PlayGame game = new PlayGame(ALGORITHM_PLAYER, PRINT_IN_CONSOLE, PAUSE, PLAY_BROWSER, ROWS, COLUMNS, NUMBER_OF_BOMBS);
+		game.start();
 		
 		
 		//new Main();

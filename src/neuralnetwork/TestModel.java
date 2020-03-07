@@ -54,7 +54,7 @@ public class TestModel {
 	
 	private void testTestCases() {
 		play = new PlayGame(ROWS, COLUMNS, TOTAL_NUMBER_OF_BOMBS, agentType);
-		for (int i = 1; i <= 10; i++) {
+		for (int i = 2; i <= 10; i++) {
 			ObjectInputStream in;
 
 			try {

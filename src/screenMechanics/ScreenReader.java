@@ -6,7 +6,7 @@ import java.awt.Robot;
 import java.awt.event.InputEvent;
 
 import org.openqa.selenium.By;
-
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -224,27 +224,33 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 	}
 	
 	public void clickCellInitial(int row, int col){
-		String square = row + "_" + col;
+		String square = (row+1) + "_" + (col+1);
 		//driver.findElement(By.id(square)).click();
 
 		org.openqa.selenium.Point p = driver.findElement(By.id(square)).getLocation();
-		
+		//Keys.
 		int x = p.x+5;
 		int y = p.y+120;
 		robot.mouseMove(x, y);    
 		robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
 		robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+		//robot.delay(2000);
 	}
 	
 	public void flagCell(int row, int col) {
-		String square = row + "_" + col;
+		String square = (row+1) + "_" + (col+1);
+		//driver.findElement(By.id(square)).sendKeys(Keys.SPACE);
+	//	System.out.print
+		//System.out.println(square);
 		org.openqa.selenium.Point p = driver.findElement(By.id(square)).getLocation();
+		
 		
 		int x = p.x+5;
 		int y = p.y+120;
 		robot.mouseMove(x, y);    
 		robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
 		robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+		//robot.delay(2000);
 	}
 	
 
