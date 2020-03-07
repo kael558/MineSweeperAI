@@ -7,6 +7,7 @@ import java.awt.event.InputEvent;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -127,76 +128,80 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 	}
 	
 	public void updateObservableBoard(){
-		String HTML = driver.findElement(By.id("game")).getAttribute("innerHTML");
-		
-		/*Get squares*/
-		int indexSquare = 0;
-		resetSquaresRevealedCount();
-		for (int row = 1; row <= ROWS; row++){
-			for (int col = 1; col <= COLUMNS; col++){
-				String squareSearch = " id=\"" + row + "_" + col + "\"";
-				indexSquare = HTML.indexOf(squareSearch, indexSquare+9);
-				
-				String classSearch = "=\"";
-				int indexLook = HTML.indexOf(classSearch, indexSquare - 25);
-				
-				String classType = HTML.substring(indexLook+2, indexSquare-1);
-				switch (classType){
-				case "square blank":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_HIDDEN);
-					break;
-				case "square open0":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE0);
-					incrementSquaresRevealedCount();
-					break;
-				case "square open1":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE1);
-					incrementSquaresRevealedCount();
-					break;
-				case "square open2":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE2);
-					incrementSquaresRevealedCount();
-					break;
-				case "square open3":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE3);
-					incrementSquaresRevealedCount();
-					break;
-				case "square open4":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE4);
-					incrementSquaresRevealedCount();
-					break;
-				case "square open5":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE5);
-					incrementSquaresRevealedCount();
-					break;
-				case "square open6":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE6);
-					incrementSquaresRevealedCount();
-					break;
-				case "square open7":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE7);
-					incrementSquaresRevealedCount();
-					break;
-				case "square open8":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE8);
-					incrementSquaresRevealedCount();
-					break;
-				case "square bombflagged":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_FLAGGED);
-					break;
-				case "square bombrevealed":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_BOMB);
-					break;
-				case "square bombmisflagged":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_FLAGGED);
-					break;
-				case "square bombdeath":
-					super.getObservableCell(row-1, col-1).setStatus(STATUS_BOMB);
-					break;
-				default:
-					throw new IllegalArgumentException("Unknown case");
+		try{
+			String HTML = driver.findElement(By.id("game")).getAttribute("innerHTML");
+			
+			/*Get squares*/
+			int indexSquare = 0;
+			resetSquaresRevealedCount();
+			for (int row = 1; row <= ROWS; row++){
+				for (int col = 1; col <= COLUMNS; col++){
+					String squareSearch = " id=\"" + row + "_" + col + "\"";
+					indexSquare = HTML.indexOf(squareSearch, indexSquare+9);
+					
+					String classSearch = "=\"";
+					int indexLook = HTML.indexOf(classSearch, indexSquare - 25);
+					
+					String classType = HTML.substring(indexLook+2, indexSquare-1);
+					switch (classType){
+					case "square blank":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_HIDDEN);
+						break;
+					case "square open0":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE0);
+						incrementSquaresRevealedCount();
+						break;
+					case "square open1":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE1);
+						incrementSquaresRevealedCount();
+						break;
+					case "square open2":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE2);
+						incrementSquaresRevealedCount();
+						break;
+					case "square open3":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE3);
+						incrementSquaresRevealedCount();
+						break;
+					case "square open4":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE4);
+						incrementSquaresRevealedCount();
+						break;
+					case "square open5":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE5);
+						incrementSquaresRevealedCount();
+						break;
+					case "square open6":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE6);
+						incrementSquaresRevealedCount();
+						break;
+					case "square open7":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE7);
+						incrementSquaresRevealedCount();
+						break;
+					case "square open8":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE8);
+						incrementSquaresRevealedCount();
+						break;
+					case "square bombflagged":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_FLAGGED);
+						break;
+					case "square bombrevealed":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_BOMB);
+						break;
+					case "square bombmisflagged":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_FLAGGED);
+						break;
+					case "square bombdeath":
+						super.getObservableCell(row-1, col-1).setStatus(STATUS_BOMB);
+						break;
+					default:
+						throw new IllegalArgumentException("Unknown case");
+					}
 				}
 			}
+		}catch(UnhandledAlertException e){
+			System.exit(0);
 		}
 	}
 	

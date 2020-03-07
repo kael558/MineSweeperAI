@@ -138,8 +138,8 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 		ArrayList<HiddenCell> hiddenCellPerimeter = new ArrayList<HiddenCell>();;
 		int clearAmount = 0;
 		int minimumCount = Integer.MAX_VALUE;
-		int minimumCountRow = 0;
-		int minimumCountCol = 0;
+		int minimumCountRow = 999;
+		int minimumCountCol = 999;
 		
 		ObservableBoard temp = new ObservableBoard(board);
 		
@@ -157,35 +157,40 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 							}
 						//	System.out.println(hiddenCellPerimeter + " size: " + hiddenCellPerimeter.size());
 							
-
-							tryFlagCombination(temp, hiddenCellPerimeter, 0);
 							
-							//System.out.println(hiddenCellPerimeter);
+							if (hiddenCellPerimeter.size() < 40){
+								tryFlagCombination(temp, hiddenCellPerimeter, 0);
+								
+								for (int i = 0; i < hiddenCellPerimeter.size(); i++){
+									if (hiddenCellPerimeter.get(i).getCount() < minimumCount){
+										//action = getAction(hiddenCellPerimeter.get(i).getRow(), hiddenCellPerimeter.get(i).getColumn(), board.COLUMNS, true);
+										//System.out.println("Probability Action");
+										minimumCount = hiddenCellPerimeter.get(i).getCount();
+										minimumCountRow= hiddenCellPerimeter.get(i).getRow();
+										minimumCountCol= hiddenCellPerimeter.get(i).getColumn();
+										//break hiddenCellPerimeterLoop;
+										
+									}
+									
+									if (hiddenCellPerimeter.get(i).getCount()==0){
+										action = getAction(hiddenCellPerimeter.get(i).getRow(), hiddenCellPerimeter.get(i).getColumn(), temp.COLUMNS, true);
+										System.out.println("Definite Probability Action");
+										System.out.println(hiddenCellPerimeter);
+										return action;
+									}
+								}
+	
+							} else {
+								System.out.println(hiddenCellPerimeter.size() + " " + hiddenCellPerimeter);
+							}
+							
 							
 							//pause();
 							
 							//minimumCount = hiddenCellPerimeter.get(0).getCount();
 							//minimumCountRow = 0;
 							
-							for (int i = 0; i < hiddenCellPerimeter.size(); i++){
-								if (hiddenCellPerimeter.get(i).getCount() < minimumCount){
-									//action = getAction(hiddenCellPerimeter.get(i).getRow(), hiddenCellPerimeter.get(i).getColumn(), board.COLUMNS, true);
-									//System.out.println("Probability Action");
-									minimumCount = hiddenCellPerimeter.get(i).getCount();
-									minimumCountRow= hiddenCellPerimeter.get(i).getRow();
-									minimumCountCol= hiddenCellPerimeter.get(i).getColumn();
-									//break hiddenCellPerimeterLoop;
-									
-								}
-								
-								if (hiddenCellPerimeter.get(i).getCount()==0){
-									action = getAction(hiddenCellPerimeter.get(i).getRow(), hiddenCellPerimeter.get(i).getColumn(), temp.COLUMNS, true);
-									System.out.println("Definite Probability Action");
-									System.out.println(hiddenCellPerimeter);
-									return action;
-								}
-							}
-							
+					
 							clearAmount = hiddenCellPerimeter.size();
 							
 						
@@ -201,64 +206,15 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 			}
 		}
 	
-		System.out.println("Minimum Count Probability Action");
-		
-		action = getAction( minimumCountRow,  minimumCountCol, board.COLUMNS, true);
-		System.out.println(hiddenCellPerimeter);
-		pause();
-		//for (int i = 0; i < hiddenCellPerimeter.size(); i++){
-			//board.flagCell(hiddenCellPerimeter.get(i).getRow(), hiddenCellPerimeter.get(i).getColumn());
+		if (minimumCountRow!=999 && minimumCountCol!=999){
+			System.out.println("Minimum Count Probability Action");
 			
-			
-			
-		//}
-		
-		
-		
-		/*
-		ArrayList<NumberedCell> numberedCellPerimeter = new ArrayList<NumberedCell>();;
-		for (int row = 0; row < board.ROWS; row++){
-			for (int col = 0; col < board.COLUMNS; col++){
-				if (board.getObservableCell(row, col).getStatus() == STATUS_HIDDEN){
-					if (adjacentIsNumbered(board, row, col)){
-						//System.out.println("row: " + row + " col: " + col);
-						if (!contains(hiddenCellPerimeter, row, col)){
-							populateNumberedCellPerimeter(numberedCellPerimeter, board, row, col);
-						}
-					}
-				}
-			}
+			action = getAction( minimumCountRow,  minimumCountCol, board.COLUMNS, true);
+			System.out.println(hiddenCellPerimeter);
+			return action;
 		}
 		
-		
-		
-		for (int i = 0; i < hiddenCellPerimeter.size(); i++){
-			board.flagCell(hiddenCellPerimeter.get(i).getRow(), hiddenCellPerimeter.get(i).getColumn());
-			hiddenCellPerimeter.get(i).setFlagged();
-			System.out.println("Set Origin Flag: " + hiddenCellPerimeter.get(i).output());
-			
-			//have to use recursion
-			for (int j = i+1; j < hiddenCellPerimeter.size(); j++){
-				board.drawObservableBoard();
-				System.out.println("Checking if cell: " + hiddenCellPerimeter.get(j).output() + " is a possible flag");
-				if (possibleFlag(board, hiddenCellPerimeter.get(j).getRow(), hiddenCellPerimeter.get(j).getColumn())){
-					board.flagCell(hiddenCellPerimeter.get(j).getRow(), hiddenCellPerimeter.get(j).getColumn());
-					hiddenCellPerimeter.get(j).setFlagged();
-					hiddenCellPerimeter.get(j).incrementCount();
-					hiddenCellPerimeter.get(i).incrementCount();
-				//	pause();
-				}
-			}
-			
-			for (int j = 0; j < hiddenCellPerimeter.size(); j++){
-				if (hiddenCellPerimeter.get(j).getFlagged()){
-					board.flagCell(hiddenCellPerimeter.get(j).getRow(), hiddenCellPerimeter.get(j).getColumn());
-				}
-			}
-		}
-		
-		System.out.println(hiddenCellPerimeter);
-		*/
+		System.out.println("Random Action as hiddenCellPerimeter is too large");
 		return action;
 	}
 
