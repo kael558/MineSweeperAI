@@ -1,5 +1,8 @@
 package main;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 import interfaces.StatusConstants;
@@ -63,7 +66,7 @@ public class PlayGame implements StatusConstants {
 			if (pause) {
 				pause();
 			} else {
-				sleep();
+				//sleep();
 			}
 
 			int action = agent.chooseAction(board);
@@ -75,11 +78,32 @@ public class PlayGame implements StatusConstants {
 		}
 		System.out.println(board.getGameCondition());
 		System.out.println("Time: " + ((System.currentTimeMillis() - start) / 1000) + " seconds.");
+		
+		/*
+		if (board.getGameCondition().equals("Loser")){
+			System.out.println("Saving board...");
+			board.resetObservableBoard();
+			
+			ObjectOutputStream out;
+
+			try {
+				out = new ObjectOutputStream(new FileOutputStream("testcases//" + board.ROWS + "x" + board.COLUMNS + "b" + board.totalBombs+ "_" + 2 + ".txt"));
+				out.writeObject(board);
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			System.out.println("Board saved.");
+		}
+		*/
 	}
 
 	private void sleep() {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

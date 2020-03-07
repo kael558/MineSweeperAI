@@ -56,6 +56,23 @@ public class ObservableBoard  implements StatusConstants, Serializable{
 		}
 	}
 	
+	public ObservableBoard(ObservableBoard board){		
+		ROWS = board.ROWS;
+		COLUMNS = board.COLUMNS;
+		
+		totalBombs = board.totalBombs;
+		
+		gameCondition = "In Progress"; 
+		flagCount = board.totalBombs; //flags remaining
+		squaresRevealedCount = board.getSquaresRevealedCount();		
+		
+		observableBoard = new ObservableCell[ROWS][COLUMNS];
+		for (int row = 0; row < ROWS; row++){
+			for (int col = 0; col < COLUMNS; col++){
+				this.observableBoard[row][col] = new ObservableCell(board.getObservableCell(row, col).getStatus());
+			}
+		}
+	}
 	
 	public void drawObservableBoard(){	
 		System.out.printf("  ");
@@ -222,8 +239,18 @@ public class ObservableBoard  implements StatusConstants, Serializable{
 	
 	
 	public void flagCell(int selectedRow, int selectedCol){
-	
-		
+		if (getObservableCell(selectedRow, selectedCol).getStatus()==STATUS_HIDDEN){
+			getObservableCell(selectedRow, selectedCol).setStatus(STATUS_FLAGGED);
+			decrementFlagCount();
+
+		} else if (getObservableCell(selectedRow, selectedCol).getStatus()==STATUS_FLAGGED){
+			getObservableCell(selectedRow, selectedCol).setStatus(STATUS_HIDDEN);
+			incrementFlagCount();
+
+		} else{
+			//System.out.println("Cannot flag a revealed cell");
+
+		}
 	}
 	
 	public void clickCellInitial(int selectedRow, int selectedCol){
