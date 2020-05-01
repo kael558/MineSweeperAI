@@ -1,10 +1,10 @@
 package neuralnetwork;
 
-
-public class TrainingThread{
+public class TrainingThread {
 
 	//static Queue<ArrayList<Pair<INDArray, INDArray>>> queue = new LinkedList<ArrayList<Pair<INDArray, INDArray>> >();
 	//public static boolean pause = false;
+
 
 	public TrainingThread(){
 		

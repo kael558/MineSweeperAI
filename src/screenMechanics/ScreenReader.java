@@ -37,7 +37,7 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 	}
 
 	private void createDriver() {
-		String chromeDriverPath = "C:/Drivers/chromedriver_win32/chromedriver.exe" ;
+		String chromeDriverPath = "lib/chromedriver.exe" ;
 		System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 		driver = new ChromeDriver();
 		driver.get("http://minesweeperonline.com/");
