@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 import interfaces.StatusConstants;
-import main.Main.HiddenCell;
 import mechanics.ObservableBoard;
 
 public class AlgorithmPlayer extends Agent implements StatusConstants {
@@ -158,7 +157,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 						//	System.out.println(hiddenCellPerimeter + " size: " + hiddenCellPerimeter.size());
 							
 							
-							if (hiddenCellPerimeter.size() < 40){
+							if (hiddenCellPerimeter.size() < 30){
 								tryFlagCombination(temp, hiddenCellPerimeter, 0);
 								
 								for (int i = 0; i < hiddenCellPerimeter.size(); i++){

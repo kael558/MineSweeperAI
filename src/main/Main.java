@@ -1,9 +1,5 @@
 package main;
 
-import java.util.ArrayList;
-
-import neuralnetwork.TestModel;
-import players.AlgorithmPlayer.HiddenCell;
 
 /* cd /c/Users/Rahel/workspace/MineSweeperAI
  * git add .
@@ -58,52 +54,7 @@ public class Main {
 		}
 		System.out.println("Won " + wins + "/100");*/
 	}
-	public Main(){
-		ArrayList<HiddenCell> hiddenCellPerimeter = new ArrayList<HiddenCell>();
-		HiddenCell hc = new HiddenCell(1, 1);
-		hiddenCellPerimeter.add(hc);
-		
-		System.out.println(hiddenCellPerimeter);
-		
-		
-		for (HiddenCell HC: hiddenCellPerimeter){
-			if (hc.getRow() == HC.getRow() && hc.getColumn() == HC.getColumn()){
-				System.out.println("It contains it");
-			}
-		}
-			
-	}
-	
-	
-	public class HiddenCell{
-		int row, column, count;
-		
-		public HiddenCell(int row, int column){
-			this.row = row;
-			this.column = column;
-			count = 0;
-		}
-		
-		public int getRow(){
-			return row;
-		}
-		
-		public int getColumn(){
-			return column;
-		}
-		
-		public int getCount(){
-			return count;
-		}
-		
-		public void incrementCount(){
-			count++;
-		}
-		
-		public String toString(){
-			return  row + ", " + column + ", " + count;
-		} 
-	}
+
 }
 /*
 	0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29
