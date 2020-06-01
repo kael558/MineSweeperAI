@@ -43,9 +43,6 @@ public class Board extends ObservableBoard implements Serializable{
 			//int row = indexes.get(bombIndex)/COLUMNS;
 			//int col = indexes.get(bombIndex)%COLUMNS;
 			
-			
-			
-			
 			if (board[row][col] == null && !(row >= selectedRow-1 && row <= selectedRow+1 && col >= selectedCol-1 && col <= selectedCol+1)){
 				board[row][col] = new Cell(SECRET_STATUS_BOMB);
 				bombCount++;

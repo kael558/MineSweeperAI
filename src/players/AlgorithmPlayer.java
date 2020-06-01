@@ -128,12 +128,6 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 		
 		
 		/*PROBABILITY BASED*/
-		/* TODO number perimeter
-		 * 	if numberperimeter size = 1, then dont do it for that one
-		 * 
-		 * 
-		 */
-		//pause();
 		ArrayList<HiddenCell> hiddenCellPerimeter = new ArrayList<HiddenCell>();;
 		int clearAmount = 0;
 		int minimumCount = Integer.MAX_VALUE;
@@ -142,33 +136,23 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 		
 		ObservableBoard temp = new ObservableBoard(board);
 		
-		//hiddenCellPerimeterLoop:
 		for (int row = 0; row < temp.ROWS; row++){
 			for (int col = 0; col < temp.COLUMNS; col++){
 				if (temp.getObservableCell(row, col).getStatus() == STATUS_HIDDEN){
 					if (adjacentIsNumbered(temp, row, col)){
-						//System.out.println("row: " + row + " col: " + col);
 						if (!contains(hiddenCellPerimeter, row, col)){
 							populateHiddenCellPerimeter(hiddenCellPerimeter, temp, row, col);
-							//System.out.println(hiddenCellPerimeter);
 							for (int i = 0; i < clearAmount; i++){
 								hiddenCellPerimeter.remove(0);
 							}
-						//	System.out.println(hiddenCellPerimeter + " size: " + hiddenCellPerimeter.size());
-							
-							
 							if (hiddenCellPerimeter.size() < 30){
 								tryFlagCombination(temp, hiddenCellPerimeter, 0);
 								
 								for (int i = 0; i < hiddenCellPerimeter.size(); i++){
 									if (hiddenCellPerimeter.get(i).getCount() < minimumCount){
-										//action = getAction(hiddenCellPerimeter.get(i).getRow(), hiddenCellPerimeter.get(i).getColumn(), board.COLUMNS, true);
-										//System.out.println("Probability Action");
 										minimumCount = hiddenCellPerimeter.get(i).getCount();
 										minimumCountRow= hiddenCellPerimeter.get(i).getRow();
 										minimumCountCol= hiddenCellPerimeter.get(i).getColumn();
-										//break hiddenCellPerimeterLoop;
-										
 									}
 									
 									if (hiddenCellPerimeter.get(i).getCount()==0){
@@ -183,22 +167,10 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 								System.out.println(hiddenCellPerimeter.size() + " " + hiddenCellPerimeter);
 							}
 							
-							
-							//pause();
-							
-							//minimumCount = hiddenCellPerimeter.get(0).getCount();
-							//minimumCountRow = 0;
-							
+						
 					
 							clearAmount = hiddenCellPerimeter.size();
-							
-						
-							
-						//	pause();
-							//hiddenCellPerimeter.rem
-							
-							//hiddenCellPerimeter.clear();
-							
+	
 						}
 					}
 				}
