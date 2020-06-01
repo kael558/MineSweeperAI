@@ -63,11 +63,11 @@ public class PlayGame implements StatusConstants {
 			board.drawObservableBoard();
 
 		while (board.isRunning()) {
-			if (pause) {
+			if (pause) 
 				pause();
-			} else {
+			else 
 				sleep();
-			}
+			
 
 			int action = agent.chooseAction(board);
 
@@ -78,6 +78,9 @@ public class PlayGame implements StatusConstants {
 		}
 		System.out.println(board.getGameCondition());
 		System.out.println("Time: " + ((System.currentTimeMillis() - start) / 1000) + " seconds.");
+		
+		if (pause) 
+			pause();
 	}
 
 	private void sleep() {
