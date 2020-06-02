@@ -26,7 +26,7 @@ public class TestModel {
 		TOTAL_NUMBER_OF_BOMBS = bombs;
 		this.agentType = agentType;
 		
-		//makeTestCases();
+	//	makeTestCases();
 		testTestCases();
 	}
 
