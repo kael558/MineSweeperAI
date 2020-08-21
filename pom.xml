@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>MineSweeperAI</groupId>
@@ -17,9 +18,34 @@
 				</configuration>
 			</plugin>
 
-
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<configuration>
+					<executable>java</executable>
+					<arguments>
+						<argument>-classpath</argument>
+						<classpath />
+						<argument>com.example.AkkaQuickstart</argument>
+					</arguments>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>typesafe</id>
+			<name>Typesafe Repository</name>
+			<url>http://repo.typesafe.com/typesafe/releases/</url>
+		</repository>
+	</repositories>
+
+	<properties>
+		<akka.version>2.6.8</akka.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.deeplearning4j</groupId>
@@ -41,11 +67,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.25</version>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-jdk14</artifactId>
-			<version>1.7.25</version>
-		</dependency>
+
 		<dependency>
 			<groupId>net.sourceforge.htmlunit</groupId>
 			<artifactId>htmlunit</artifactId>
@@ -86,18 +108,30 @@
 			<artifactId>guava</artifactId>
 			<version>24.1-jre</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.typesafe.akka</groupId>
-			<artifactId>akka-actor-typed_2.13</artifactId>
-			<version>2.6.3</version>
+			<artifactId>akka-actor</artifactId>
+			<version>2.0.5</version>
 		</dependency>
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.2.3</version>
 		</dependency>
-	
-	
+
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-actor-typed_2.13</artifactId>
+			<version>${akka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-actor-testkit-typed_2.13</artifactId>
+			<version>${akka.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 

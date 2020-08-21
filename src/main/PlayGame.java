@@ -51,7 +51,7 @@ public class PlayGame implements StatusConstants {
 		} else if (agentType == 1) {
 			agent = new ManualPlayer();
 		} else if (agentType == 2){
-			agent = new AlgorithmPlayer(); // default is random agent
+			agent = new AlgorithmPlayer(); 
 		} else {
 			agent = new Agent(); // default is random agent
 		}

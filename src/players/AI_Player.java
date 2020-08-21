@@ -4,7 +4,6 @@ import java.io.File;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.IntSummaryStatistics;
 
 import java.util.Random;
@@ -17,67 +16,26 @@ import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;
 import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.deeplearning4j.nn.weights.IWeightInit;
 import org.deeplearning4j.nn.weights.WeightInit;
-import org.deeplearning4j.nn.weights.WeightInitDistribution;
-import org.deeplearning4j.nn.conf.layers.*;
 import org.nd4j.linalg.activations.Activation;
-import org.deeplearning4j.nn.conf.distribution.Distribution;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
 
-import org.apache.commons.io.FilenameUtils;
-import org.datavec.api.io.filters.BalancedPathFilter;
-import org.datavec.api.io.labels.ParentPathLabelGenerator;
-import org.datavec.api.split.FileSplit;
-import org.datavec.api.split.InputSplit;
-import org.datavec.image.loader.NativeImageLoader;
-import org.datavec.image.recordreader.ImageRecordReader;
-import org.datavec.image.transform.FlipImageTransform;
-import org.datavec.image.transform.ImageTransform;
-import org.datavec.image.transform.PipelineImageTransform;
-import org.datavec.image.transform.WarpImageTransform;
-import org.deeplearning4j.api.storage.StatsStorage;
-import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
-
-import org.deeplearning4j.nn.conf.GradientNormalization;
-import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
-import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
-import org.deeplearning4j.nn.conf.distribution.Distribution;
-import org.deeplearning4j.nn.conf.distribution.NormalDistribution;
-import org.deeplearning4j.nn.conf.inputs.InputType;
-import org.deeplearning4j.nn.conf.inputs.InvalidInputTypeException;
-import org.deeplearning4j.nn.conf.layers.*;
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.deeplearning4j.nn.weights.WeightInit;
-import org.deeplearning4j.nn.weights.WeightInitDistribution;
-import org.deeplearning4j.optimize.api.InvocationType;
-import org.deeplearning4j.optimize.listeners.EvaluativeListener;
-import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
-
-import org.nd4j.linalg.activations.Activation;
-import org.nd4j.linalg.dataset.DataSet;
-import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
-import org.nd4j.linalg.dataset.api.preprocessor.DataNormalization;
-import org.nd4j.linalg.dataset.api.preprocessor.ImagePreProcessingScaler;
-import org.nd4j.linalg.learning.config.AdaDelta;
-import org.nd4j.linalg.lossfunctions.LossFunctions;
-import org.nd4j.linalg.primitives.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import akka.actor.typed.ActorSystem;
 import interfaces.StatusConstants;
 import mechanics.Board;
 import mechanics.ObservableBoard;
-import neuralnetwork.ActionValueIndex;
+import neuralnetwork.NeuralNetwork;
 
 public class AI_Player extends Agent implements StatusConstants {
 
 	private static MultiLayerNetwork model;
 	int epochs = 10000;
-
+	int update = 1000;
+	int numGames = 5;
+	
 	int height = 5, width = 5;
 	int bitWidth = 12;
 
@@ -113,7 +71,9 @@ public class AI_Player extends Agent implements StatusConstants {
 		Scanner scan = new Scanner(System.in);
 		epochs = scan.nextInt();
 		// scan.close();
-		train();
+		//train();
+		
+		ActorSystem.create(NeuralNetwork.create(model, update, epochs, numGames, fileName), "Neural Network");
 	}
 
 	public int chooseAction(ObservableBoard board) {
@@ -122,8 +82,9 @@ public class AI_Player extends Agent implements StatusConstants {
 				if (board.getObservableCell(row, col).getStatus() == STATUS_HIDDEN) {
 					INDArray state = Nd4j.create(board.getState(row, col));
 					INDArray qval = model.output(state);
-					System.out.print("action: " + qval.argMax(0).getInt(0) + " | row: " + row + " col:" + col + " | ");
-					print(qval, "qval: ");
+					
+					//System.out.print("action: " + qval.argMax(0).getInt(0) + " | row: " + row + " col:" + col + " | ");
+				//	print(qval, "qval: ");
 					// print(state, "state: ");
 					if (qval.getDouble(0) > 0.9)
 						return row * board.COLUMNS + col;
@@ -151,8 +112,7 @@ public class AI_Player extends Agent implements StatusConstants {
 		for (int epoch = 1; epoch <= epochs; epoch++) {
 			Board trainingBoard = new Board(ROWS, COLUMNS, NUMBER_OF_BOMBS);
 			long epochStartTime = System.nanoTime();
-			// ArrayList<Pair<INDArray, INDArray>> iter = new
-			// ArrayList<Pair<INDArray, INDArray>>();
+			// ArrayList<Pair<INDArray, INDArray>> iter = new ArrayList<Pair<INDArray, INDArray>>();
 			int actionCount = 0;
 			
 			gameloop: while (!trainingBoard.isBoardInitialized() || trainingBoard.isRunning()) {
@@ -224,7 +184,7 @@ public class AI_Player extends Agent implements StatusConstants {
 			// iter.clear();
 
 			averageSquaresRevealedCount.accept(trainingBoard.getSquaresRevealedCount());
-			if (epoch % 1000 == 0)
+			if (epoch % 10 == 0)
 				System.out.printf(
 						"Epoch: %-4d Time Taken: %-3.2fs Squares Revealed: %-3d Average: %-3.2f Highest: %-3d%n", epoch,
 						(System.nanoTime() - epochStartTime) / 1000000000.0, trainingBoard.getSquaresRevealedCount(),
