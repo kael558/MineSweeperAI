@@ -1,11 +1,12 @@
 package neuralnetwork;
 
-import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.deeplearning4j.datasets.iterator.INDArrayDataSetIterator;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.nd4j.linalg.api.buffer.DataType;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.factory.Nd4j;
@@ -20,7 +21,6 @@ import akka.japi.Pair;
 import interfaces.StatusConstants;
 import mechanics.Board;
 import mechanics.ObservableBoard;
-import neuralnetwork.NeuralNetwork.Command;
 
 public class Game extends AbstractBehavior<Game.Command> implements StatusConstants {
 
@@ -38,7 +38,7 @@ public class Game extends AbstractBehavior<Game.Command> implements StatusConsta
 	private double epsilon;
 	private Random r;
 
-	private ActorRef<NeuralNetwork.Command> neuralNetworkActor;
+	private ActorRef<NeuralNetwork.ReceiveData> neuralNetworkActor;
 	
 	// Types of messages received
 	public enum StartGame implements Command {
@@ -64,15 +64,17 @@ public class Game extends AbstractBehavior<Game.Command> implements StatusConsta
 
 	// Behaviors
 	private Behavior<Command> onStartGame() {
-		getContext().getLog().info("{} is starting a new game", getContext().getSelf().path().name());
+		//getContext().getLog().info("{} is starting a new game", getContext().getSelf().path().name());
 		
 		Board trainingBoard = new Board(ROWS, COLUMNS, NUMBER_OF_BOMBS);
-		long epochStartTime = System.nanoTime();
 
-		Iterable<Pair<INDArray, INDArray>> iter = new ArrayList<Pair<INDArray, INDArray>>();
+		List<INDArray> features = new ArrayList<INDArray>();
+		List<INDArray> labels = new ArrayList<INDArray>();
+		
 		int actionCount = 0;
 
-		gameloop: while (!trainingBoard.isBoardInitialized() || trainingBoard.isRunning()) {
+		gameloop: 
+		while (!trainingBoard.isBoardInitialized() || trainingBoard.isRunning()) {
 			for (int row = 0; row < trainingBoard.ROWS; row++) {
 				for (int col = 0; col < trainingBoard.COLUMNS; col++) {
 					if (trainingBoard.getObservableCell(row, col).getStatus() == STATUS_HIDDEN
@@ -103,19 +105,17 @@ public class Game extends AbstractBehavior<Game.Command> implements StatusConsta
 							int initialFlagCount = trainingBoard.getFlagCount();
 							trainingBoard.playMove(action);
 
-							// trainingBoard.drawObservableBoard();
-
 							INDArray y = qval.dup();
 
 							double updateClick = getRewardClick(trainingBoard, row, col) + qval.getDouble(0);
-							double updateFlag = getRewardFlag(trainingBoard, initialFlagCount, row, col)
-									+ qval.getDouble(1);
+							double updateFlag = getRewardFlag(trainingBoard, initialFlagCount, row, col) + qval.getDouble(1);
 
 							y.putScalar(0, updateClick);
 							y.putScalar(1, updateFlag);
 
-							Pair<INDArray, INDArray> p = new Pair<INDArray, INDArray>(state, y);
-							((ArrayList<Pair<INDArray, INDArray>>) iter).add(p);
+							features.add(state);
+							labels.add(y);
+
 
 							if (!trainingBoard.isRunning() || actionCount >= 100)
 								break gameloop;
@@ -125,13 +125,16 @@ public class Game extends AbstractBehavior<Game.Command> implements StatusConsta
 			}
 		}
 
-		DataSetIterator iterator = new INDArrayDataSetIterator((Iterable) iter,
-				((ArrayList<Pair<INDArray, INDArray>>) iter).size());
-		((ArrayList<Pair<INDArray, INDArray>>) iter).clear();
-
-		getContext().getLog().info("{} has finished a game", getContext().getSelf().path().name());
+		if (epsilon > 0.1) 
+			epsilon -= 1 / (double) 100000;
 		
-		neuralNetworkActor.tell(new NeuralNetwork.ReceiveData(iterator));
+		ArrayList<INDArray> [] data = new ArrayList[2];
+		data[0] = (ArrayList<INDArray>) features;
+		data[1] = (ArrayList<INDArray>) labels;
+
+		//getContext().getLog().info("{} has finished a game", getContext().getSelf().path().name());
+		
+		neuralNetworkActor.tell(new NeuralNetwork.ReceiveData(data));
 		
 		getContext().getSelf().tell(Game.StartGame.INSTANCE);
 		
@@ -159,14 +162,20 @@ public class Game extends AbstractBehavior<Game.Command> implements StatusConsta
 		return this;
 	}
 
-	private Game(ActorContext<Command> context, MultiLayerNetwork model, ActorRef<NeuralNetwork.Command> neuralNetwork) {
+	private Game(ActorContext<Command> context, MultiLayerNetwork model, ActorRef<NeuralNetwork.ReceiveData> neuralNetwork, int rows, int columns, int number_of_bombs) {
 		super(context);
 		this.model = model;
 		this.neuralNetworkActor = neuralNetwork;
+		this.ROWS = rows;
+		this.COLUMNS = columns;
+		this.NUMBER_OF_BOMBS = number_of_bombs;
+		this.r = new Random();
+		this.epsilon = 1.0;
+		getContext().getLog().info("Creating game actor");
 	}
 
-	public static Behavior<Command> create(MultiLayerNetwork model, ActorRef<NeuralNetwork.Command> neuralNetwork) {
-		return Behaviors.setup(context -> new Game(context, model, neuralNetwork));
+	public static Behavior<Command> create(MultiLayerNetwork model, ActorRef<NeuralNetwork.ReceiveData> neuralNetwork, int rows, int columns, int number_of_bombs) {
+		return Behaviors.setup(context -> new Game(context, model, neuralNetwork, rows, columns, number_of_bombs));
 	}
 
 }

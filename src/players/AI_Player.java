@@ -3,11 +3,7 @@ package players;
 import java.io.File;
 
 import java.io.IOException;
-
-import java.util.IntSummaryStatistics;
-
 import java.util.Random;
-import java.util.Scanner;
 import java.util.zip.ZipException;
 
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
@@ -22,21 +18,14 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
-
-import akka.actor.typed.ActorSystem;
 import interfaces.StatusConstants;
 import mechanics.Board;
 import mechanics.ObservableBoard;
-import neuralnetwork.NeuralNetwork;
 
 public class AI_Player extends Agent implements StatusConstants {
 
 	private static MultiLayerNetwork model;
-	int epochs = 10000;
-	int update = 1000;
-	int numGames = 5;
-	
-	int height = 5, width = 5;
+	int epochs = 1000000;
 	int bitWidth = 12;
 
 	double epsilon = 1.0;
@@ -67,13 +56,13 @@ public class AI_Player extends Agent implements StatusConstants {
 		model = denseModel();
 		model.init();
 
-		System.out.print("Enter number of epochs to train: ");
-		Scanner scan = new Scanner(System.in);
-		epochs = scan.nextInt();
 		// scan.close();
-		//train();
 		
-		ActorSystem.create(NeuralNetwork.create(model, update, epochs, numGames, fileName), "Neural Network");
+		train();
+		//if (epochs != 0)
+		//	ActorSystem.create(NeuralNetwork.create(model, update, epochs, numGames, fileName), "NeuralNetwork");
+		
+		
 	}
 
 	public int chooseAction(ObservableBoard board) {
@@ -91,12 +80,6 @@ public class AI_Player extends Agent implements StatusConstants {
 					else if (qval.getDouble(1) > 0.9)
 						return row * board.COLUMNS + col
 								+ (board.ROWS * board.COLUMNS);
-					
-					// qval.argMax(0).getInt(0);
-					// ArrayList<ActionValueIndex> allowedActions =
-					// getAllowedActions(qval, board);
-					// int action = argmax(allowedActions);
-					// return action;
 				}
 			}
 		}
@@ -106,13 +89,13 @@ public class AI_Player extends Agent implements StatusConstants {
 
 	public void train() {
 		System.out.println("Begin Training");
-		IntSummaryStatistics averageSquaresRevealedCount = new IntSummaryStatistics();
+		//IntSummaryStatistics averageSquaresRevealedCount = new IntSummaryStatistics();
 		int actionLimit = 2000;
 		
 		for (int epoch = 1; epoch <= epochs; epoch++) {
 			Board trainingBoard = new Board(ROWS, COLUMNS, NUMBER_OF_BOMBS);
-			long epochStartTime = System.nanoTime();
-			// ArrayList<Pair<INDArray, INDArray>> iter = new ArrayList<Pair<INDArray, INDArray>>();
+			//long epochStartTime = System.nanoTime();
+			
 			int actionCount = 0;
 			
 			gameloop: while (!trainingBoard.isBoardInitialized() || trainingBoard.isRunning()) {
@@ -121,6 +104,7 @@ public class AI_Player extends Agent implements StatusConstants {
 						if (trainingBoard.getObservableCell(row, col).getStatus() == STATUS_HIDDEN
 								|| trainingBoard.getObservableCell(row, col).getStatus() == STATUS_FLAGGED) {
 							INDArray state = Nd4j.create(trainingBoard.getState(row, col));
+							
 							INDArray qval = model.output(state);
 
 							// System.out.print (row + " " + col + ": ");
@@ -160,15 +144,9 @@ public class AI_Player extends Agent implements StatusConstants {
 
 								y.putScalar(0, updateClick);
 								y.putScalar(1, updateFlag);
-								// print(y, "y: ");
-								// Pair<INDArray, INDArray> p = new
-								// Pair<INDArray,
-								// INDArray>(state, y);
-								// iter.add(p);
 
 								model.fit(state, y);
-
-								// pause();
+								
 
 								if (!trainingBoard.isRunning() || actionCount >= actionLimit)
 									break gameloop;
@@ -178,22 +156,19 @@ public class AI_Player extends Agent implements StatusConstants {
 				}
 
 			}
-			// DataSetIterator iterator = new INDArrayDataSetIterator(iter,
-			// iter.size());
-			// model.fit(iterator);
-			// iter.clear();
-
-			averageSquaresRevealedCount.accept(trainingBoard.getSquaresRevealedCount());
+			
+			/*
+			//averageSquaresRevealedCount.accept(trainingBoard.getSquaresRevealedCount());
 			if (epoch % 10 == 0)
 				System.out.printf(
 						"Epoch: %-4d Time Taken: %-3.2fs Squares Revealed: %-3d Average: %-3.2f Highest: %-3d%n", epoch,
 						(System.nanoTime() - epochStartTime) / 1000000000.0, trainingBoard.getSquaresRevealedCount(),
 						averageSquaresRevealedCount.getAverage(), averageSquaresRevealedCount.getMax());
-
+			*/
+			
 			if (epoch == epochs || epoch % 10000 == 0) 
 				saveModel();
 			
-
 			if (epsilon > 0.1) 
 				epsilon -= 1 / (double) epochs;
 			
@@ -205,56 +180,23 @@ public class AI_Player extends Agent implements StatusConstants {
 		System.out.println(str + " " + arr);
 	}
 
-	/*
-	 * HAVE KNOWLEDGE OF BOMBS CLICKED 
-	 * if clicked is bomb, decrease click score, increase flag score. 
-	 * if clicked is not bomb, increase click score, decrease flag score. 
-	 * 
-	 * FLAGGED 
-	 * if flag is placed on bomb, then increase flag score, decrease click score. 
-	 * if flag is not placed on bomb, then decrease flag score, increase click score.
-	 * 
-	 * REMOVE FLAG 
-	 * if flag was not placed on bomb, increase flag score, decrease click score 
-	 * if flag was placed on bomb, decrease score
-	 * 
-	 * if there are no squares surrounding 
-	 * 
-	 */
 	private double getRewardClick(ObservableBoard trainingBoard, int row, int col) {
 		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() != STATUS_BOMB && trainingBoard.getObservableCell(row, col).getStatus() != STATUS_FLAGGED)
 			return 1;
-
 		return -1;
 	}
 
-	private double getRewardFlag(ObservableBoard trainingBoard, int initialFlagCount, int row, int col) {
-		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() == STATUS_BOMB) // bomb
-			return 1;
-
-		return -1;
-		/*
-		
-		
-		if (trainingBoard.getFlagCount() != initialFlagCount) { // flag												// placed/removed
-			if (trainingBoard.getObservableCell(row, col).getStatus() == STATUS_FLAGGED) { // flag																		// placed
-				if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() == STATUS_BOMB) // bomb
-					return 1;
-				else
-					return -1;
-			} else { // flag removed
-				if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() == STATUS_BOMB) // bomb
-					return -1;
-				else
-					return 1;
-			}
-		} else { // no flags placed/removed
+	private double getRewardFlag(ObservableBoard trainingBoard, int initialFlagCount, int row, int col) {	
+		if (trainingBoard.getObservableCell(row, col).getStatus() == STATUS_FLAGGED)
 			if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() == STATUS_BOMB) // bomb
 				return 1;
 			else
 				return -1;
-		}
-	*/
+		else
+			if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() == STATUS_BOMB) // bomb
+				return -1;
+			else
+				return 1;
 	}
 
 	private void saveModel() {
@@ -378,6 +320,7 @@ public class AI_Player extends Agent implements StatusConstants {
 	 * e.printStackTrace(); } }
 	 */
 
+	/*
 	private void pause() {
 		System.out.println("Paused: Please enter any character to continue.");
 
@@ -385,6 +328,7 @@ public class AI_Player extends Agent implements StatusConstants {
 		Scanner scan = new Scanner(System.in);
 		scan.nextLine();
 	}
+	*/
 
 	/*
 	 * public void train() { IntSummaryStatistics averageSquaresRevealedCount =

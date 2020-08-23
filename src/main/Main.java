@@ -44,7 +44,7 @@ public class Main {
 		temp.drawObservableBoard();
 		*/
 		PlayGame game = new PlayGame(AI_PLAYER, PRINT_IN_CONSOLE, PAUSE, !PLAY_BROWSER, ROWS, COLUMNS, NUMBER_OF_BOMBS);
-		game.start();
+		//game.start();
 		
 		
 		/*
