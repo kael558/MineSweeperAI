@@ -58,16 +58,10 @@
 			<version>1.0.0-beta4</version>
 		</dependency>
 		<dependency>
-			<groupId>org.nd4j</groupId>
-			<artifactId>nd4j-native-platform</artifactId>
-			<version>1.0.0-beta4</version>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.25</version>
 		</dependency>
-
 		<dependency>
 			<groupId>net.sourceforge.htmlunit</groupId>
 			<artifactId>htmlunit</artifactId>
@@ -84,7 +78,12 @@
 			<artifactId>selenium-java</artifactId>
 			<version>3.8.1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.11.0</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.github.detro</groupId>
 			<artifactId>phantomjsdriver</artifactId>
@@ -95,12 +94,6 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>3.11.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

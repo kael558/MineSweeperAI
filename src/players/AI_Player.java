@@ -18,7 +18,11 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import interfaces.StatusConstants;
+import main.Main;
 import mechanics.Board;
 import mechanics.ObservableBoard;
 
@@ -35,6 +39,8 @@ public class AI_Player extends Agent implements StatusConstants {
 	int ROWS, COLUMNS, NUMBER_OF_BOMBS;
 	String fileName = "";
 
+	private static final Logger logger = LoggerFactory.getLogger(Main.class);
+	
 	public AI_Player(int rows, int columns, int numBombs, String temp) {
 		ROWS = rows;
 		COLUMNS = columns;
@@ -46,6 +52,7 @@ public class AI_Player extends Agent implements StatusConstants {
 	}
 
 	public AI_Player(int rows, int columns, int numBombs) {
+		logger.debug("AI Player");
 		ROWS = rows;
 		COLUMNS = columns;
 		NUMBER_OF_BOMBS = numBombs;
@@ -55,7 +62,7 @@ public class AI_Player extends Agent implements StatusConstants {
 		// model = alexnetModel();
 		model = denseModel();
 		model.init();
-
+		logger.debug("model initialized");
 		// scan.close();
 		
 		train();
@@ -157,8 +164,11 @@ public class AI_Player extends Agent implements StatusConstants {
 
 			}
 			
+			if (epoch % 1000 == 0)
+				logger.debug("Epoch: {} | Squares Revealed: {}", epoch, trainingBoard.getSquaresRevealedCount());
+			
 			/*
-			//averageSquaresRevealedCount.accept(trainingBoard.getSquaresRevealedCount());
+			averageSquaresRevealedCount.accept(trainingBoard.getSquaresRevealedCount());
 			if (epoch % 10 == 0)
 				System.out.printf(
 						"Epoch: %-4d Time Taken: %-3.2fs Squares Revealed: %-3d Average: %-3.2f Highest: %-3d%n", epoch,
@@ -208,6 +218,7 @@ public class AI_Player extends Agent implements StatusConstants {
 			e.printStackTrace();
 		}
 		System.out.println("Model Saved");
+		logger.debug("Model Saved");
 	}
 
 	private MultiLayerNetwork denseModel() {

@@ -31,8 +31,6 @@ public class NeuralNetwork extends AbstractBehavior<NeuralNetwork.ReceiveData> {
 	
 	List<ActorRef<Game.Command>> games;
 
-
-
 	public static class ReceiveData  {
 		public final ArrayList<INDArray> [] data;
 

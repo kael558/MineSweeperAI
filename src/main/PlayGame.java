@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import interfaces.StatusConstants;
 import mechanics.Board;
 import mechanics.ObservableBoard;
@@ -20,7 +23,9 @@ public class PlayGame implements StatusConstants {
 	Agent agent;
 	boolean printBoard = true;
 	boolean pause = true;
+	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
+	
 	public PlayGame(int rows, int columns, int bombs, int agentType) {
 		if (agentType == 0) {
 			agent = new AI_Player(rows, columns, bombs, "no train");
@@ -37,6 +42,7 @@ public class PlayGame implements StatusConstants {
 
 	public PlayGame(int agentType, boolean printBoard, boolean pause, boolean playBrowser, int rows, int columns,
 			int numBombs) {
+		logger.debug("PlayGame");
 		this.pause = pause;
 		this.printBoard = printBoard;
 

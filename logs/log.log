@@ -1,0 +1,15 @@
+13:17:23.876 [main] DEBUG main.Main - Main class
+13:17:23.881 [main] DEBUG main.Main - PlayGame
+13:17:23.883 [main] DEBUG main.Main - AI Player
+13:17:23.953 [main] INFO  org.nd4j.linalg.factory.Nd4jBackend - Loaded [CpuBackend] backend
+13:17:25.082 [main] INFO  org.nd4j.nativeblas.NativeOpsHolder - Number of threads used for NativeOps: 4
+13:17:25.483 [main] INFO  org.nd4j.nativeblas.Nd4jBlas - Number of threads used for BLAS: 4
+13:17:25.493 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Backend used: [CPU]; OS: [Windows 10]
+13:17:25.493 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Cores: [4]; Memory: [2.0GB];
+13:17:25.493 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Blas vendor: [MKL]
+13:17:25.908 [main] INFO  o.d.nn.multilayer.MultiLayerNetwork - Starting MultiLayerNetwork with WorkspaceModes set to [training: ENABLED; inference: ENABLED], cacheMode set to [NONE]
+13:17:25.966 [main] DEBUG main.Main - model initialized
+13:17:25.973 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 1
+13:17:25.973 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 2
+13:18:19.271 [main] DEBUG main.Main - Epoch: 1000 | Squares Revealed: 22
+13:19:08.610 [main] DEBUG main.Main - Epoch: 2000 | Squares Revealed: 24
