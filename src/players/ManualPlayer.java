@@ -2,16 +2,14 @@ package players;
 
 import java.util.Scanner;
 
-import mechanics.Board;
 import mechanics.ObservableBoard;
 
-public class ManualPlayer  extends Agent{
+public class ManualPlayer  extends Player {
 
 	public ManualPlayer(){
 	
 	}
-	
-	
+
 	public int chooseAction(ObservableBoard board){
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
@@ -29,8 +27,7 @@ public class ManualPlayer  extends Agent{
 			action[2] = scan.nextInt();
 		
 		} while (action[0] < 0 || action[0] >= board.ROWS || action[1] < 0 || action[1] >= board.COLUMNS || action[2] < 0 || action[2] > 1);
-		
-		
+
 		if (action[2] == 0)
 			return action[0]*board.COLUMNS + action[1];
 		

@@ -4,21 +4,21 @@ import java.awt.AWTException;
 
 import java.awt.Robot;
 import java.awt.event.InputEvent;
+import java.io.Serial;
 
+import interfaces.CellType;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import interfaces.StatusConstants;
 import mechanics.ObservableBoard;
-import mechanics.ObservableCell;
 
 import org.openqa.selenium.WebElement;	
 
-public class ScreenReader extends ObservableBoard implements StatusConstants {
+public class ScreenReader extends ObservableBoard  {
 	
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	WebDriver driver;
@@ -49,7 +49,6 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 		try {
 			robot = new Robot();
 		} catch (AWTException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -81,15 +80,14 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 		
 		String heightString = style.substring(beginIndex+8, endIndex);
 		
-		int totalWidth = Integer.valueOf(widthString);
-		int totalHeight = Integer.valueOf(heightString);
+		int totalWidth = Integer.parseInt(widthString);
+		int totalHeight = Integer.parseInt(heightString);
 		
 		//may need to get sizes for each individual borders...
 		int row = (totalHeight - 10 - 24 - 10 - 10)/16;
-		int col = (totalWidth-20)/16; 
-	
-		int[] d = {row, col, 0};
-		return d;
+		int col = (totalWidth-20)/16;
+
+		return new int[]{row, col, 0};
 	}
 	
 	public int getFlagsLeft(String HTML){
@@ -103,9 +101,8 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 		int indexLookBombs = HTML.indexOf(timeSearchDigits, indexDigits-10);
 		
 		String number = HTML.substring(indexLookBombs+6, indexDigits-1);
-		num+=Integer.valueOf(number)*100;
-		
-		
+		num+=Integer.parseInt(number)*100;
+
 		searchDigits = " id=\"mines_tens\"";
 		indexDigits = HTML.indexOf(searchDigits, 100);
 		
@@ -113,7 +110,7 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 		indexLookBombs = HTML.indexOf(timeSearchDigits, indexDigits-10);
 		
 		number = HTML.substring(indexLookBombs+6, indexDigits-1);
-		num+=Integer.valueOf(number)*10;
+		num+=Integer.parseInt(number)*10;
 		
 		searchDigits = " id=\"mines_ones\"";
 		indexDigits = HTML.indexOf(searchDigits, 100);
@@ -122,7 +119,7 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 		indexLookBombs = HTML.indexOf(timeSearchDigits, indexDigits-10);
 		
 		number = HTML.substring(indexLookBombs+6, indexDigits-1);
-		num+=Integer.valueOf(number);
+		num+=Integer.parseInt(number);
 		
 		return num;
 	}
@@ -145,55 +142,55 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 					String classType = HTML.substring(indexLook+2, indexSquare-1);
 					switch (classType){
 					case "square blank":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_HIDDEN);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.HIDDEN);
 						break;
 					case "square open0":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE0);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE0);
 						incrementSquaresRevealedCount();
 						break;
 					case "square open1":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE1);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE1);
 						incrementSquaresRevealedCount();
 						break;
 					case "square open2":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE2);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE2);
 						incrementSquaresRevealedCount();
 						break;
 					case "square open3":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE3);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE3);
 						incrementSquaresRevealedCount();
 						break;
 					case "square open4":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE4);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE4);
 						incrementSquaresRevealedCount();
 						break;
 					case "square open5":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE5);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE5);
 						incrementSquaresRevealedCount();
 						break;
 					case "square open6":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE6);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE6);
 						incrementSquaresRevealedCount();
 						break;
 					case "square open7":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE7);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE7);
 						incrementSquaresRevealedCount();
 						break;
 					case "square open8":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_SQUARE8);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE8);
 						incrementSquaresRevealedCount();
 						break;
 					case "square bombflagged":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_FLAGGED);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.FLAGGED);
 						break;
 					case "square bombrevealed":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_BOMB);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.BOMB);
 						break;
 					case "square bombmisflagged":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_FLAGGED);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.FLAGGED);
 						break;
 					case "square bombdeath":
-						super.getObservableCell(row-1, col-1).setStatus(STATUS_BOMB);
+						super.getObservableCell(row-1, col-1).setCellType(CellType.BOMB);
 						break;
 					default:
 						throw new IllegalArgumentException("Unknown case");
@@ -220,7 +217,6 @@ public class ScreenReader extends ObservableBoard implements StatusConstants {
 		} else {
 			action[0] = actionIndex/COLUMNS;
 			action[1] = actionIndex%COLUMNS;
-			action[2] = 0;
 			//System.out.println("clicked" + action[0] + " " + action[1]);
 			clickCellInitial(action[0], action[1]);
 		} 

@@ -1,14 +1,11 @@
 package neuralnetwork;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-import org.deeplearning4j.datasets.iterator.INDArrayDataSetIterator;
+import interfaces.CellType;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.nd4j.linalg.api.buffer.DataType;
 import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.factory.Nd4j;
 
 import akka.actor.typed.ActorRef;
@@ -17,12 +14,10 @@ import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
-import akka.japi.Pair;
-import interfaces.StatusConstants;
 import mechanics.Board;
 import mechanics.ObservableBoard;
 
-public class Game extends AbstractBehavior<Game.Command> implements StatusConstants {
+public class Game extends AbstractBehavior<Game.Command>  {
 
 	/*
 	 * runs game of minesweeper sends data to neural network, sends message to
@@ -68,8 +63,8 @@ public class Game extends AbstractBehavior<Game.Command> implements StatusConsta
 		
 		Board trainingBoard = new Board(ROWS, COLUMNS, NUMBER_OF_BOMBS);
 
-		List<INDArray> features = new ArrayList<INDArray>();
-		List<INDArray> labels = new ArrayList<INDArray>();
+		ArrayList<INDArray> features = new ArrayList<INDArray>();
+		ArrayList<INDArray> labels = new ArrayList<INDArray>();
 		
 		int actionCount = 0;
 
@@ -77,9 +72,9 @@ public class Game extends AbstractBehavior<Game.Command> implements StatusConsta
 		while (!trainingBoard.isBoardInitialized() || trainingBoard.isRunning()) {
 			for (int row = 0; row < trainingBoard.ROWS; row++) {
 				for (int col = 0; col < trainingBoard.COLUMNS; col++) {
-					if (trainingBoard.getObservableCell(row, col).getStatus() == STATUS_HIDDEN
-							|| trainingBoard.getObservableCell(row, col).getStatus() == STATUS_FLAGGED) {
-						INDArray state = Nd4j.create(trainingBoard.getState(row, col));
+					if (trainingBoard.getObservableCell(row, col).getCellType() == CellType.HIDDEN
+							|| trainingBoard.getObservableCell(row, col).getCellType() == CellType.FLAGGED) {
+						INDArray state = Nd4j.create(trainingBoard.serializeState5x5(row, col));
 						INDArray qval = model.output(state);
 
 						int action = -1;
@@ -129,8 +124,8 @@ public class Game extends AbstractBehavior<Game.Command> implements StatusConsta
 			epsilon -= 1 / (double) 100000;
 		
 		ArrayList<INDArray> [] data = new ArrayList[2];
-		data[0] = (ArrayList<INDArray>) features;
-		data[1] = (ArrayList<INDArray>) labels;
+		data[0] = features;
+		data[1] = labels;
 
 		//getContext().getLog().info("{} has finished a game", getContext().getSelf().path().name());
 		
@@ -142,14 +137,14 @@ public class Game extends AbstractBehavior<Game.Command> implements StatusConsta
 	}
 
 	private double getRewardClick(ObservableBoard trainingBoard, int row, int col) {
-		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() != STATUS_BOMB
-				&& trainingBoard.getObservableCell(row, col).getStatus() != STATUS_FLAGGED)
+		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() != CellType.BOMB
+				&& trainingBoard.getObservableCell(row, col).getCellType() != CellType.FLAGGED)
 			return 1;
 		return -1;
 	}
 
 	private double getRewardFlag(ObservableBoard trainingBoard, int initialFlagCount, int row, int col) {
-		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() == STATUS_BOMB) // bomb
+		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() == CellType.BOMB) // bomb
 			return 1;
 		return -1;
 	}

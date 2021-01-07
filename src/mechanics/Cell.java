@@ -2,24 +2,25 @@ package mechanics;
 
 import java.io.Serializable;
 
-import interfaces.StatusConstants;
+import interfaces.CellType;
 
-public class Cell  implements StatusConstants, Serializable {
+
+public class Cell implements Serializable {
 
 	private static final long serialVersionUID = 6027716377690031477L;
-	private int secretStatus; 
+	private CellType secretCellType;
 	
 	
-	public Cell(int secretStatus){
-		this.secretStatus = secretStatus;
+	public Cell(CellType secretCellType){
+		this.secretCellType = secretCellType;
 	}
 
-	public void setSecretStatus(int secretStatus){
-		this.secretStatus = secretStatus;
+	public void setSecretStatus(CellType secretCellType){
+		this.secretCellType = secretCellType;
 	}
 	
-	public int getSecretStatus(){
-		return secretStatus;
+	public CellType getSecretStatus(){
+		return secretCellType;
 	}
 	
 	

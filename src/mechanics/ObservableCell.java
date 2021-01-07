@@ -2,28 +2,28 @@ package mechanics;
 
 import java.io.Serializable;
 
-import interfaces.StatusConstants;
+import interfaces.CellType;
 
-public class ObservableCell  implements StatusConstants, Serializable{
+
+public class ObservableCell implements Serializable{
 
 	private static final long serialVersionUID = -8286311764252090592L;
-	public int status;
+	public CellType cellType;
 	
 
-	
 	public ObservableCell(){
-		this.status = STATUS_HIDDEN;
+		this.cellType = CellType.HIDDEN;
 	}
 	
-	public ObservableCell(int status){
-		this.status = status;
+	public ObservableCell(CellType cellType){
+		this.cellType = cellType;
 	}
 	
-	public int getStatus(){
-		return status;
+	public CellType getCellType(){
+		return cellType;
 	}
 	
-	public void setStatus(int status){
-		this.status = status;
+	public void setCellType(CellType cellType){
+		this.cellType = cellType;
 	}
 }

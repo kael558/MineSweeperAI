@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-import interfaces.StatusConstants;
+import interfaces.CellType;
 import mechanics.ObservableBoard;
 
-public class AlgorithmPlayer extends Agent implements StatusConstants {
+public class AlgorithmPlayer extends Player {
 
 	Random r;
 	
@@ -15,7 +15,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 		r = new Random();
 	}
 	
-	public class HiddenCell{
+	public static class HiddenCell{
 		int row, column, count;
 		boolean flagged;
 		
@@ -59,43 +59,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 			return  row + ", " + column + ", " + count;
 		}
 	}
-	
-	public class NumberedCell{
-		int row, column;
-		boolean satisfied;
-		
-		public  NumberedCell(int row, int column){
-			this.row = row;
-			this.column = column;
-			satisfied = false;
 
-		}
-		
-		public int getRow(){
-			return row;
-		}
-		
-		public int getColumn(){
-			return column;
-		}
-
-		public boolean getFlagged(){
-			return satisfied;
-		}
-		
-		public void setSatisfied(){
-			satisfied = true;
-		}
-		public String output(){
-			return  row + ", " + column;
-		}
-		public String toString(){
-			return  row + ", " + column + ", " + satisfied;
-		}
-	}
-	
-	
-	
 	
 	public int chooseAction(ObservableBoard board){
 		int action = r.nextInt(board.ROWS*board.COLUMNS);
@@ -105,7 +69,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 		/*KNOWN MOVES*/
 		for (int row = 0; row < board.ROWS; row++){
 			for (int col = 0; col < board.COLUMNS; col++){
-				if (board.getObservableCell(row, col).getStatus() == STATUS_HIDDEN){
+				if (board.getObservableCell(row, col).getCellType() == CellType.HIDDEN){
 					if (satisfyNumbered(board, row, col)){
 						System.out.println("Definite Action");
 						return getAction(row, col, board.COLUMNS, true);
@@ -114,7 +78,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 						System.out.println("Definite Action");
 						return getAction(row, col, board.COLUMNS, false);
 					}
-				} else if (board.getObservableCell(row, col).getStatus() != STATUS_FLAGGED){ //not hidden && not flagged
+				} else if (board.getObservableCell(row, col).getCellType() != CellType.FLAGGED){ //not hidden && not flagged
 					isEmpty = false; 
 				}
 			}
@@ -128,7 +92,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 		
 		
 		/*PROBABILITY BASED*/
-		ArrayList<HiddenCell> hiddenCellPerimeter = new ArrayList<HiddenCell>();;
+		ArrayList<HiddenCell> hiddenCellPerimeter = new ArrayList<>();
 		int clearAmount = 0;
 		int minimumCount = Integer.MAX_VALUE;
 		int minimumCountRow = 999;
@@ -138,7 +102,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 		
 		for (int row = 0; row < temp.ROWS; row++){
 			for (int col = 0; col < temp.COLUMNS; col++){
-				if (temp.getObservableCell(row, col).getStatus() == STATUS_HIDDEN){
+				if (temp.getObservableCell(row, col).getCellType() == CellType.HIDDEN){
 					if (adjacentIsNumbered(temp, row, col)){
 						if (!contains(hiddenCellPerimeter, row, col)){
 							populateHiddenCellPerimeter(hiddenCellPerimeter, temp, row, col);
@@ -166,11 +130,8 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 							} else {
 								System.out.println(hiddenCellPerimeter.size() + " " + hiddenCellPerimeter);
 							}
-							
-						
-					
+
 							clearAmount = hiddenCellPerimeter.size();
-	
 						}
 					}
 				}
@@ -204,7 +165,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 					for (int col = selectedCol-1; col <= selectedCol+1; col++){
 						if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 							if (!(row==selectedRow && col==selectedCol)){
-								if (board.getObservableCell(row, col).getStatus() != STATUS_HIDDEN && board.getObservableCell(row, col).getStatus() != STATUS_FLAGGED){
+								if (board.getObservableCell(row, col).getCellType() != CellType.HIDDEN && board.getObservableCell(row, col).getCellType() != CellType.FLAGGED){
 									if (!isNumberSatisfied(board, row, col)){
 										allSatisfied = false;
 										break perimeterSatisfiedLoop;
@@ -266,7 +227,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 					if (!(row==selectedRow && col==selectedCol)){
 						
 						//if one of the surrounding squares is satisfied, then dont flag
-						if (board.getObservableCell(row, col).getStatus()!=STATUS_FLAGGED && board.getObservableCell(row, col).getStatus()!=STATUS_HIDDEN){
+						if (board.getObservableCell(row, col).getCellType()!= CellType.FLAGGED && board.getObservableCell(row, col).getCellType()!= CellType.HIDDEN){
 							if (isNumberSatisfied(board, row, col)){
 								//System.out.println("Cell: " + row + " " + col + " is satisfied");
 								//pause();
@@ -290,10 +251,10 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getStatus()==STATUS_FLAGGED){
+						if (board.getObservableCell(row, col).getCellType()== CellType.FLAGGED){
 							count++;
 						}
-						if (count == board.getObservableCell(selectedRow, selectedCol).getStatus()){
+						if (CellType.values()[count] == board.getObservableCell(selectedRow, selectedCol).getCellType()){
 							return true;
 						}
 					}
@@ -303,14 +264,14 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 		return false;
 	}
 
-	private ArrayList<HiddenCell> populateHiddenCellPerimeter(ArrayList<HiddenCell> hiddenCellPerimeter, ObservableBoard board, int selectedRow, int selectedCol) {
+	private void populateHiddenCellPerimeter(ArrayList<HiddenCell> hiddenCellPerimeter, ObservableBoard board, int selectedRow, int selectedCol) {
 		hiddenCellPerimeter.add(new HiddenCell(selectedRow, selectedCol));
 
 		for (int row = selectedRow-1; row <= selectedRow+1; row++){
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getStatus() == STATUS_HIDDEN){
+						if (board.getObservableCell(row, col).getCellType() == CellType.HIDDEN){
 							if (adjacentIsNumbered(board, row, col)){
 								if (!contains(hiddenCellPerimeter, row, col)){
 									//System.out.println("row: " + row + " col: " + col);
@@ -325,9 +286,6 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 				}
 			}
 		}
-		
-		
-		return hiddenCellPerimeter;
 	}
 
 	
@@ -355,7 +313,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getStatus()!=STATUS_HIDDEN && board.getObservableCell(row, col).getStatus()!=STATUS_FLAGGED){
+						if (board.getObservableCell(row, col).getCellType()!= CellType.HIDDEN && board.getObservableCell(row, col).getCellType()!= CellType.FLAGGED){
 							return true;
 						}
 					}
@@ -372,8 +330,8 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getStatus()!=STATUS_HIDDEN && board.getObservableCell(row, col).getStatus()!=STATUS_FLAGGED){
-							if (board.getObservableCell(row, col).getStatus() == countHiddenFlagged(board, row, col)){
+						if (board.getObservableCell(row, col).getCellType()!= CellType.HIDDEN && board.getObservableCell(row, col).getCellType()!= CellType.FLAGGED){
+							if (board.getObservableCell(row, col).getCellType() == CellType.values()[countHiddenFlagged(board, row, col)]){
 								return true;
 							}
 						}
@@ -391,7 +349,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getStatus() == STATUS_HIDDEN || board.getObservableCell(row, col).getStatus() == STATUS_FLAGGED){
+						if (board.getObservableCell(row, col).getCellType() == CellType.HIDDEN || board.getObservableCell(row, col).getCellType() == CellType.FLAGGED){
 							count++;
 						}
 					}
@@ -408,8 +366,8 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getStatus()!=STATUS_HIDDEN && board.getObservableCell(row, col).getStatus()!=STATUS_FLAGGED){
-							if (board.getObservableCell(row, col).getStatus() == countBombs(board, row, col)){
+						if (board.getObservableCell(row, col).getCellType()!= CellType.HIDDEN && board.getObservableCell(row, col).getCellType()!= CellType.FLAGGED){
+							if (board.getObservableCell(row, col).getCellType() == CellType.values()[countBombs(board, row, col)]){
 								return true;
 							}
 						}
@@ -427,7 +385,7 @@ public class AlgorithmPlayer extends Agent implements StatusConstants {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getStatus() == STATUS_FLAGGED){
+						if (board.getObservableCell(row, col).getCellType() == CellType.FLAGGED){
 							count++;
 						}
 					}

@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 
+import interfaces.PlayerType;
 import main.PlayGame;
 import mechanics.Board;
 
@@ -44,7 +45,6 @@ public class TestModel {
 				out.writeObject(temp);
 				out.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -53,7 +53,7 @@ public class TestModel {
 	}
 	
 	private void testTestCases() {
-		play = new PlayGame(ROWS, COLUMNS, TOTAL_NUMBER_OF_BOMBS, agentType);
+		play = new PlayGame(null, PlayerType.AI_5x5, false, false);
 		for (int i = 2; i <= 10; i++) {
 			ObjectInputStream in;
 

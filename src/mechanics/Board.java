@@ -1,18 +1,16 @@
 package mechanics;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import interfaces.CellType;
 
-//Environment
+import java.io.Serial;
+import java.io.Serializable;
+
 public class Board extends ObservableBoard implements Serializable{
-	/**
-	 * 
-	 */
+	@Serial
 	private static final long serialVersionUID = 4244819984696003737L;
 
 	private Cell[][] board;	
-	
-	public static final int SECRET_STATUS_BOMB = -1;
+
 	private boolean isBoardInitialized;
 	
 	public Board(){
@@ -44,7 +42,7 @@ public class Board extends ObservableBoard implements Serializable{
 			//int col = indexes.get(bombIndex)%COLUMNS;
 			
 			if (board[row][col] == null && !(row >= selectedRow-1 && row <= selectedRow+1 && col >= selectedCol-1 && col <= selectedCol+1)){
-				board[row][col] = new Cell(SECRET_STATUS_BOMB);
+				board[row][col] = new Cell(CellType.BOMB);
 				bombCount++;
 			}
 		}
@@ -53,7 +51,7 @@ public class Board extends ObservableBoard implements Serializable{
 		for (int i = 0; i < ROWS; i++){
 			for (int j = 0; j < COLUMNS; j++){
 				if (board[i][j] == null){
-					board[i][j] = new Cell(getNumberOfSurroundingBombs(i, j));
+					board[i][j] = new Cell(CellType.values()[getNumberOfSurroundingBombs(i, j)]);
 				}
 			}
 		}
@@ -68,7 +66,7 @@ public class Board extends ObservableBoard implements Serializable{
 		for (int row = selectedRow-1; row <= selectedRow+1; row++){
 			for (int col = selectedColumn-1; col <= selectedColumn+1; col++){	
 				if (!(row==selectedRow && col==selectedColumn)){
-					if (row>=0 && row<ROWS && col>=0 && col<COLUMNS && board[row][col]!=null && board[row][col].getSecretStatus()==SECRET_STATUS_BOMB){
+					if (row>=0 && row<ROWS && col>=0 && col<COLUMNS && board[row][col]!=null && board[row][col].getSecretStatus()== CellType.BOMB){
 						count++;
 					}
 				}
@@ -154,30 +152,30 @@ public class Board extends ObservableBoard implements Serializable{
 	}
 	
 	private void clickCell(int selectedRow, int selectedCol){
-		if (getObservableCell(selectedRow, selectedCol).getStatus()!=STATUS_HIDDEN){
+		if (getObservableCell(selectedRow, selectedCol).getCellType()!= CellType.HIDDEN){
 		//	System.out.println("You can't click an already revealed cell");
 			return;
 		}
 		
 		
-		getObservableCell(selectedRow, selectedCol).setStatus(getCell(selectedRow, selectedCol).getSecretStatus());
+		getObservableCell(selectedRow, selectedCol).setCellType(getCell(selectedRow, selectedCol).getSecretStatus());
 		
-		if (getObservableCell(selectedRow, selectedCol).getStatus()==STATUS_BOMB){
+		if (getObservableCell(selectedRow, selectedCol).getCellType()== CellType.BOMB){
 		//	System.out.println("Clicked Bomb at" + selectedRow + " " + selectedColumn);
 			return;
 		}
 		
 		incrementSquaresRevealedCount();
-		if (getObservableCell(selectedRow, selectedCol).getStatus()==STATUS_SQUARE0){
+		if (getObservableCell(selectedRow, selectedCol).getCellType()== CellType.SQUARE0){
 			for (int row = selectedRow-1; row <= selectedRow+1; row++){
 				for (int col = selectedCol-1; col <= selectedCol+1; col++){
 					if (!(row==selectedRow && col==selectedCol)){
 						if (row>=0 && row<ROWS && col>=0 && col<COLUMNS){
-							if (getObservableCell(row, col).getStatus()==STATUS_HIDDEN){
-								if (getCell(row, col).getSecretStatus()!=STATUS_BOMB && getCell(row, col).getSecretStatus()!=STATUS_SQUARE0){
-									getObservableCell(row, col).setStatus(getCell(row, col).getSecretStatus());
+							if (getObservableCell(row, col).getCellType()== CellType.HIDDEN){
+								if (getCell(row, col).getSecretStatus()!= CellType.BOMB && getCell(row, col).getSecretStatus()!= CellType.SQUARE0){
+									getObservableCell(row, col).setCellType(getCell(row, col).getSecretStatus());
 									incrementSquaresRevealedCount();
-								} else if (getCell(row, col).getSecretStatus()==STATUS_SQUARE0){
+								} else if (getCell(row, col).getSecretStatus()== CellType.SQUARE0){
 									clickCell(row, col);
 								}
 							}
@@ -200,7 +198,7 @@ public class Board extends ObservableBoard implements Serializable{
 			System.out.println("You can't double click an unrevealed cell");
 			return false;
 		}
-		if (board[selectedRow][selectedColumn].getStatus()==STATUS_FLAGGED){
+		if (board[selectedRow][selectedColumn].getStatus()==Status.FLAGGED){
 			System.out.println("You can't double click a flagged cell");
 			return false;
 		}
@@ -222,7 +220,7 @@ public class Board extends ObservableBoard implements Serializable{
 						
 						if (row>=0 && row<ROWS && col>=0 && col<COLUMNS){
 							
-							if (board[row][col].getStatus()!=STATUS_REVEALED && board[row][col].getStatus()!=STATUS_FLAGGED){
+							if (board[row][col].getStatus()!=STATUS_REVEALED && board[row][col].getStatus()!=Status.FLAGGED){
 								if (board[row][col].getSecretStatus()>0 && board[row][col].getSecretStatus()<9){
 									board[row][col].setStatus(STATUS_REVEALED);
 									SquaresRevealedCount++;
@@ -246,7 +244,7 @@ public class Board extends ObservableBoard implements Serializable{
 		for (int row = selectedRow-1; row <= selectedRow+1; row++){
 			for (int col = selectedColumn-1; col <= selectedColumn+1; col++){	
 				if (!(row==selectedRow && col==selectedColumn)){
-					if (row>=0 && row<ROWS && col>=0 && col<COLUMNS && board[row][col].getStatus()==STATUS_FLAGGED){
+					if (row>=0 && row<ROWS && col>=0 && col<COLUMNS && board[row][col].getStatus()==Status.FLAGGED){
 						count++;
 					}
 				}

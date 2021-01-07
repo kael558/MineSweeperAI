@@ -1,7 +1,7 @@
 13:17:23.876 [main] DEBUG main.Main - Main class
 13:17:23.881 [main] DEBUG main.Main - PlayGame
 13:17:23.883 [main] DEBUG main.Main - AI Player
-13:17:23.953 [main] INFO  org.nd4j.linalg.factory.Nd4jBackend - Loaded [CpuBackend] backend
+13:17:23.953 [main] INFO  org.nd4j.linalg.factory.Nd4jBackend - Loaded [CpuBackend] backend       <----- stop for vs
 13:17:25.082 [main] INFO  org.nd4j.nativeblas.NativeOpsHolder - Number of threads used for NativeOps: 4
 13:17:25.483 [main] INFO  org.nd4j.nativeblas.Nd4jBlas - Number of threads used for BLAS: 4
 13:17:25.493 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Backend used: [CPU]; OS: [Windows 10]
@@ -13,3 +13,574 @@
 13:17:25.973 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 2
 13:18:19.271 [main] DEBUG main.Main - Epoch: 1000 | Squares Revealed: 22
 13:19:08.610 [main] DEBUG main.Main - Epoch: 2000 | Squares Revealed: 24
+
+
+15:27:31.651 [main] DEBUG main.Main - PlayGame
+15:27:31.729 [main] DEBUG main.Main - AI Player
+15:27:31.995 [main] INFO  org.nd4j.linalg.factory.Nd4jBackend - Loaded [CpuBackend] backend
+15:27:33.994 [main] DEBUG main.Main - PlayGame
+15:27:34.026 [main] DEBUG main.Main - AI Player
+15:27:34.166 [main] INFO  org.nd4j.linalg.factory.Nd4jBackend - Loaded [CpuBackend] backend
+15:27:34.541 [main] INFO  org.nd4j.nativeblas.NativeOpsHolder - Number of threads used for NativeOps: 4
+15:27:35.088 [main] INFO  org.nd4j.nativeblas.Nd4jBlas - Number of threads used for BLAS: 4
+15:27:35.104 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Backend used: [CPU]; OS: [Windows 10]
+15:27:35.104 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Cores: [4]; Memory: [2.0GB];
+15:27:35.104 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Blas vendor: [MKL]
+15:27:35.423 [main] INFO  org.nd4j.nativeblas.NativeOpsHolder - Number of threads used for NativeOps: 4
+15:27:35.454 [main] INFO  o.d.nn.multilayer.MultiLayerNetwork - Starting MultiLayerNetwork with WorkspaceModes set to [training: ENABLED; inference: ENABLED], cacheMode set to [NONE]
+15:27:36.094 [main] DEBUG main.Main - model initialized
+15:27:36.141 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 1
+15:27:36.141 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 2
+15:27:36.282 [main] INFO  org.nd4j.nativeblas.Nd4jBlas - Number of threads used for BLAS: 4
+15:27:36.298 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Backend used: [CPU]; OS: [Windows 10]
+15:27:36.298 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Cores: [4]; Memory: [2.0GB];
+15:27:36.298 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Blas vendor: [MKL]
+15:27:36.569 [main] INFO  o.d.nn.multilayer.MultiLayerNetwork - Starting MultiLayerNetwork with WorkspaceModes set to [training: ENABLED; inference: ENABLED], cacheMode set to [NONE]
+15:27:36.756 [main] DEBUG main.Main - model initialized
+15:27:36.803 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 1
+15:27:36.803 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 2
+15:27:52.791 [main] DEBUG main.Main - PlayGame
+15:27:52.791 [main] DEBUG main.Main - AI Player
+15:27:52.854 [main] INFO  org.nd4j.linalg.factory.Nd4jBackend - Loaded [CpuBackend] backend
+15:27:54.119 [main] INFO  org.nd4j.nativeblas.NativeOpsHolder - Number of threads used for NativeOps: 4
+15:27:54.510 [main] INFO  org.nd4j.nativeblas.Nd4jBlas - Number of threads used for BLAS: 4
+15:27:54.510 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Backend used: [CPU]; OS: [Windows 10]
+15:27:54.510 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Cores: [4]; Memory: [2.0GB];
+15:27:54.510 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Blas vendor: [MKL]
+15:27:54.754 [main] INFO  o.d.nn.multilayer.MultiLayerNetwork - Starting MultiLayerNetwork with WorkspaceModes set to [training: ENABLED; inference: ENABLED], cacheMode set to [NONE]
+15:27:54.817 [main] DEBUG main.Main - model initialized
+15:27:54.832 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 1
+15:27:54.832 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 2
+15:29:01.968 [main] DEBUG main.Main - PlayGame
+15:29:01.968 [main] DEBUG main.Main - AI Player
+15:29:02.015 [main] INFO  org.nd4j.linalg.factory.Nd4jBackend - Loaded [CpuBackend] backend
+15:29:02.999 [main] INFO  org.nd4j.nativeblas.NativeOpsHolder - Number of threads used for NativeOps: 4
+15:29:03.343 [main] INFO  org.nd4j.nativeblas.Nd4jBlas - Number of threads used for BLAS: 4
+15:29:03.358 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Backend used: [CPU]; OS: [Windows 10]
+15:29:03.358 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Cores: [4]; Memory: [2.0GB];
+15:29:03.358 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Blas vendor: [MKL]
+15:29:03.581 [main] INFO  o.d.nn.multilayer.MultiLayerNetwork - Starting MultiLayerNetwork with WorkspaceModes set to [training: ENABLED; inference: ENABLED], cacheMode set to [NONE]
+15:29:03.659 [main] DEBUG main.Main - model initialized
+15:29:03.674 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 1
+15:29:03.674 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 2
+15:29:45.076 [main] DEBUG main.Main - Epoch: 1000 | Squares Revealed: 46
+15:30:28.120 [main] DEBUG main.Main - Epoch: 2000 | Squares Revealed: 67
+15:31:07.039 [main] DEBUG main.Main - Epoch: 3000 | Squares Revealed: 42
+15:31:48.396 [main] DEBUG main.Main - Epoch: 4000 | Squares Revealed: 37
+15:32:28.738 [main] DEBUG main.Main - Epoch: 5000 | Squares Revealed: 64
+15:33:09.907 [main] DEBUG main.Main - Epoch: 6000 | Squares Revealed: 14
+15:33:46.600 [main] DEBUG main.Main - Epoch: 7000 | Squares Revealed: 30
+15:34:21.210 [main] DEBUG main.Main - Epoch: 8000 | Squares Revealed: 38
+15:34:54.286 [main] DEBUG main.Main - Epoch: 9000 | Squares Revealed: 85
+15:35:28.487 [main] DEBUG main.Main - Epoch: 10000 | Squares Revealed: 18
+15:35:28.918 [main] DEBUG main.Main - Model Saved
+15:36:02.978 [main] DEBUG main.Main - Epoch: 11000 | Squares Revealed: 126
+15:36:37.647 [main] DEBUG main.Main - Epoch: 12000 | Squares Revealed: 11
+15:37:12.475 [main] DEBUG main.Main - Epoch: 13000 | Squares Revealed: 50
+15:37:48.254 [main] DEBUG main.Main - Epoch: 14000 | Squares Revealed: 37
+15:38:23.001 [main] DEBUG main.Main - Epoch: 15000 | Squares Revealed: 34
+15:38:57.764 [main] DEBUG main.Main - Epoch: 16000 | Squares Revealed: 27
+15:39:32.366 [main] DEBUG main.Main - Epoch: 17000 | Squares Revealed: 54
+15:40:16.314 [main] DEBUG main.Main - Epoch: 18000 | Squares Revealed: 83
+15:40:52.146 [main] DEBUG main.Main - Epoch: 19000 | Squares Revealed: 4
+15:41:30.256 [main] DEBUG main.Main - Epoch: 20000 | Squares Revealed: 128
+15:41:30.458 [main] DEBUG main.Main - Model Saved
+15:42:12.205 [main] DEBUG main.Main - Epoch: 21000 | Squares Revealed: 6
+15:42:53.418 [main] DEBUG main.Main - Epoch: 22000 | Squares Revealed: 4
+15:43:28.741 [main] DEBUG main.Main - Epoch: 23000 | Squares Revealed: 15
+15:44:06.472 [main] DEBUG main.Main - Epoch: 24000 | Squares Revealed: 26
+15:44:41.492 [main] DEBUG main.Main - Epoch: 25000 | Squares Revealed: 71
+15:45:16.132 [main] DEBUG main.Main - Epoch: 26000 | Squares Revealed: 25
+15:45:51.818 [main] DEBUG main.Main - Epoch: 27000 | Squares Revealed: 24
+15:46:25.690 [main] DEBUG main.Main - Epoch: 28000 | Squares Revealed: 11
+15:47:02.604 [main] DEBUG main.Main - Epoch: 29000 | Squares Revealed: 4
+15:47:38.524 [main] DEBUG main.Main - Epoch: 30000 | Squares Revealed: 21
+15:47:38.705 [main] DEBUG main.Main - Model Saved
+15:48:13.890 [main] DEBUG main.Main - Epoch: 31000 | Squares Revealed: 39
+15:48:49.848 [main] DEBUG main.Main - Epoch: 32000 | Squares Revealed: 31
+15:49:26.542 [main] DEBUG main.Main - Epoch: 33000 | Squares Revealed: 7
+15:50:01.462 [main] DEBUG main.Main - Epoch: 34000 | Squares Revealed: 38
+15:50:36.678 [main] DEBUG main.Main - Epoch: 35000 | Squares Revealed: 9
+15:51:12.019 [main] DEBUG main.Main - Epoch: 36000 | Squares Revealed: 54
+15:51:47.861 [main] DEBUG main.Main - Epoch: 37000 | Squares Revealed: 24
+15:52:22.823 [main] DEBUG main.Main - Epoch: 38000 | Squares Revealed: 50
+15:52:57.876 [main] DEBUG main.Main - Epoch: 39000 | Squares Revealed: 17
+15:53:33.849 [main] DEBUG main.Main - Epoch: 40000 | Squares Revealed: 33
+15:53:34.031 [main] DEBUG main.Main - Model Saved
+15:54:08.888 [main] DEBUG main.Main - Epoch: 41000 | Squares Revealed: 24
+15:54:45.586 [main] DEBUG main.Main - Epoch: 42000 | Squares Revealed: 27
+15:55:20.974 [main] DEBUG main.Main - Epoch: 43000 | Squares Revealed: 12
+15:55:55.643 [main] DEBUG main.Main - Epoch: 44000 | Squares Revealed: 20
+15:56:29.985 [main] DEBUG main.Main - Epoch: 45000 | Squares Revealed: 13
+15:57:05.529 [main] DEBUG main.Main - Epoch: 46000 | Squares Revealed: 87
+15:57:41.828 [main] DEBUG main.Main - Epoch: 47000 | Squares Revealed: 27
+15:58:16.588 [main] DEBUG main.Main - Epoch: 48000 | Squares Revealed: 66
+15:58:50.269 [main] DEBUG main.Main - Epoch: 49000 | Squares Revealed: 7
+15:59:27.453 [main] DEBUG main.Main - Epoch: 50000 | Squares Revealed: 103
+15:59:27.633 [main] DEBUG main.Main - Model Saved
+16:00:03.365 [main] DEBUG main.Main - Epoch: 51000 | Squares Revealed: 17
+16:00:39.050 [main] DEBUG main.Main - Epoch: 52000 | Squares Revealed: 14
+16:01:14.985 [main] DEBUG main.Main - Epoch: 53000 | Squares Revealed: 98
+16:01:52.170 [main] DEBUG main.Main - Epoch: 54000 | Squares Revealed: 63
+16:02:28.388 [main] DEBUG main.Main - Epoch: 55000 | Squares Revealed: 17
+16:03:04.071 [main] DEBUG main.Main - Epoch: 56000 | Squares Revealed: 37
+16:03:40.402 [main] DEBUG main.Main - Epoch: 57000 | Squares Revealed: 55
+16:04:17.025 [main] DEBUG main.Main - Epoch: 58000 | Squares Revealed: 10
+16:04:53.569 [main] DEBUG main.Main - Epoch: 59000 | Squares Revealed: 19
+16:05:28.723 [main] DEBUG main.Main - Epoch: 60000 | Squares Revealed: 15
+16:05:28.903 [main] DEBUG main.Main - Model Saved
+16:06:05.760 [main] DEBUG main.Main - Epoch: 61000 | Squares Revealed: 10
+16:06:41.648 [main] DEBUG main.Main - Epoch: 62000 | Squares Revealed: 5
+16:07:17.235 [main] DEBUG main.Main - Epoch: 63000 | Squares Revealed: 13
+16:07:53.951 [main] DEBUG main.Main - Epoch: 64000 | Squares Revealed: 4
+16:08:30.171 [main] DEBUG main.Main - Epoch: 65000 | Squares Revealed: 36
+16:09:06.277 [main] DEBUG main.Main - Epoch: 66000 | Squares Revealed: 24
+16:09:42.854 [main] DEBUG main.Main - Epoch: 67000 | Squares Revealed: 105
+16:10:18.679 [main] DEBUG main.Main - Epoch: 68000 | Squares Revealed: 48
+16:10:54.599 [main] DEBUG main.Main - Epoch: 69000 | Squares Revealed: 30
+16:11:31.643 [main] DEBUG main.Main - Epoch: 70000 | Squares Revealed: 9
+16:11:31.832 [main] DEBUG main.Main - Model Saved
+16:12:08.799 [main] DEBUG main.Main - Epoch: 71000 | Squares Revealed: 15
+16:12:45.343 [main] DEBUG main.Main - Epoch: 72000 | Squares Revealed: 14
+16:13:22.510 [main] DEBUG main.Main - Epoch: 73000 | Squares Revealed: 6
+16:13:59.597 [main] DEBUG main.Main - Epoch: 74000 | Squares Revealed: 24
+16:14:36.991 [main] DEBUG main.Main - Epoch: 75000 | Squares Revealed: 6
+16:15:14.582 [main] DEBUG main.Main - Epoch: 76000 | Squares Revealed: 39
+16:15:51.439 [main] DEBUG main.Main - Epoch: 77000 | Squares Revealed: 11
+16:16:27.499 [main] DEBUG main.Main - Epoch: 78000 | Squares Revealed: 50
+16:17:04.145 [main] DEBUG main.Main - Epoch: 79000 | Squares Revealed: 50
+16:17:41.345 [main] DEBUG main.Main - Epoch: 80000 | Squares Revealed: 26
+16:17:41.523 [main] DEBUG main.Main - Model Saved
+16:18:18.371 [main] DEBUG main.Main - Epoch: 81000 | Squares Revealed: 21
+16:18:53.994 [main] DEBUG main.Main - Epoch: 82000 | Squares Revealed: 28
+16:19:29.460 [main] DEBUG main.Main - Epoch: 83000 | Squares Revealed: 18
+16:20:06.207 [main] DEBUG main.Main - Epoch: 84000 | Squares Revealed: 44
+16:20:40.236 [main] DEBUG main.Main - Epoch: 85000 | Squares Revealed: 7
+16:21:17.671 [main] DEBUG main.Main - Epoch: 86000 | Squares Revealed: 33
+16:21:54.012 [main] DEBUG main.Main - Epoch: 87000 | Squares Revealed: 21
+16:22:30.176 [main] DEBUG main.Main - Epoch: 88000 | Squares Revealed: 30
+16:23:07.078 [main] DEBUG main.Main - Epoch: 89000 | Squares Revealed: 17
+16:23:43.791 [main] DEBUG main.Main - Epoch: 90000 | Squares Revealed: 53
+16:23:43.975 [main] DEBUG main.Main - Model Saved
+16:24:19.383 [main] DEBUG main.Main - Epoch: 91000 | Squares Revealed: 26
+16:24:54.441 [main] DEBUG main.Main - Epoch: 92000 | Squares Revealed: 22
+16:25:30.017 [main] DEBUG main.Main - Epoch: 93000 | Squares Revealed: 34
+16:26:07.233 [main] DEBUG main.Main - Epoch: 94000 | Squares Revealed: 5
+16:26:43.653 [main] DEBUG main.Main - Epoch: 95000 | Squares Revealed: 70
+16:27:21.334 [main] DEBUG main.Main - Epoch: 96000 | Squares Revealed: 31
+16:27:59.203 [main] DEBUG main.Main - Epoch: 97000 | Squares Revealed: 82
+16:28:35.696 [main] DEBUG main.Main - Epoch: 98000 | Squares Revealed: 7
+16:29:12.740 [main] DEBUG main.Main - Epoch: 99000 | Squares Revealed: 41
+16:29:50.741 [main] DEBUG main.Main - Epoch: 100000 | Squares Revealed: 34
+16:29:50.919 [main] DEBUG main.Main - Model Saved
+16:30:28.120 [main] DEBUG main.Main - Epoch: 101000 | Squares Revealed: 43
+16:31:05.180 [main] DEBUG main.Main - Epoch: 102000 | Squares Revealed: 28
+16:31:41.271 [main] DEBUG main.Main - Epoch: 103000 | Squares Revealed: 51
+16:32:18.133 [main] DEBUG main.Main - Epoch: 104000 | Squares Revealed: 13
+16:32:55.286 [main] DEBUG main.Main - Epoch: 105000 | Squares Revealed: 28
+16:33:33.724 [main] DEBUG main.Main - Epoch: 106000 | Squares Revealed: 28
+16:34:10.894 [main] DEBUG main.Main - Epoch: 107000 | Squares Revealed: 39
+16:34:47.953 [main] DEBUG main.Main - Epoch: 108000 | Squares Revealed: 5
+16:35:24.967 [main] DEBUG main.Main - Epoch: 109000 | Squares Revealed: 40
+16:36:02.651 [main] DEBUG main.Main - Epoch: 110000 | Squares Revealed: 28
+16:36:02.828 [main] DEBUG main.Main - Model Saved
+16:36:39.388 [main] DEBUG main.Main - Epoch: 111000 | Squares Revealed: 98
+16:37:16.024 [main] DEBUG main.Main - Epoch: 112000 | Squares Revealed: 35
+16:37:53.568 [main] DEBUG main.Main - Epoch: 113000 | Squares Revealed: 52
+16:38:31.634 [main] DEBUG main.Main - Epoch: 114000 | Squares Revealed: 23
+16:39:09.897 [main] DEBUG main.Main - Epoch: 115000 | Squares Revealed: 31
+16:39:47.364 [main] DEBUG main.Main - Epoch: 116000 | Squares Revealed: 39
+16:40:24.220 [main] DEBUG main.Main - Epoch: 117000 | Squares Revealed: 6
+16:41:01.812 [main] DEBUG main.Main - Epoch: 118000 | Squares Revealed: 8
+16:41:40.293 [main] DEBUG main.Main - Epoch: 119000 | Squares Revealed: 41
+16:42:17.214 [main] DEBUG main.Main - Epoch: 120000 | Squares Revealed: 10
+16:42:17.394 [main] DEBUG main.Main - Model Saved
+16:42:53.892 [main] DEBUG main.Main - Epoch: 121000 | Squares Revealed: 17
+16:43:30.567 [main] DEBUG main.Main - Epoch: 122000 | Squares Revealed: 21
+16:44:08.876 [main] DEBUG main.Main - Epoch: 123000 | Squares Revealed: 18
+16:44:45.249 [main] DEBUG main.Main - Epoch: 124000 | Squares Revealed: 63
+16:45:22.543 [main] DEBUG main.Main - Epoch: 125000 | Squares Revealed: 32
+16:45:59.619 [main] DEBUG main.Main - Epoch: 126000 | Squares Revealed: 29
+16:46:37.585 [main] DEBUG main.Main - Epoch: 127000 | Squares Revealed: 13
+16:47:15.855 [main] DEBUG main.Main - Epoch: 128000 | Squares Revealed: 9
+16:47:52.681 [main] DEBUG main.Main - Epoch: 129000 | Squares Revealed: 33
+16:48:30.476 [main] DEBUG main.Main - Epoch: 130000 | Squares Revealed: 33
+16:48:30.663 [main] DEBUG main.Main - Model Saved
+16:49:09.582 [main] DEBUG main.Main - Epoch: 131000 | Squares Revealed: 55
+16:49:47.079 [main] DEBUG main.Main - Epoch: 132000 | Squares Revealed: 44
+16:50:23.561 [main] DEBUG main.Main - Epoch: 133000 | Squares Revealed: 26
+16:50:59.621 [main] DEBUG main.Main - Epoch: 134000 | Squares Revealed: 20
+16:51:38.056 [main] DEBUG main.Main - Epoch: 135000 | Squares Revealed: 19
+16:52:15.678 [main] DEBUG main.Main - Epoch: 136000 | Squares Revealed: 7
+16:52:53.785 [main] DEBUG main.Main - Epoch: 137000 | Squares Revealed: 24
+16:53:32.568 [main] DEBUG main.Main - Epoch: 138000 | Squares Revealed: 6
+16:54:10.924 [main] DEBUG main.Main - Epoch: 139000 | Squares Revealed: 8
+16:54:48.281 [main] DEBUG main.Main - Epoch: 140000 | Squares Revealed: 37
+16:54:48.460 [main] DEBUG main.Main - Model Saved
+16:55:25.792 [main] DEBUG main.Main - Epoch: 141000 | Squares Revealed: 17
+16:56:02.617 [main] DEBUG main.Main - Epoch: 142000 | Squares Revealed: 18
+16:56:41.443 [main] DEBUG main.Main - Epoch: 143000 | Squares Revealed: 20
+16:57:18.408 [main] DEBUG main.Main - Epoch: 144000 | Squares Revealed: 50
+16:57:56.108 [main] DEBUG main.Main - Epoch: 145000 | Squares Revealed: 16
+16:58:34.945 [main] DEBUG main.Main - Epoch: 146000 | Squares Revealed: 38
+16:59:11.958 [main] DEBUG main.Main - Epoch: 147000 | Squares Revealed: 42
+16:59:48.315 [main] DEBUG main.Main - Epoch: 148000 | Squares Revealed: 32
+17:00:27.562 [main] DEBUG main.Main - Epoch: 149000 | Squares Revealed: 30
+17:01:05.357 [main] DEBUG main.Main - Epoch: 150000 | Squares Revealed: 5
+17:01:05.542 [main] DEBUG main.Main - Model Saved
+17:01:43.618 [main] DEBUG main.Main - Epoch: 151000 | Squares Revealed: 31
+17:02:20.281 [main] DEBUG main.Main - Epoch: 152000 | Squares Revealed: 6
+17:02:57.075 [main] DEBUG main.Main - Epoch: 153000 | Squares Revealed: 10
+17:03:35.140 [main] DEBUG main.Main - Epoch: 154000 | Squares Revealed: 6
+17:04:13.169 [main] DEBUG main.Main - Epoch: 155000 | Squares Revealed: 40
+17:04:50.916 [main] DEBUG main.Main - Epoch: 156000 | Squares Revealed: 51
+17:05:31.086 [main] DEBUG main.Main - Epoch: 157000 | Squares Revealed: 50
+17:06:11.536 [main] DEBUG main.Main - Epoch: 158000 | Squares Revealed: 10
+17:06:50.127 [main] DEBUG main.Main - Epoch: 159000 | Squares Revealed: 30
+17:07:31.735 [main] DEBUG main.Main - Epoch: 160000 | Squares Revealed: 8
+17:07:31.912 [main] DEBUG main.Main - Model Saved
+17:08:12.582 [main] DEBUG main.Main - Epoch: 161000 | Squares Revealed: 8
+17:08:53.823 [main] DEBUG main.Main - Epoch: 162000 | Squares Revealed: 33
+17:09:34.751 [main] DEBUG main.Main - Epoch: 163000 | Squares Revealed: 27
+17:10:15.592 [main] DEBUG main.Main - Epoch: 164000 | Squares Revealed: 37
+17:10:56.995 [main] DEBUG main.Main - Epoch: 165000 | Squares Revealed: 18
+17:11:38.352 [main] DEBUG main.Main - Epoch: 166000 | Squares Revealed: 75
+17:12:18.333 [main] DEBUG main.Main - Epoch: 167000 | Squares Revealed: 24
+17:12:59.956 [main] DEBUG main.Main - Epoch: 168000 | Squares Revealed: 41
+17:13:41.611 [main] DEBUG main.Main - Epoch: 169000 | Squares Revealed: 46
+17:14:21.655 [main] DEBUG main.Main - Epoch: 170000 | Squares Revealed: 8
+17:14:21.832 [main] DEBUG main.Main - Model Saved
+17:15:04.205 [main] DEBUG main.Main - Epoch: 171000 | Squares Revealed: 19
+17:15:46.748 [main] DEBUG main.Main - Epoch: 172000 | Squares Revealed: 38
+17:16:28.511 [main] DEBUG main.Main - Epoch: 173000 | Squares Revealed: 35
+17:17:07.993 [main] DEBUG main.Main - Epoch: 174000 | Squares Revealed: 18
+17:17:48.678 [main] DEBUG main.Main - Epoch: 175000 | Squares Revealed: 24
+17:18:29.362 [main] DEBUG main.Main - Epoch: 176000 | Squares Revealed: 44
+17:19:10.171 [main] DEBUG main.Main - Epoch: 177000 | Squares Revealed: 17
+17:19:50.559 [main] DEBUG main.Main - Epoch: 178000 | Squares Revealed: 20
+17:20:27.463 [main] DEBUG main.Main - Epoch: 179000 | Squares Revealed: 29
+17:21:04.866 [main] DEBUG main.Main - Epoch: 180000 | Squares Revealed: 9
+17:21:05.041 [main] DEBUG main.Main - Model Saved
+17:21:42.866 [main] DEBUG main.Main - Epoch: 181000 | Squares Revealed: 25
+17:22:22.462 [main] DEBUG main.Main - Epoch: 182000 | Squares Revealed: 7
+17:23:00.928 [main] DEBUG main.Main - Epoch: 183000 | Squares Revealed: 19
+17:23:39.475 [main] DEBUG main.Main - Epoch: 184000 | Squares Revealed: 37
+17:24:17.035 [main] DEBUG main.Main - Epoch: 185000 | Squares Revealed: 36
+17:24:55.611 [main] DEBUG main.Main - Epoch: 186000 | Squares Revealed: 23
+17:25:33.764 [main] DEBUG main.Main - Epoch: 187000 | Squares Revealed: 4
+17:26:11.543 [main] DEBUG main.Main - Epoch: 188000 | Squares Revealed: 37
+17:26:50.877 [main] DEBUG main.Main - Epoch: 189000 | Squares Revealed: 4
+17:27:30.561 [main] DEBUG main.Main - Epoch: 190000 | Squares Revealed: 20
+17:27:30.745 [main] DEBUG main.Main - Model Saved
+17:28:09.178 [main] DEBUG main.Main - Epoch: 191000 | Squares Revealed: 36
+17:28:48.465 [main] DEBUG main.Main - Epoch: 192000 | Squares Revealed: 13
+17:29:25.447 [main] DEBUG main.Main - Epoch: 193000 | Squares Revealed: 21
+17:30:03.585 [main] DEBUG main.Main - Epoch: 194000 | Squares Revealed: 21
+17:30:43.519 [main] DEBUG main.Main - Epoch: 195000 | Squares Revealed: 43
+17:31:20.142 [main] DEBUG main.Main - Epoch: 196000 | Squares Revealed: 19
+17:32:00.218 [main] DEBUG main.Main - Epoch: 197000 | Squares Revealed: 21
+17:32:38.715 [main] DEBUG main.Main - Epoch: 198000 | Squares Revealed: 43
+17:33:16.894 [main] DEBUG main.Main - Epoch: 199000 | Squares Revealed: 26
+17:33:54.688 [main] DEBUG main.Main - Epoch: 200000 | Squares Revealed: 5
+17:33:54.867 [main] DEBUG main.Main - Model Saved
+17:34:33.833 [main] DEBUG main.Main - Epoch: 201000 | Squares Revealed: 27
+17:35:13.939 [main] DEBUG main.Main - Epoch: 202000 | Squares Revealed: 14
+17:35:54.624 [main] DEBUG main.Main - Epoch: 203000 | Squares Revealed: 26
+17:36:36.543 [main] DEBUG main.Main - Epoch: 204000 | Squares Revealed: 115
+17:37:17.571 [main] DEBUG main.Main - Epoch: 205000 | Squares Revealed: 19
+17:37:59.131 [main] DEBUG main.Main - Epoch: 206000 | Squares Revealed: 35
+17:38:40.772 [main] DEBUG main.Main - Epoch: 207000 | Squares Revealed: 8
+17:39:21.994 [main] DEBUG main.Main - Epoch: 208000 | Squares Revealed: 7
+17:40:04.866 [main] DEBUG main.Main - Epoch: 209000 | Squares Revealed: 25
+17:40:46.582 [main] DEBUG main.Main - Epoch: 210000 | Squares Revealed: 10
+17:40:46.765 [main] DEBUG main.Main - Model Saved
+17:41:28.731 [main] DEBUG main.Main - Epoch: 211000 | Squares Revealed: 19
+17:42:09.025 [main] DEBUG main.Main - Epoch: 212000 | Squares Revealed: 5
+17:42:51.459 [main] DEBUG main.Main - Epoch: 213000 | Squares Revealed: 35
+17:43:34.348 [main] DEBUG main.Main - Epoch: 214000 | Squares Revealed: 29
+17:44:17.282 [main] DEBUG main.Main - Epoch: 215000 | Squares Revealed: 10
+17:44:59.248 [main] DEBUG main.Main - Epoch: 216000 | Squares Revealed: 50
+17:45:40.495 [main] DEBUG main.Main - Epoch: 217000 | Squares Revealed: 41
+17:46:22.727 [main] DEBUG main.Main - Epoch: 218000 | Squares Revealed: 36
+17:47:04.724 [main] DEBUG main.Main - Epoch: 219000 | Squares Revealed: 41
+17:47:45.877 [main] DEBUG main.Main - Epoch: 220000 | Squares Revealed: 7
+17:47:46.054 [main] DEBUG main.Main - Model Saved
+17:48:28.221 [main] DEBUG main.Main - Epoch: 221000 | Squares Revealed: 23
+17:49:11.843 [main] DEBUG main.Main - Epoch: 222000 | Squares Revealed: 18
+17:49:55.753 [main] DEBUG main.Main - Epoch: 223000 | Squares Revealed: 15
+17:50:38.031 [main] DEBUG main.Main - Epoch: 224000 | Squares Revealed: 9
+17:51:19.888 [main] DEBUG main.Main - Epoch: 225000 | Squares Revealed: 26
+17:52:02.963 [main] DEBUG main.Main - Epoch: 226000 | Squares Revealed: 29
+17:52:46.866 [main] DEBUG main.Main - Epoch: 227000 | Squares Revealed: 12
+17:53:32.949 [main] DEBUG main.Main - Epoch: 228000 | Squares Revealed: 9
+17:54:15.995 [main] DEBUG main.Main - Epoch: 229000 | Squares Revealed: 34
+17:54:58.673 [main] DEBUG main.Main - Epoch: 230000 | Squares Revealed: 50
+17:54:58.851 [main] DEBUG main.Main - Model Saved
+17:55:42.504 [main] DEBUG main.Main - Epoch: 231000 | Squares Revealed: 30
+17:56:23.829 [main] DEBUG main.Main - Epoch: 232000 | Squares Revealed: 11
+17:57:05.103 [main] DEBUG main.Main - Epoch: 233000 | Squares Revealed: 25
+17:57:48.975 [main] DEBUG main.Main - Epoch: 234000 | Squares Revealed: 38
+17:58:31.746 [main] DEBUG main.Main - Epoch: 235000 | Squares Revealed: 30
+17:59:15.353 [main] DEBUG main.Main - Epoch: 236000 | Squares Revealed: 52
+17:59:57.959 [main] DEBUG main.Main - Epoch: 237000 | Squares Revealed: 12
+18:00:41.831 [main] DEBUG main.Main - Epoch: 238000 | Squares Revealed: 68
+18:01:25.156 [main] DEBUG main.Main - Epoch: 239000 | Squares Revealed: 85
+18:02:06.794 [main] DEBUG main.Main - Epoch: 240000 | Squares Revealed: 30
+18:02:06.977 [main] DEBUG main.Main - Model Saved
+18:02:49.631 [main] DEBUG main.Main - Epoch: 241000 | Squares Revealed: 30
+18:03:31.609 [main] DEBUG main.Main - Epoch: 242000 | Squares Revealed: 18
+18:04:13.950 [main] DEBUG main.Main - Epoch: 243000 | Squares Revealed: 24
+18:04:57.858 [main] DEBUG main.Main - Epoch: 244000 | Squares Revealed: 39
+18:05:41.355 [main] DEBUG main.Main - Epoch: 245000 | Squares Revealed: 10
+18:06:22.930 [main] DEBUG main.Main - Epoch: 246000 | Squares Revealed: 47
+18:07:05.505 [main] DEBUG main.Main - Epoch: 247000 | Squares Revealed: 8
+18:07:48.877 [main] DEBUG main.Main - Epoch: 248000 | Squares Revealed: 6
+18:08:32.980 [main] DEBUG main.Main - Epoch: 249000 | Squares Revealed: 95
+18:09:16.024 [main] DEBUG main.Main - Epoch: 250000 | Squares Revealed: 9
+18:09:16.210 [main] DEBUG main.Main - Model Saved
+18:09:57.947 [main] DEBUG main.Main - Epoch: 251000 | Squares Revealed: 65
+18:10:40.116 [main] DEBUG main.Main - Epoch: 252000 | Squares Revealed: 43
+18:11:22.238 [main] DEBUG main.Main - Epoch: 253000 | Squares Revealed: 86
+18:12:02.829 [main] DEBUG main.Main - Epoch: 254000 | Squares Revealed: 64
+18:12:45.623 [main] DEBUG main.Main - Epoch: 255000 | Squares Revealed: 39
+18:13:27.768 [main] DEBUG main.Main - Epoch: 256000 | Squares Revealed: 7
+18:14:07.203 [main] DEBUG main.Main - Epoch: 257000 | Squares Revealed: 22
+18:14:48.982 [main] DEBUG main.Main - Epoch: 258000 | Squares Revealed: 18
+18:15:29.510 [main] DEBUG main.Main - Epoch: 259000 | Squares Revealed: 51
+18:16:11.007 [main] DEBUG main.Main - Epoch: 260000 | Squares Revealed: 14
+18:16:11.186 [main] DEBUG main.Main - Model Saved
+18:16:53.370 [main] DEBUG main.Main - Epoch: 261000 | Squares Revealed: 7
+18:17:34.617 [main] DEBUG main.Main - Epoch: 262000 | Squares Revealed: 11
+18:18:19.354 [main] DEBUG main.Main - Epoch: 263000 | Squares Revealed: 58
+18:19:02.095 [main] DEBUG main.Main - Epoch: 264000 | Squares Revealed: 73
+18:19:42.701 [main] DEBUG main.Main - Epoch: 265000 | Squares Revealed: 13
+18:20:24.230 [main] DEBUG main.Main - Epoch: 266000 | Squares Revealed: 41
+18:21:05.727 [main] DEBUG main.Main - Epoch: 267000 | Squares Revealed: 56
+18:21:45.912 [main] DEBUG main.Main - Epoch: 268000 | Squares Revealed: 4
+18:22:26.034 [main] DEBUG main.Main - Epoch: 269000 | Squares Revealed: 19
+18:23:06.121 [main] DEBUG main.Main - Epoch: 270000 | Squares Revealed: 10
+18:23:06.296 [main] DEBUG main.Main - Model Saved
+18:23:46.223 [main] DEBUG main.Main - Epoch: 271000 | Squares Revealed: 34
+18:24:25.502 [main] DEBUG main.Main - Epoch: 272000 | Squares Revealed: 14
+18:25:04.812 [main] DEBUG main.Main - Epoch: 273000 | Squares Revealed: 55
+18:25:43.575 [main] DEBUG main.Main - Epoch: 274000 | Squares Revealed: 56
+18:26:24.181 [main] DEBUG main.Main - Epoch: 275000 | Squares Revealed: 16
+18:27:02.948 [main] DEBUG main.Main - Epoch: 276000 | Squares Revealed: 20
+18:27:43.852 [main] DEBUG main.Main - Epoch: 277000 | Squares Revealed: 42
+18:28:24.203 [main] DEBUG main.Main - Epoch: 278000 | Squares Revealed: 10
+18:29:03.763 [main] DEBUG main.Main - Epoch: 279000 | Squares Revealed: 6
+18:29:43.503 [main] DEBUG main.Main - Epoch: 280000 | Squares Revealed: 11
+18:29:43.683 [main] DEBUG main.Main - Model Saved
+18:30:23.289 [main] DEBUG main.Main - Epoch: 281000 | Squares Revealed: 36
+18:31:00.974 [main] DEBUG main.Main - Epoch: 282000 | Squares Revealed: 11
+18:31:40.643 [main] DEBUG main.Main - Epoch: 283000 | Squares Revealed: 26
+18:32:19.328 [main] DEBUG main.Main - Epoch: 284000 | Squares Revealed: 28
+18:32:58.872 [main] DEBUG main.Main - Epoch: 285000 | Squares Revealed: 66
+18:33:38.645 [main] DEBUG main.Main - Epoch: 286000 | Squares Revealed: 58
+18:34:18.673 [main] DEBUG main.Main - Epoch: 287000 | Squares Revealed: 28
+18:34:58.077 [main] DEBUG main.Main - Epoch: 288000 | Squares Revealed: 44
+18:35:37.324 [main] DEBUG main.Main - Epoch: 289000 | Squares Revealed: 6
+18:36:17.602 [main] DEBUG main.Main - Epoch: 290000 | Squares Revealed: 74
+18:36:17.791 [main] DEBUG main.Main - Model Saved
+18:36:56.976 [main] DEBUG main.Main - Epoch: 291000 | Squares Revealed: 54
+18:37:37.879 [main] DEBUG main.Main - Epoch: 292000 | Squares Revealed: 18
+18:38:18.268 [main] DEBUG main.Main - Epoch: 293000 | Squares Revealed: 16
+18:38:57.224 [main] DEBUG main.Main - Epoch: 294000 | Squares Revealed: 38
+18:39:38.221 [main] DEBUG main.Main - Epoch: 295000 | Squares Revealed: 18
+18:40:20.656 [main] DEBUG main.Main - Epoch: 296000 | Squares Revealed: 34
+18:41:01.419 [main] DEBUG main.Main - Epoch: 297000 | Squares Revealed: 19
+18:41:41.463 [main] DEBUG main.Main - Epoch: 298000 | Squares Revealed: 19
+18:42:22.101 [main] DEBUG main.Main - Epoch: 299000 | Squares Revealed: 41
+18:43:01.660 [main] DEBUG main.Main - Epoch: 300000 | Squares Revealed: 39
+18:43:01.836 [main] DEBUG main.Main - Model Saved
+18:43:42.386 [main] DEBUG main.Main - Epoch: 301000 | Squares Revealed: 82
+18:44:22.899 [main] DEBUG main.Main - Epoch: 302000 | Squares Revealed: 12
+18:45:02.240 [main] DEBUG main.Main - Epoch: 303000 | Squares Revealed: 29
+18:45:42.862 [main] DEBUG main.Main - Epoch: 304000 | Squares Revealed: 56
+18:46:21.766 [main] DEBUG main.Main - Epoch: 305000 | Squares Revealed: 26
+18:47:02.763 [main] DEBUG main.Main - Epoch: 306000 | Squares Revealed: 12
+18:47:43.729 [main] DEBUG main.Main - Epoch: 307000 | Squares Revealed: 25
+18:48:24.151 [main] DEBUG main.Main - Epoch: 308000 | Squares Revealed: 14
+18:49:04.351 [main] DEBUG main.Main - Epoch: 309000 | Squares Revealed: 46
+18:49:44.247 [main] DEBUG main.Main - Epoch: 310000 | Squares Revealed: 5
+18:49:44.429 [main] DEBUG main.Main - Model Saved
+18:50:24.301 [main] DEBUG main.Main - Epoch: 311000 | Squares Revealed: 68
+18:51:03.798 [main] DEBUG main.Main - Epoch: 312000 | Squares Revealed: 7
+18:51:45.061 [main] DEBUG main.Main - Epoch: 313000 | Squares Revealed: 65
+18:52:24.903 [main] DEBUG main.Main - Epoch: 314000 | Squares Revealed: 16
+18:53:05.786 [main] DEBUG main.Main - Epoch: 315000 | Squares Revealed: 22
+18:53:47.742 [main] DEBUG main.Main - Epoch: 316000 | Squares Revealed: 12
+18:54:28.286 [main] DEBUG main.Main - Epoch: 317000 | Squares Revealed: 15
+18:55:07.986 [main] DEBUG main.Main - Epoch: 318000 | Squares Revealed: 42
+18:55:47.764 [main] DEBUG main.Main - Epoch: 319000 | Squares Revealed: 37
+18:56:28.902 [main] DEBUG main.Main - Epoch: 320000 | Squares Revealed: 27
+18:56:29.087 [main] DEBUG main.Main - Model Saved
+18:57:11.638 [main] DEBUG main.Main - Epoch: 321000 | Squares Revealed: 18
+18:57:51.073 [main] DEBUG main.Main - Epoch: 322000 | Squares Revealed: 24
+18:58:32.032 [main] DEBUG main.Main - Epoch: 323000 | Squares Revealed: 24
+18:59:11.949 [main] DEBUG main.Main - Epoch: 324000 | Squares Revealed: 30
+18:59:52.330 [main] DEBUG main.Main - Epoch: 325000 | Squares Revealed: 7
+19:00:33.422 [main] DEBUG main.Main - Epoch: 326000 | Squares Revealed: 36
+19:01:13.794 [main] DEBUG main.Main - Epoch: 327000 | Squares Revealed: 25
+19:01:54.073 [main] DEBUG main.Main - Epoch: 328000 | Squares Revealed: 27
+19:02:34.851 [main] DEBUG main.Main - Epoch: 329000 | Squares Revealed: 45
+19:03:16.365 [main] DEBUG main.Main - Epoch: 330000 | Squares Revealed: 13
+19:03:16.547 [main] DEBUG main.Main - Model Saved
+19:03:57.435 [main] DEBUG main.Main - Epoch: 331000 | Squares Revealed: 110
+19:04:36.932 [main] DEBUG main.Main - Epoch: 332000 | Squares Revealed: 30
+19:05:17.609 [main] DEBUG main.Main - Epoch: 333000 | Squares Revealed: 72
+19:05:55.950 [main] DEBUG main.Main - Epoch: 334000 | Squares Revealed: 17
+19:06:33.884 [main] DEBUG main.Main - Epoch: 335000 | Squares Revealed: 74
+19:07:15.033 [main] DEBUG main.Main - Epoch: 336000 | Squares Revealed: 10
+19:07:54.187 [main] DEBUG main.Main - Epoch: 337000 | Squares Revealed: 38
+19:08:34.105 [main] DEBUG main.Main - Epoch: 338000 | Squares Revealed: 8
+19:09:14.915 [main] DEBUG main.Main - Epoch: 339000 | Squares Revealed: 12
+19:09:56.249 [main] DEBUG main.Main - Epoch: 340000 | Squares Revealed: 25
+19:09:56.431 [main] DEBUG main.Main - Model Saved
+19:10:36.960 [main] DEBUG main.Main - Epoch: 341000 | Squares Revealed: 33
+19:11:17.105 [main] DEBUG main.Main - Epoch: 342000 | Squares Revealed: 6
+19:11:58.430 [main] DEBUG main.Main - Epoch: 343000 | Squares Revealed: 24
+19:12:39.177 [main] DEBUG main.Main - Epoch: 344000 | Squares Revealed: 13
+19:13:19.497 [main] DEBUG main.Main - Epoch: 345000 | Squares Revealed: 21
+19:13:59.341 [main] DEBUG main.Main - Epoch: 346000 | Squares Revealed: 60
+19:14:39.948 [main] DEBUG main.Main - Epoch: 347000 | Squares Revealed: 16
+19:15:21.389 [main] DEBUG main.Main - Epoch: 348000 | Squares Revealed: 15
+19:16:00.543 [main] DEBUG main.Main - Epoch: 349000 | Squares Revealed: 46
+19:16:40.555 [main] DEBUG main.Main - Epoch: 350000 | Squares Revealed: 9
+19:16:40.744 [main] DEBUG main.Main - Model Saved
+19:17:19.788 [main] DEBUG main.Main - Epoch: 351000 | Squares Revealed: 26
+19:18:01.426 [main] DEBUG main.Main - Epoch: 352000 | Squares Revealed: 55
+19:18:42.354 [main] DEBUG main.Main - Epoch: 353000 | Squares Revealed: 39
+19:19:22.648 [main] DEBUG main.Main - Epoch: 354000 | Squares Revealed: 24
+19:20:03.254 [main] DEBUG main.Main - Epoch: 355000 | Squares Revealed: 40
+19:20:44.642 [main] DEBUG main.Main - Epoch: 356000 | Squares Revealed: 10
+19:21:26.252 [main] DEBUG main.Main - Epoch: 357000 | Squares Revealed: 86
+19:22:07.093 [main] DEBUG main.Main - Epoch: 358000 | Squares Revealed: 28
+19:22:46.793 [main] DEBUG main.Main - Epoch: 359000 | Squares Revealed: 26
+19:23:29.347 [main] DEBUG main.Main - Epoch: 360000 | Squares Revealed: 20
+19:23:29.525 [main] DEBUG main.Main - Model Saved
+19:24:10.858 [main] DEBUG main.Main - Epoch: 361000 | Squares Revealed: 43
+19:24:53.152 [main] DEBUG main.Main - Epoch: 362000 | Squares Revealed: 6
+19:25:35.071 [main] DEBUG main.Main - Epoch: 363000 | Squares Revealed: 46
+19:26:16.115 [main] DEBUG main.Main - Epoch: 364000 | Squares Revealed: 40
+19:26:57.197 [main] DEBUG main.Main - Epoch: 365000 | Squares Revealed: 23
+19:27:37.788 [main] DEBUG main.Main - Epoch: 366000 | Squares Revealed: 14
+19:28:19.252 [main] DEBUG main.Main - Epoch: 367000 | Squares Revealed: 17
+19:28:59.874 [main] DEBUG main.Main - Epoch: 368000 | Squares Revealed: 7
+19:29:40.790 [main] DEBUG main.Main - Epoch: 369000 | Squares Revealed: 10
+19:30:21.506 [main] DEBUG main.Main - Epoch: 370000 | Squares Revealed: 13
+19:30:21.690 [main] DEBUG main.Main - Model Saved
+19:31:02.765 [main] DEBUG main.Main - Epoch: 371000 | Squares Revealed: 28
+19:31:41.216 [main] DEBUG main.Main - Epoch: 372000 | Squares Revealed: 21
+19:32:20.713 [main] DEBUG main.Main - Epoch: 373000 | Squares Revealed: 34
+19:33:00.804 [main] DEBUG main.Main - Epoch: 374000 | Squares Revealed: 39
+19:33:42.389 [main] DEBUG main.Main - Epoch: 375000 | Squares Revealed: 34
+19:34:24.011 [main] DEBUG main.Main - Epoch: 376000 | Squares Revealed: 50
+19:35:06.539 [main] DEBUG main.Main - Epoch: 377000 | Squares Revealed: 27
+19:35:47.646 [main] DEBUG main.Main - Epoch: 378000 | Squares Revealed: 80
+19:36:28.471 [main] DEBUG main.Main - Epoch: 379000 | Squares Revealed: 42
+19:37:08.203 [main] DEBUG main.Main - Epoch: 380000 | Squares Revealed: 46
+19:37:08.379 [main] DEBUG main.Main - Model Saved
+19:37:48.860 [main] DEBUG main.Main - Epoch: 381000 | Squares Revealed: 59
+19:38:29.234 [main] DEBUG main.Main - Epoch: 382000 | Squares Revealed: 14
+19:39:09.493 [main] DEBUG main.Main - Epoch: 383000 | Squares Revealed: 59
+19:39:49.319 [main] DEBUG main.Main - Epoch: 384000 | Squares Revealed: 15
+19:40:29.972 [main] DEBUG main.Main - Epoch: 385000 | Squares Revealed: 8
+19:41:10.717 [main] DEBUG main.Main - Epoch: 386000 | Squares Revealed: 96
+19:41:52.476 [main] DEBUG main.Main - Epoch: 387000 | Squares Revealed: 88
+19:42:33.676 [main] DEBUG main.Main - Epoch: 388000 | Squares Revealed: 93
+19:43:14.001 [main] DEBUG main.Main - Epoch: 389000 | Squares Revealed: 39
+19:43:55.118 [main] DEBUG main.Main - Epoch: 390000 | Squares Revealed: 8
+19:43:55.301 [main] DEBUG main.Main - Model Saved
+19:44:36.361 [main] DEBUG main.Main - Epoch: 391000 | Squares Revealed: 34
+19:45:19.233 [main] DEBUG main.Main - Epoch: 392000 | Squares Revealed: 12
+19:45:59.996 [main] DEBUG main.Main - Epoch: 393000 | Squares Revealed: 107
+19:46:41.618 [main] DEBUG main.Main - Epoch: 394000 | Squares Revealed: 41
+19:47:23.834 [main] DEBUG main.Main - Epoch: 395000 | Squares Revealed: 44
+19:48:04.753 [main] DEBUG main.Main - Epoch: 396000 | Squares Revealed: 21
+19:48:46.347 [main] DEBUG main.Main - Epoch: 397000 | Squares Revealed: 33
+19:49:27.776 [main] DEBUG main.Main - Epoch: 398000 | Squares Revealed: 96
+19:50:10.664 [main] DEBUG main.Main - Epoch: 399000 | Squares Revealed: 22
+19:50:52.442 [main] DEBUG main.Main - Epoch: 400000 | Squares Revealed: 13
+19:50:52.621 [main] DEBUG main.Main - Model Saved
+19:51:33.806 [main] DEBUG main.Main - Epoch: 401000 | Squares Revealed: 21
+19:52:16.178 [main] DEBUG main.Main - Epoch: 402000 | Squares Revealed: 32
+19:52:57.104 [main] DEBUG main.Main - Epoch: 403000 | Squares Revealed: 14
+19:53:37.818 [main] DEBUG main.Main - Epoch: 404000 | Squares Revealed: 26
+19:54:17.400 [main] DEBUG main.Main - Epoch: 405000 | Squares Revealed: 72
+19:54:59.071 [main] DEBUG main.Main - Epoch: 406000 | Squares Revealed: 9
+19:55:38.942 [main] DEBUG main.Main - Epoch: 407000 | Squares Revealed: 44
+19:56:20.251 [main] DEBUG main.Main - Epoch: 408000 | Squares Revealed: 13
+19:57:03.359 [main] DEBUG main.Main - Epoch: 409000 | Squares Revealed: 39
+19:57:46.325 [main] DEBUG main.Main - Epoch: 410000 | Squares Revealed: 36
+19:57:46.510 [main] DEBUG main.Main - Model Saved
+19:58:28.081 [main] DEBUG main.Main - Epoch: 411000 | Squares Revealed: 89
+19:59:10.406 [main] DEBUG main.Main - Epoch: 412000 | Squares Revealed: 11
+19:59:51.841 [main] DEBUG main.Main - Epoch: 413000 | Squares Revealed: 24
+20:00:34.776 [main] DEBUG main.Main - Epoch: 414000 | Squares Revealed: 51
+20:01:17.491 [main] DEBUG main.Main - Epoch: 415000 | Squares Revealed: 76
+20:01:59.254 [main] DEBUG main.Main - Epoch: 416000 | Squares Revealed: 70
+20:02:41.001 [main] DEBUG main.Main - Epoch: 417000 | Squares Revealed: 16
+20:03:22.248 [main] DEBUG main.Main - Epoch: 418000 | Squares Revealed: 28
+20:04:04.089 [main] DEBUG main.Main - Epoch: 419000 | Squares Revealed: 24
+20:04:46.164 [main] DEBUG main.Main - Epoch: 420000 | Squares Revealed: 39
+20:04:46.344 [main] DEBUG main.Main - Model Saved
+20:05:29.826 [main] DEBUG main.Main - Epoch: 421000 | Squares Revealed: 10
+20:06:12.948 [main] DEBUG main.Main - Epoch: 422000 | Squares Revealed: 26
+20:06:55.335 [main] DEBUG main.Main - Epoch: 423000 | Squares Revealed: 22
+20:07:38.739 [main] DEBUG main.Main - Epoch: 424000 | Squares Revealed: 11
+20:08:21.312 [main] DEBUG main.Main - Epoch: 425000 | Squares Revealed: 13
+20:09:03.887 [main] DEBUG main.Main - Epoch: 426000 | Squares Revealed: 38
+20:09:45.650 [main] DEBUG main.Main - Epoch: 427000 | Squares Revealed: 16
+20:10:28.256 [main] DEBUG main.Main - Epoch: 428000 | Squares Revealed: 17
+20:11:11.159 [main] DEBUG main.Main - Epoch: 429000 | Squares Revealed: 28
+20:11:54.172 [main] DEBUG main.Main - Epoch: 430000 | Squares Revealed: 26
+20:11:54.359 [main] DEBUG main.Main - Model Saved
+20:12:35.372 [main] DEBUG main.Main - Epoch: 431000 | Squares Revealed: 34
+20:13:17.570 [main] DEBUG main.Main - Epoch: 432000 | Squares Revealed: 20
+20:14:00.589 [main] DEBUG main.Main - Epoch: 433000 | Squares Revealed: 76
+20:14:41.664 [main] DEBUG main.Main - Epoch: 434000 | Squares Revealed: 9
+20:15:24.255 [main] DEBUG main.Main - Epoch: 435000 | Squares Revealed: 8
+20:16:06.767 [main] DEBUG main.Main - Epoch: 436000 | Squares Revealed: 46
+20:16:48.358 [main] DEBUG main.Main - Epoch: 437000 | Squares Revealed: 6
+20:17:31.965 [main] DEBUG main.Main - Epoch: 438000 | Squares Revealed: 10
+20:18:14.712 [main] DEBUG main.Main - Epoch: 439000 | Squares Revealed: 7
+20:18:57.126 [main] DEBUG main.Main - Epoch: 440000 | Squares Revealed: 35
+20:18:57.314 [main] DEBUG main.Main - Model Saved
+20:19:39.749 [main] DEBUG main.Main - Epoch: 441000 | Squares Revealed: 10
+20:20:23.746 [main] DEBUG main.Main - Epoch: 442000 | Squares Revealed: 21
+20:21:07.634 [main] DEBUG main.Main - Epoch: 443000 | Squares Revealed: 52
+20:21:50.365 [main] DEBUG main.Main - Epoch: 444000 | Squares Revealed: 11
+20:22:32.097 [main] DEBUG main.Main - Epoch: 445000 | Squares Revealed: 76
+20:23:15.774 [main] DEBUG main.Main - Epoch: 446000 | Squares Revealed: 11
+20:23:59.508 [main] DEBUG main.Main - Epoch: 447000 | Squares Revealed: 15
+20:24:41.505 [main] DEBUG main.Main - Epoch: 448000 | Squares Revealed: 6
+20:25:23.502 [main] DEBUG main.Main - Epoch: 449000 | Squares Revealed: 57
+20:26:06.796 [main] DEBUG main.Main - Epoch: 450000 | Squares Revealed: 4
+20:26:06.971 [main] DEBUG main.Main - Model Saved
+20:26:51.423 [main] DEBUG main.Main - Epoch: 451000 | Squares Revealed: 35
+20:27:34.498 [main] DEBUG main.Main - Epoch: 452000 | Squares Revealed: 93
+20:28:18.343 [main] DEBUG main.Main - Epoch: 453000 | Squares Revealed: 110
+20:29:02.090 [main] DEBUG main.Main - Epoch: 454000 | Squares Revealed: 31
+20:29:46.338 [main] DEBUG main.Main - Epoch: 455000 | Squares Revealed: 40
+20:30:29.725 [main] DEBUG main.Main - Epoch: 456000 | Squares Revealed: 54
+20:31:12.566 [main] DEBUG main.Main - Epoch: 457000 | Squares Revealed: 19
+20:31:56.923 [main] DEBUG main.Main - Epoch: 458000 | Squares Revealed: 8
+20:32:39.966 [main] DEBUG main.Main - Epoch: 459000 | Squares Revealed: 32
+20:33:24.799 [main] DEBUG main.Main - Epoch: 460000 | Squares Revealed: 85
+20:33:24.978 [main] DEBUG main.Main - Model Saved
+20:34:05.975 [main] DEBUG main.Main - Epoch: 461000 | Squares Revealed: 40
+20:34:49.941 [main] DEBUG main.Main - Epoch: 462000 | Squares Revealed: 35
+20:35:33.485 [main] DEBUG main.Main - Epoch: 463000 | Squares Revealed: 8
+20:36:59.576 [main] DEBUG main.Main - PlayGame
+20:36:59.584 [main] DEBUG main.Main - AI Player
+20:36:59.644 [main] INFO  org.nd4j.linalg.factory.Nd4jBackend - Loaded [CpuBackend] backend
+20:37:00.583 [main] INFO  org.nd4j.nativeblas.NativeOpsHolder - Number of threads used for NativeOps: 4
+20:37:00.981 [main] INFO  org.nd4j.nativeblas.Nd4jBlas - Number of threads used for BLAS: 4
+20:37:00.987 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Backend used: [CPU]; OS: [Windows 10]
+20:37:00.987 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Cores: [4]; Memory: [2.0GB];
+20:37:00.987 [main] INFO  o.n.l.a.o.e.DefaultOpExecutioner - Blas vendor: [MKL]
+20:37:01.357 [main] INFO  o.d.nn.multilayer.MultiLayerNetwork - Starting MultiLayerNetwork with WorkspaceModes set to [training: ENABLED; inference: ENABLED], cacheMode set to [NONE]
+20:37:01.403 [main] DEBUG main.Main - model initialized
+20:37:04.130 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 1
+20:37:04.131 [main] DEBUG o.n.l.m.d.DeallocatorService - Starting deallocator thread 2

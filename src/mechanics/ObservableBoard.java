@@ -1,11 +1,13 @@
 package mechanics;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import interfaces.StatusConstants;
+import interfaces.CellType;
 
 //Partially Observable Environment
-public class ObservableBoard implements StatusConstants, Serializable {
+public class ObservableBoard implements  Serializable {
 	/**
 	 * 
 	 */
@@ -69,7 +71,7 @@ public class ObservableBoard implements StatusConstants, Serializable {
 		observableBoard = new ObservableCell[ROWS][COLUMNS];
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLUMNS; col++) {
-				this.observableBoard[row][col] = new ObservableCell(board.getObservableCell(row, col).getStatus());
+				this.observableBoard[row][col] = new ObservableCell(board.getObservableCell(row, col).getCellType());
 			}
 		}
 	}
@@ -84,16 +86,16 @@ public class ObservableBoard implements StatusConstants, Serializable {
 		for (int i = 0; i < ROWS; i++) {
 			System.out.printf("%-3d", i);
 			for (int j = 0; j < COLUMNS; j++) {
-				if (observableBoard[i][j].getStatus() == STATUS_HIDDEN) {
+				if (observableBoard[i][j].getCellType() == CellType.HIDDEN) {
 					System.out.print("|_|");
-				} else if (observableBoard[i][j].getStatus() == STATUS_FLAGGED) {
+				} else if (observableBoard[i][j].getCellType() == CellType.FLAGGED) {
 					System.out.print(" F ");
-				} else if (observableBoard[i][j].getStatus() == STATUS_BOMB) {
+				} else if (observableBoard[i][j].getCellType() == CellType.BOMB) {
 					System.out.print("-1 ");
-				} else if (observableBoard[i][j].getStatus() == STATUS_SQUARE0) {
+				} else if (observableBoard[i][j].getCellType() == CellType.SQUARE0) {
 					System.out.print("   ");
 				} else {
-					System.out.printf("%2d", observableBoard[i][j].getStatus());
+					System.out.printf("%2d", observableBoard[i][j].getCellType());
 					System.out.print(" ");
 				}
 			}
@@ -104,7 +106,7 @@ public class ObservableBoard implements StatusConstants, Serializable {
 	public void resetObservableBoard() {
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLUMNS; col++) {
-				this.observableBoard[row][col].setStatus(STATUS_HIDDEN);
+				this.observableBoard[row][col].setCellType(CellType.HIDDEN);
 			}
 		}
 		gameCondition = "In Progress";
@@ -115,7 +117,7 @@ public class ObservableBoard implements StatusConstants, Serializable {
 	public void updateGameCondition() {
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLUMNS; j++) {
-				if (observableBoard[i][j].getStatus() == STATUS_BOMB) {
+				if (observableBoard[i][j].getCellType() == CellType.BOMB) {
 					gameCondition = "Loser";
 				}
 			}
@@ -170,81 +172,68 @@ public class ObservableBoard implements StatusConstants, Serializable {
 		return squaresRevealedCount;
 	}
 
-	public boolean[][] getState(int selectedRow, int selectedCol) {
-		int bitWidth = 12;
-		boolean[][] state = new boolean[1][5 * 5 * bitWidth];
 
-		for (int i = 0; i < 5 * 5 * bitWidth; i++) {
-			state[0][i] = false;
-		}
+	public boolean[][] serializeState(){
+		int bitsPerSquare = 4;
+		int flagBits = 7;
+		boolean[][] state = new boolean[1][ROWS * COLUMNS * bitsPerSquare + flagBits];
 
-		int count = 0;
-		for (int row = selectedRow - 2; row <= selectedRow + 2; row++) {
-			for (int col = selectedCol - 2; col <= selectedCol + 2; col++) {
-				if (row >= 0 && row < ROWS && col >= 0 && col < COLUMNS) {
-					switch (observableBoard[row][col].getStatus()) {
-					case STATUS_BOMB: // case bomb
-						state[0][count * 12 + 11] = true;
-						break;
-					case STATUS_SQUARE0:
-						state[0][count * 12 + 10] = true;
-						break;
-					case STATUS_SQUARE1:
-						state[0][count * 12 + 9] = true;
-						break;
-					case STATUS_SQUARE2:
-						state[0][count * 12 + 8] = true;
-						break;
-					case STATUS_SQUARE3:
-						state[0][count * 12 + 7] = true;
-						break;
-					case STATUS_SQUARE4:
-						state[0][count * 12 + 6] = true;
-						break;
-					case STATUS_SQUARE5:
-						state[0][count * 12 + 5] = true;
-						break;
-					case STATUS_SQUARE6:
-						state[0][count * 12 + 4] = true;
-						break;
-					case STATUS_SQUARE7:
-						state[0][count * 12 + 3] = true;
-						break;
-					case STATUS_SQUARE8:
-						state[0][count * 12 + 2] = true;
-						break;
-					case STATUS_HIDDEN:
-						state[0][count * 12 + 1] = true;
-						break;
-					case STATUS_FLAGGED:
-						state[0][count * 12 + 0] = true;
-						break;
-					default:
-						throw new IllegalArgumentException("Unknown Case");
-					}
-				}
-				count++;
+		int bitCount = 0;
+		for (int row = 0; row < ROWS; row++)
+			for (int col = 0; col < COLUMNS; col++) {
+				appendToBooleanArray(state, bitCount, observableBoard[row][col].getCellType().ordinal());
+				bitCount+=4;
 			}
 
-		}
-
-		/*
-		System.out.println("ROW: " + selectedRow + " COL:" + selectedCol);
-		for (int i = 0; i < 5 * 5 * bitWidth; i++) {
-			if (i % 60 == 0 && i != 0)
-				System.out.println("");
-			else if (i % 12 == 0 && i != 0)
-				System.out.print(" ");
-
-			if (state[0][i])
-				System.out.print("1");
-			else
-				System.out.print("0");
-		}
-		System.out.println();
-		*/
+		appendToBooleanArray(state, bitCount, flagCount);
 		return state;
 	}
+
+	/**
+	 * 24 squares * 4 bits = 96 bits
+	 * +1 bit for middle square hidden or flagged
+	 */
+	public boolean[][] serializeState5x5(int selectedRow, int selectedCol) {
+		int bitsPerSquare = 4;
+		boolean[][] state = new boolean[1][24 * bitsPerSquare + 1];
+
+		int bitCount = 0;
+		for (int row = selectedRow - 2; row <= selectedRow + 2; row++)
+			for (int col = selectedCol - 2; col <= selectedCol + 2; col++) {
+				if (row >= 0 && row < ROWS && col >= 0 && col < COLUMNS)
+					if (!(selectedRow == row && selectedCol == col))
+						appendToBooleanArray(state, bitCount, observableBoard[row][col].getCellType().ordinal());
+					else
+						appendToBooleanArray(state, bitCount, CellType.INVALID.ordinal());
+				bitCount+=4;
+			}
+		state[0][bitCount] = observableBoard[selectedRow][selectedCol].getCellType() == CellType.HIDDEN;
+		return state;
+	}
+
+	private void appendToBooleanArray(boolean[][] arr, int index, int value){
+		for (int i = index+3; i>=index; i--, value/=2)
+			arr[0][i] = value%2==1;
+	}
+
+
+	public List<CellType> get5x5StateAsList(int selectedRow, int selectedCol){
+		List<CellType> state = new ArrayList<>();
+
+		for (int row = selectedRow - 2; row <= selectedRow + 2; row++) {
+			for (int col = selectedCol - 2; col <= selectedCol + 2; col++) {
+				if (row >= 0 && row < ROWS && col >= 0 && col < COLUMNS)
+					state.add(observableBoard[row][col].getCellType());
+				else
+					state.add(CellType.HIDDEN);
+			}
+		}
+		return state;
+	}
+
+
+	//public boolean[][] get
+
 
 	/* Overridden Methods */
 	/* Actions */
@@ -253,12 +242,12 @@ public class ObservableBoard implements StatusConstants, Serializable {
 	}
 
 	public void flagCell(int selectedRow, int selectedCol) {
-		if (getObservableCell(selectedRow, selectedCol).getStatus() == STATUS_HIDDEN) {
-			getObservableCell(selectedRow, selectedCol).setStatus(STATUS_FLAGGED);
+		if (getObservableCell(selectedRow, selectedCol).getCellType() == CellType.HIDDEN) {
+			getObservableCell(selectedRow, selectedCol).setCellType(CellType.FLAGGED);
 			decrementFlagCount();
 
-		} else if (getObservableCell(selectedRow, selectedCol).getStatus() == STATUS_FLAGGED) {
-			getObservableCell(selectedRow, selectedCol).setStatus(STATUS_HIDDEN);
+		} else if (getObservableCell(selectedRow, selectedCol).getCellType() == CellType.FLAGGED) {
+			getObservableCell(selectedRow, selectedCol).setCellType(CellType.HIDDEN);
 			incrementFlagCount();
 
 		} else {

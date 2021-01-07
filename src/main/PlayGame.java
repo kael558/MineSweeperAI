@@ -1,67 +1,42 @@
 package main;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import interfaces.StatusConstants;
+import interfaces.PlayerType;
 import mechanics.Board;
 import mechanics.ObservableBoard;
-import players.AI_Player;
-import players.Agent;
-import players.AlgorithmPlayer;
-import players.ManualPlayer;
-import screenMechanics.ScreenReader;
+import players.*;
+import players.ai.CNN_5x5_Player;
+import players.ai.CNN_Full_Player;
+import players.ai.MCTS_Player;
 
-public class PlayGame implements StatusConstants {
+public class PlayGame  {
 	ObservableBoard board;
 
-	Agent agent;
-	boolean printBoard = true;
-	boolean pause = true;
-	private static final Logger logger = LoggerFactory.getLogger(Main.class);
+	Player player;
+	boolean printBoard;
+	boolean pause;
 
-	
-	public PlayGame(int rows, int columns, int bombs, int agentType) {
-		if (agentType == 0) {
-			agent = new AI_Player(rows, columns, bombs, "no train");
-		} else if (agentType == 1) {
-			agent = new ManualPlayer();
-		} else if (agentType == 2){
-			agent = new AlgorithmPlayer(); // default is random agent
-		} else {
-			agent = new Agent(); // default is random agent
-		}
+	public static void main(String[] args){
+		PlayGame pg = new PlayGame(new Board(), PlayerType.AI_5x5, false, false);
+		pg.start();
 	}
-	
 
-
-	public PlayGame(int agentType, boolean printBoard, boolean pause, boolean playBrowser, int rows, int columns,
-			int numBombs) {
-		logger.debug("PlayGame");
+	public PlayGame(Board board, PlayerType playerType, boolean printBoard, boolean pause){
+		this.board = board;
 		this.pause = pause;
 		this.printBoard = printBoard;
 
-		if (playBrowser) {
-			board = new ScreenReader();
-		} else {
-			board = new Board(rows, columns, numBombs);
-		}
-
-		if (agentType == 0) {
-			agent = new AI_Player(rows, columns, numBombs);
-		} else if (agentType == 1) {
-			agent = new ManualPlayer();
-		} else if (agentType == 2){
-			agent = new AlgorithmPlayer(); 
-		} else {
-			agent = new Agent(); // default is random agent
+		switch(playerType){
+			case AI_5x5 -> player = new CNN_5x5_Player();
+			case AI_Full -> player = new CNN_Full_Player();
+			case AI_MCTS -> player = new MCTS_Player();
+			case HUMAN -> player = new ManualPlayer();
+			case ALGORITHM -> player = new AlgorithmPlayer();
+			case RANDOM -> player = new RandomPlayer();
 		}
 	}
+
 
 	public void start() {
 		long start = System.currentTimeMillis();
@@ -73,10 +48,8 @@ public class PlayGame implements StatusConstants {
 				pause();
 			else 
 				sleep();
-			
 
-			int action = agent.chooseAction(board);
-
+			int action = player.chooseAction(board);
 			board.playMove(action);
 
 			if (printBoard)
