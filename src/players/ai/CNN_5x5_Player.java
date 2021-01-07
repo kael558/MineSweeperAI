@@ -37,7 +37,7 @@ public class CNN_5x5_Player extends AI_Player {
         new CNN_5x5_Player().train();
     }
 
-    private static boolean [][] toBooleanArray(byte[] bytes){
+    private boolean [][] toBooleanArray(byte[] bytes){
         boolean [][] state = new boolean[1][97]; //97 bits
         int bitCount = 0;
 

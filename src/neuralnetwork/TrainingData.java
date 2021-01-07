@@ -44,6 +44,77 @@ public class TrainingData {
     }
 
 
+    public void generate(){
+        int dataCount = 0;
+
+        FileOutputStream fos = new FileOutputStream(file, true);
+        //ObjectOutputStream oos = new ObjectOutputStream(fos);
+        ObjectOutputStream oos = new ObjectOutputStream(fos) {
+            protected void writeStreamHeader() throws IOException {
+                reset();
+            }
+        };
+
+        //only applicable for 5x5
+        List<CellType> emptyState = new ArrayList<>(Collections.nCopies(25, CellType.HIDDEN));
+
+        for (int i = 0; i < numGames && dataCount < 5000000; i++){
+            Board trainingBoard = new Board(16, 30, 16*15); //half of all squares are bombs to remove bias.
+
+            //initialize board with random click
+            trainingBoard.clickCellInitial(r.nextInt(16), r.nextInt(30));
+
+            while (trainingBoard.isRunning()) {
+                for (int row = 0; row < trainingBoard.ROWS; row++) {
+                    for (int col = 0; col < trainingBoard.COLUMNS; col++) {
+                        if (trainingBoard.getObservableCell(row, col).getCellType() == CellType.HIDDEN
+                                || trainingBoard.getObservableCell(row, col).getCellType() == CellType.FLAGGED) {
+
+                            if (playerType == PlayerType.AI_5x5){
+                                List<CellType> stateAsList = trainingBoard.get5x5StateAsList(row, col);
+                                if (!stateAsList.equals(emptyState)){
+                                    boolean[][] state = trainingBoard.serializeState5x5(row, col);
+                                    byte[] bytes = toByteArray(state);
+                                    // fos.write(bytes);
+                                    //dont forget to write score in there as well
+
+                                 /*   INDArray state = Nd4j.create();
+                                    int actionScore = getActionScore5x5(trainingBoard, row, col);
+                                    ActionValue av = new ActionValue(state, actionScore);
+                                    oos.writeObject(av);
+                                    oos.flush();
+
+                                  */
+                                    dataCount++;
+                                }
+                            } else {
+                                INDArray state = Nd4j.create(trainingBoard.serializeState());
+                                //int actionScore = getActionScore(trainingBoard, row, col);
+                                //not sure what i want to save
+
+                            }
+
+                            //making sure it doesn't lose just to improve state diversity
+                            if (r.nextInt(2)==0) { //50% of the time do an action
+                                int action = row * trainingBoard.COLUMNS + col;
+                                if (trainingBoard.getCell(row, col).getSecretStatus() != CellType.BOMB){ //click
+                                    trainingBoard.playMove(action);
+                                } else {//flag
+                                    trainingBoard.playMove(action + (trainingBoard.ROWS * trainingBoard.COLUMNS));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (i%100==0)
+                System.out.println("Game: " + i + " -> Size: " + dataCount);
+        }
+        System.out.println("Training Set Size: " + dataCount);
+        oos.close();
+    }
+
+
 
     public void generateDataFor(PlayerType playerType) throws IOException {
         int dataCount = 0;

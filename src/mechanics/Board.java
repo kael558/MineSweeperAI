@@ -186,6 +186,12 @@ public class Board extends ObservableBoard implements Serializable{
 			}
 		}
 	}
+
+
+	public byte[] seralializeState(){
+		//byte[] bytes = new byte[R];
+		return null;
+	}
 	
 	
 	
