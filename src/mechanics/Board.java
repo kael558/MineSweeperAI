@@ -86,7 +86,7 @@ public class Board extends ObservableBoard implements Serializable{
 		for (int i = 0; i < ROWS; i++){
 			System.out.printf("%-2d", i);
 			for (int j = 0; j < COLUMNS; j++){
-				System.out.printf("%3d", board[i][j].getSecretStatus());
+				System.out.printf("%3d", board[i][j].getSecretStatus().ordinal());
 			}
 			System.out.println();
 		}
@@ -188,12 +188,6 @@ public class Board extends ObservableBoard implements Serializable{
 	}
 
 
-	public byte[] seralializeState(){
-		//byte[] bytes = new byte[R];
-		return null;
-	}
-	
-	
 	
 	/* Unnecessary
 	 The double click show option:

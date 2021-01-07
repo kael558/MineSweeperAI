@@ -1,8 +1,9 @@
 package players;
 
+import mechanics.Action;
 import mechanics.ObservableBoard;
 
 
 public abstract class Player {
-	public abstract int chooseAction(ObservableBoard board);
+	public abstract Action chooseAction(ObservableBoard board);
 }

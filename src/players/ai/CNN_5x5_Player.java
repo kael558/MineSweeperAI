@@ -1,7 +1,9 @@
 package players.ai;
 
+import interfaces.ActionType;
 import interfaces.CellType;
 import main.GetConfig;
+import mechanics.Action;
 import mechanics.ObservableBoard;
 import neuralnetwork.ActionValue;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
@@ -61,7 +63,7 @@ public class CNN_5x5_Player extends AI_Player {
     }
 
 
-    public int chooseAction(ObservableBoard board) {
+    public Action chooseAction(ObservableBoard board) {
         for (int row = 0; row < board.ROWS; row++) {
             for (int col = 0; col < board.COLUMNS; col++) {
                 if (board.getObservableCell(row, col).getCellType() == CellType.HIDDEN) {
@@ -70,14 +72,14 @@ public class CNN_5x5_Player extends AI_Player {
 
                     double val = qval.getDouble(0);
                     if (val > 0.9)
-                        return row * board.COLUMNS + col;
+                        return new Action(ActionType.CLICK, row, col);
                     else if (val < -0.9)
-                        return row * board.COLUMNS + col + (board.ROWS * board.COLUMNS);
+                        return new Action(ActionType.FLAG, row, col);
                 }
             }
         }
 
-        return r.nextInt(board.ROWS * board.COLUMNS * 2); //random action lul
+        return new Action(board.ROWS,board.COLUMNS); //random action lul
     }
 
     public void train() throws IOException, ClassNotFoundException {

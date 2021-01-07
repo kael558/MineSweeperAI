@@ -1,13 +1,11 @@
 package players;
 
+import mechanics.Action;
 import mechanics.ObservableBoard;
-
-import java.util.Random;
 
 public class RandomPlayer extends Player {
     @Override
-    public int chooseAction(ObservableBoard board) {
-        Random r = new Random();
-        return r.nextInt(board.ROWS*board.COLUMNS*2);
+    public Action chooseAction(ObservableBoard board) {
+        return new Action(board.ROWS, board.COLUMNS);
     }
 }

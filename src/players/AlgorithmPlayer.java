@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import interfaces.ActionType;
 import interfaces.CellType;
+import mechanics.Action;
 import mechanics.ObservableBoard;
 
 public class AlgorithmPlayer extends Player {
@@ -61,8 +63,8 @@ public class AlgorithmPlayer extends Player {
 	}
 
 	
-	public int chooseAction(ObservableBoard board){
-		int action = r.nextInt(board.ROWS*board.COLUMNS);
+	public Action chooseAction(ObservableBoard board){
+		Action action = new Action(ActionType.CLICK, r.nextInt(board.ROWS), r.nextInt(board.COLUMNS));
 
 		boolean isEmpty = true;
 		
@@ -72,11 +74,11 @@ public class AlgorithmPlayer extends Player {
 				if (board.getObservableCell(row, col).getCellType() == CellType.HIDDEN){
 					if (satisfyNumbered(board, row, col)){
 						System.out.println("Definite Action");
-						return getAction(row, col, board.COLUMNS, true);
+						return new Action(ActionType.CLICK, row, col);
 					} 
 					if (satisfyFlagged(board, row, col)){
 						System.out.println("Definite Action");
-						return getAction(row, col, board.COLUMNS, false);
+						return new Action(ActionType.FLAG, row, col);
 					}
 				} else if (board.getObservableCell(row, col).getCellType() != CellType.FLAGGED){ //not hidden && not flagged
 					isEmpty = false; 
@@ -120,10 +122,9 @@ public class AlgorithmPlayer extends Player {
 									}
 									
 									if (hiddenCellPerimeter.get(i).getCount()==0){
-										action = getAction(hiddenCellPerimeter.get(i).getRow(), hiddenCellPerimeter.get(i).getColumn(), temp.COLUMNS, true);
 										System.out.println("Definite Probability Action");
 										System.out.println(hiddenCellPerimeter);
-										return action;
+										return new Action(ActionType.CLICK, hiddenCellPerimeter.get(i).getRow(), hiddenCellPerimeter.get(i).getColumn());
 									}
 								}
 	
@@ -140,10 +141,8 @@ public class AlgorithmPlayer extends Player {
 	
 		if (minimumCountRow!=999 && minimumCountCol!=999){
 			System.out.println("Minimum Count Probability Action");
-			
-			action = getAction( minimumCountRow,  minimumCountCol, board.COLUMNS, true);
 			System.out.println(hiddenCellPerimeter);
-			return action;
+			return new Action(ActionType.CLICK, minimumCountRow, minimumCountCol);
 		}
 		
 		System.out.println("Random Action as hiddenCellPerimeter is too large");
@@ -395,15 +394,5 @@ public class AlgorithmPlayer extends Player {
 		}
 		return count;
 	}
-
-	public int getAction(int row, int col, int COLUMNS, boolean clicked){
-		if (clicked)
-			return row * COLUMNS + col;
-		
-		return row * COLUMNS + col + 480;
-	}
-	
-
-	
 }
 

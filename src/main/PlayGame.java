@@ -3,6 +3,7 @@ package main;
 import java.util.Scanner;
 
 import interfaces.PlayerType;
+import mechanics.Action;
 import mechanics.Board;
 import mechanics.ObservableBoard;
 import players.*;
@@ -49,7 +50,7 @@ public class PlayGame  {
 			else 
 				sleep();
 
-			int action = player.chooseAction(board);
+			Action action = player.chooseAction(board);
 			board.playMove(action);
 
 			if (printBoard)
@@ -78,14 +79,8 @@ public class PlayGame  {
 		scan.nextLine();
 	}
 
-	public void printBoard(int action) {
-		if (action >= 480) {
-			action -= 480;
-			System.out.print("Flagged ");
-		} else {
-			System.out.print("Clicked ");
-		}
-		System.out.println("cell at row: " + action / board.COLUMNS + " col: " + action % board.COLUMNS);
+	public void printBoard(Action action) {
+		System.out.println(action);
 		board.drawObservableBoard();
 		System.out.println("Squares Revealed: " + board.getSquaresRevealedCount());
 	}

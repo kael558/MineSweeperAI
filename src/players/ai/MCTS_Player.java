@@ -1,5 +1,6 @@
 package players.ai;
 
+import mechanics.Action;
 import mechanics.ObservableBoard;
 
 import java.io.IOException;
@@ -20,8 +21,8 @@ public class MCTS_Player extends AI_Player{
     }
 
     @Override
-    public int chooseAction(ObservableBoard board) {
-        return 0;
+    public Action chooseAction(ObservableBoard board) {
+        return null;
     }
 
     @Override

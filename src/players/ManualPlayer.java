@@ -2,6 +2,8 @@ package players;
 
 import java.util.Scanner;
 
+import interfaces.ActionType;
+import mechanics.Action;
 import mechanics.ObservableBoard;
 
 public class ManualPlayer  extends Player {
@@ -10,28 +12,29 @@ public class ManualPlayer  extends Player {
 	
 	}
 
-	public int chooseAction(ObservableBoard board){
+	public Action chooseAction(ObservableBoard board){
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		
-		int[] action = {0, 0, 0};
+		int row = 0;
+		int col = 0;
+		int click = 0;
 
 		do{
 			System.out.println("Choose an action:");
 			System.out.print("Enter Row (0 - 15): ");
-			action[0] = scan.nextInt();
+			row = scan.nextInt();
 			System.out.print("Enter Col (0 - 29): ");
-			action[1] = scan.nextInt();
+			col = scan.nextInt();
 			
 			System.out.print("Enter Action (0 - click, 1 - flag): ");
-			action[2] = scan.nextInt();
+			click = scan.nextInt();
 		
-		} while (action[0] < 0 || action[0] >= board.ROWS || action[1] < 0 || action[1] >= board.COLUMNS || action[2] < 0 || action[2] > 1);
+		} while (row < 0 || row >= board.ROWS || col < 0 || col >= board.COLUMNS || click < 0 || click > 1);
 
-		if (action[2] == 0)
-			return action[0]*board.COLUMNS + action[1];
-		
-		return action[0]*board.COLUMNS + action[1] + 480;
-		
+		if (click == 0)
+			return new Action(ActionType.CLICK, row, col);
+
+		return new Action(ActionType.FLAG, row, col);
 	}
 }

@@ -95,7 +95,7 @@ public class ObservableBoard implements  Serializable {
 				} else if (observableBoard[i][j].getCellType() == CellType.SQUARE0) {
 					System.out.print("   ");
 				} else {
-					System.out.printf("%2d", observableBoard[i][j].getCellType());
+					System.out.printf("%2d", observableBoard[i][j].getCellType().ordinal());
 					System.out.print(" ");
 				}
 			}
@@ -172,6 +172,7 @@ public class ObservableBoard implements  Serializable {
 		return squaresRevealedCount;
 	}
 
+	/*
 
 	public boolean[][] serializeState(){
 		int bitsPerSquare = 4;
@@ -188,6 +189,33 @@ public class ObservableBoard implements  Serializable {
 		appendToBooleanArray(state, bitCount, flagCount);
 		return state;
 	}
+*/
+
+	/**
+	 * Pre-condition: rows*columns must be even
+	 * 4 bits per square -> 2 squares per byte
+	 * 480 squares -> 240 bytes
+	 * ~1 byte for flag ~ 99 flags
+	 * 241 bytes
+	 * @return
+	 */
+	public byte[] serializeState() {
+		double squareToByteRatio = 0.5;
+		int flagByte = 1;
+		byte[] bytes = new byte[(int) (ROWS * COLUMNS * squareToByteRatio) + flagByte];
+
+		int byteCount = 0;
+		for (int row = 0; row < ROWS; row++){
+			for (int col = 0; col < COLUMNS - 1; col+=2) {
+				byte b = (byte) ((observableBoard[row][col].getCellType().ordinal() << 4)
+						| observableBoard[row][col + 1].getCellType().ordinal());
+				bytes[byteCount++] = b;
+			}
+		}
+		bytes[byteCount] = (byte) getFlagCount();
+		return bytes;
+	}
+
 
 	/**
 	 * 24 squares * 4 bits = 96 bits
@@ -237,7 +265,7 @@ public class ObservableBoard implements  Serializable {
 
 	/* Overridden Methods */
 	/* Actions */
-	public void playMove(int action) {
+	public void playMove(Action action) {
 
 	}
 
