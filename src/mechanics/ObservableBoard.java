@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.CellType;
+import interfaces.GameStatus;
 
 //Partially Observable Environment
 public class ObservableBoard implements  Serializable {
@@ -15,9 +16,9 @@ public class ObservableBoard implements  Serializable {
 	public int ROWS;
 	public int COLUMNS;
 
-	public ObservableCell observableBoard[][];
+	public CellType[][] observableBoard;
 
-	private String gameCondition;
+	private GameStatus gameStatus;
 	private int squaresRevealedCount;
 	private int flagCount;
 	public int totalBombs;
@@ -28,14 +29,14 @@ public class ObservableBoard implements  Serializable {
 
 		totalBombs = 99;
 
-		gameCondition = "In Progress";
+		gameStatus = GameStatus.IN_PROGRESS;
 		flagCount = 99;
 		squaresRevealedCount = 0;
 
-		observableBoard = new ObservableCell[ROWS][COLUMNS];
+		observableBoard = new CellType[ROWS][COLUMNS];
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLUMNS; col++) {
-				this.observableBoard[row][col] = new ObservableCell();
+				this.observableBoard[row][col] = CellType.HIDDEN;
 			}
 		}
 	}
@@ -46,14 +47,14 @@ public class ObservableBoard implements  Serializable {
 
 		totalBombs = number_of_bombs;
 
-		gameCondition = "In Progress";
+		gameStatus = GameStatus.IN_PROGRESS;
 		flagCount = number_of_bombs; // flags remaining
 		squaresRevealedCount = 0;
 
-		observableBoard = new ObservableCell[ROWS][COLUMNS];
+		observableBoard = new CellType[ROWS][COLUMNS];
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLUMNS; col++) {
-				this.observableBoard[row][col] = new ObservableCell();
+				this.observableBoard[row][col] = CellType.HIDDEN;
 			}
 		}
 	}
@@ -64,20 +65,21 @@ public class ObservableBoard implements  Serializable {
 
 		totalBombs = board.totalBombs;
 
-		gameCondition = "In Progress";
+		gameStatus = GameStatus.IN_PROGRESS;
 		flagCount = board.totalBombs; // flags remaining
 		squaresRevealedCount = board.getSquaresRevealedCount();
 
-		observableBoard = new ObservableCell[ROWS][COLUMNS];
+		observableBoard = new CellType[ROWS][COLUMNS];
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLUMNS; col++) {
-				this.observableBoard[row][col] = new ObservableCell(board.getObservableCell(row, col).getCellType());
+				this.observableBoard[row][col] = CellType.HIDDEN;
 			}
 		}
 	}
 
+
 	public void drawObservableBoard() {
-		System.out.printf("  ");
+		System.out.print("  ");
 		for (int i = 0; i < COLUMNS; i++) {
 			System.out.printf("%3d", i);
 		}
@@ -86,16 +88,16 @@ public class ObservableBoard implements  Serializable {
 		for (int i = 0; i < ROWS; i++) {
 			System.out.printf("%-3d", i);
 			for (int j = 0; j < COLUMNS; j++) {
-				if (observableBoard[i][j].getCellType() == CellType.HIDDEN) {
+				if (observableBoard[i][j] == CellType.HIDDEN) {
 					System.out.print("|_|");
-				} else if (observableBoard[i][j].getCellType() == CellType.FLAGGED) {
+				} else if (observableBoard[i][j] == CellType.FLAGGED) {
 					System.out.print(" F ");
-				} else if (observableBoard[i][j].getCellType() == CellType.BOMB) {
+				} else if (observableBoard[i][j] == CellType.BOMB) {
 					System.out.print("-1 ");
-				} else if (observableBoard[i][j].getCellType() == CellType.SQUARE0) {
+				} else if (observableBoard[i][j] == CellType.SQUARE0) {
 					System.out.print("   ");
 				} else {
-					System.out.printf("%2d", observableBoard[i][j].getCellType().ordinal());
+					System.out.printf("%2d", observableBoard[i][j].ordinal());
 					System.out.print(" ");
 				}
 			}
@@ -103,33 +105,24 @@ public class ObservableBoard implements  Serializable {
 		}
 	}
 
-	public void resetObservableBoard() {
-		for (int row = 0; row < ROWS; row++) {
-			for (int col = 0; col < COLUMNS; col++) {
-				this.observableBoard[row][col].setCellType(CellType.HIDDEN);
-			}
-		}
-		gameCondition = "In Progress";
-		flagCount = 99;
-		squaresRevealedCount = 0;
-	}
 
 	public void updateGameCondition() {
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLUMNS; j++) {
-				if (observableBoard[i][j].getCellType() == CellType.BOMB) {
-					gameCondition = "Loser";
+				if (observableBoard[i][j] == CellType.BOMB) {
+					gameStatus = GameStatus.LOST;
+					return;
 				}
 			}
 		}
 
 		if (ROWS * COLUMNS - totalBombs == squaresRevealedCount) {
-			gameCondition = "Winner";
+			gameStatus = GameStatus.WIN;
 		}
 	}
 
 	public boolean isRunning() {
-		if (gameCondition.equals("In Progress")) {
+		if (gameStatus == GameStatus.IN_PROGRESS) {
 			return true;
 		}
 		return false;
@@ -152,12 +145,12 @@ public class ObservableBoard implements  Serializable {
 	}
 
 	/* GETTERS */
-	public ObservableCell getObservableCell(int row, int col) {
+	public CellType getObservableCell(int row, int col) {
 		return observableBoard[row][col];
 	}
 
-	public String getGameCondition() {
-		return gameCondition;
+	public GameStatus getGameCondition() {
+		return gameStatus;
 	}
 
 	public int getNumberOfBombs() {
@@ -173,7 +166,6 @@ public class ObservableBoard implements  Serializable {
 	}
 
 	/*
-
 	public boolean[][] serializeState(){
 		int bitsPerSquare = 4;
 		int flagBits = 7;
@@ -182,7 +174,7 @@ public class ObservableBoard implements  Serializable {
 		int bitCount = 0;
 		for (int row = 0; row < ROWS; row++)
 			for (int col = 0; col < COLUMNS; col++) {
-				appendToBooleanArray(state, bitCount, observableBoard[row][col].getCellType().ordinal());
+				appendToBooleanArray(state, bitCount, observableBoard[row][col].ordinal());
 				bitCount+=4;
 			}
 
@@ -192,50 +184,34 @@ public class ObservableBoard implements  Serializable {
 */
 
 	/**
-	 * Pre-condition: rows*columns must be even
-	 * 4 bits per square -> 2 squares per byte
-	 * 480 squares -> 240 bytes
-	 * ~1 byte for flag ~ 99 flags
-	 * 241 bytes
-	 * @return
-	 */
-	public byte[] serializeState() {
-		double squareToByteRatio = 0.5;
-		int flagByte = 1;
-		byte[] bytes = new byte[(int) (ROWS * COLUMNS * squareToByteRatio) + flagByte];
-
-		int byteCount = 0;
-		for (int row = 0; row < ROWS; row++){
-			for (int col = 0; col < COLUMNS - 1; col+=2) {
-				byte b = (byte) ((observableBoard[row][col].getCellType().ordinal() << 4)
-						| observableBoard[row][col + 1].getCellType().ordinal());
-				bytes[byteCount++] = b;
-			}
-		}
-		bytes[byteCount] = (byte) getFlagCount();
-		return bytes;
-	}
-
-
-	/**
 	 * 24 squares * 4 bits = 96 bits
 	 * +1 bit for middle square hidden or flagged
 	 */
 	public boolean[][] serializeState5x5(int selectedRow, int selectedCol) {
+		boolean hasNonHidden = false;
 		int bitsPerSquare = 4;
 		boolean[][] state = new boolean[1][24 * bitsPerSquare + 1];
 
 		int bitCount = 0;
-		for (int row = selectedRow - 2; row <= selectedRow + 2; row++)
+		for (int row = selectedRow - 2; row <= selectedRow + 2; row++) {
 			for (int col = selectedCol - 2; col <= selectedCol + 2; col++) {
-				if (row >= 0 && row < ROWS && col >= 0 && col < COLUMNS)
-					if (!(selectedRow == row && selectedCol == col))
-						appendToBooleanArray(state, bitCount, observableBoard[row][col].getCellType().ordinal());
-					else
-						appendToBooleanArray(state, bitCount, CellType.INVALID.ordinal());
-				bitCount+=4;
+				if (row >= 0 && row < ROWS && col >= 0 && col < COLUMNS) {
+					if (!hasNonHidden && observableBoard[row][col] != CellType.HIDDEN)
+						hasNonHidden = true;
+					if (!(selectedRow == row && selectedCol == col)) {
+						appendToBooleanArray(state, bitCount, observableBoard[row][col].ordinal());
+						bitCount += 4;
+					}
+				} else {
+					appendToBooleanArray(state, bitCount, CellType.INVALID.ordinal());
+					bitCount += 4;
+				}
 			}
-		state[0][bitCount] = observableBoard[selectedRow][selectedCol].getCellType() == CellType.HIDDEN;
+		}
+
+		if (!hasNonHidden) //return null if state is all hidden cells.
+			return null;
+		state[0][bitCount] = observableBoard[selectedRow][selectedCol] == CellType.HIDDEN;
 		return state;
 	}
 
@@ -245,24 +221,6 @@ public class ObservableBoard implements  Serializable {
 	}
 
 
-	public List<CellType> get5x5StateAsList(int selectedRow, int selectedCol){
-		List<CellType> state = new ArrayList<>();
-
-		for (int row = selectedRow - 2; row <= selectedRow + 2; row++) {
-			for (int col = selectedCol - 2; col <= selectedCol + 2; col++) {
-				if (row >= 0 && row < ROWS && col >= 0 && col < COLUMNS)
-					state.add(observableBoard[row][col].getCellType());
-				else
-					state.add(CellType.HIDDEN);
-			}
-		}
-		return state;
-	}
-
-
-	//public boolean[][] get
-
-
 	/* Overridden Methods */
 	/* Actions */
 	public void playMove(Action action) {
@@ -270,12 +228,12 @@ public class ObservableBoard implements  Serializable {
 	}
 
 	public void flagCell(int selectedRow, int selectedCol) {
-		if (getObservableCell(selectedRow, selectedCol).getCellType() == CellType.HIDDEN) {
-			getObservableCell(selectedRow, selectedCol).setCellType(CellType.FLAGGED);
+		if (observableBoard[selectedRow][selectedCol] == CellType.HIDDEN) {
+			observableBoard[selectedRow][selectedCol] = CellType.FLAGGED;
 			decrementFlagCount();
 
-		} else if (getObservableCell(selectedRow, selectedCol).getCellType() == CellType.FLAGGED) {
-			getObservableCell(selectedRow, selectedCol).setCellType(CellType.HIDDEN);
+		} else if (observableBoard[selectedRow][selectedCol] == CellType.FLAGGED) {
+			observableBoard[selectedRow][selectedCol] = CellType.HIDDEN;
 			incrementFlagCount();
 
 		} else {
@@ -292,10 +250,6 @@ public class ObservableBoard implements  Serializable {
 
 	}
 
-	public Cell getCell(int row, int col) {
-		return null;
-	}
-
 	public boolean isBoardInitialized() {
 		return false;
 	}
@@ -307,5 +261,4 @@ public class ObservableBoard implements  Serializable {
 	public void updateObservableBoard() {
 
 	}
-
 }

@@ -3,7 +3,9 @@ package neuralnetwork;
 import java.util.ArrayList;
 import java.util.Random;
 
+import interfaces.ActionType;
 import interfaces.CellType;
+import mechanics.Action;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
@@ -72,30 +74,28 @@ public class Game extends AbstractBehavior<Game.Command>  {
 		while (!trainingBoard.isBoardInitialized() || trainingBoard.isRunning()) {
 			for (int row = 0; row < trainingBoard.ROWS; row++) {
 				for (int col = 0; col < trainingBoard.COLUMNS; col++) {
-					if (trainingBoard.getObservableCell(row, col).getCellType() == CellType.HIDDEN
-							|| trainingBoard.getObservableCell(row, col).getCellType() == CellType.FLAGGED) {
+					if (trainingBoard.getObservableCell(row, col) == CellType.HIDDEN
+							|| trainingBoard.getObservableCell(row, col) == CellType.FLAGGED) {
 						INDArray state = Nd4j.create(trainingBoard.serializeState5x5(row, col));
 						INDArray qval = model.output(state);
 
-						int action = -1;
+						Action action = null;
 
 						if (r.nextDouble() < epsilon) {
 							double a = r.nextDouble();
 
 							if (a < 0.333)
-								action = row * trainingBoard.COLUMNS + col;
+								action = new Action(ActionType.CLICK, row, col);
 							else if (a < 0.666)
-								action = row * trainingBoard.COLUMNS + col
-										+ (trainingBoard.ROWS * trainingBoard.COLUMNS);
+								action = new Action(ActionType.FLAG, row, col);
 						} else {
 							if (qval.getDouble(0) > 0.9)
-								action = row * trainingBoard.COLUMNS + col;
+								action = new Action(ActionType.CLICK, row, col);
 							else if (qval.getDouble(1) > 0.9)
-								action = row * trainingBoard.COLUMNS + col
-										+ (trainingBoard.ROWS * trainingBoard.COLUMNS);
+								action = new Action(ActionType.FLAG, row, col);
 						}
 
-						if (action != -1) {
+						if (action != null) {
 							actionCount++;
 							int initialFlagCount = trainingBoard.getFlagCount();
 							trainingBoard.playMove(action);
@@ -136,15 +136,15 @@ public class Game extends AbstractBehavior<Game.Command>  {
 		return this;
 	}
 
-	private double getRewardClick(ObservableBoard trainingBoard, int row, int col) {
-		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() != CellType.BOMB
-				&& trainingBoard.getObservableCell(row, col).getCellType() != CellType.FLAGGED)
+	private double getRewardClick(Board trainingBoard, int row, int col) {
+		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col) != CellType.BOMB
+				&& trainingBoard.getObservableCell(row, col) != CellType.FLAGGED)
 			return 1;
 		return -1;
 	}
 
-	private double getRewardFlag(ObservableBoard trainingBoard, int initialFlagCount, int row, int col) {
-		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col).getSecretStatus() == CellType.BOMB) // bomb
+	private double getRewardFlag(Board trainingBoard, int initialFlagCount, int row, int col) {
+		if (trainingBoard.isBoardInitialized() && trainingBoard.getCell(row, col) == CellType.BOMB) // bomb
 			return 1;
 		return -1;
 	}

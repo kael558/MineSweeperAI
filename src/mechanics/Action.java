@@ -5,9 +5,9 @@ import interfaces.ActionType;
 import java.util.Random;
 
 public class Action {
-    private ActionType actionType;
-    private int row;
-    private int col;
+    public ActionType actionType;
+    public int row;
+    public int col;
 
     public Action(ActionType actionType, int row, int col) {
         this.actionType = actionType;
@@ -26,4 +26,6 @@ public class Action {
     public String toString(){
         return actionType + " (" + row + ", " + col + ")";
     }
+
+
 }

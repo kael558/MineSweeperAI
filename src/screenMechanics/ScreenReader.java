@@ -6,7 +6,9 @@ import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.io.Serial;
 
+import interfaces.ActionType;
 import interfaces.CellType;
+import mechanics.Action;
 import org.openqa.selenium.By;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
@@ -140,60 +142,48 @@ public class ScreenReader extends ObservableBoard  {
 					int indexLook = HTML.indexOf(classSearch, indexSquare - 25);
 					
 					String classType = HTML.substring(indexLook+2, indexSquare-1);
-					switch (classType){
-					case "square blank":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.HIDDEN);
-						break;
-					case "square open0":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE0);
-						incrementSquaresRevealedCount();
-						break;
-					case "square open1":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE1);
-						incrementSquaresRevealedCount();
-						break;
-					case "square open2":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE2);
-						incrementSquaresRevealedCount();
-						break;
-					case "square open3":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE3);
-						incrementSquaresRevealedCount();
-						break;
-					case "square open4":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE4);
-						incrementSquaresRevealedCount();
-						break;
-					case "square open5":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE5);
-						incrementSquaresRevealedCount();
-						break;
-					case "square open6":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE6);
-						incrementSquaresRevealedCount();
-						break;
-					case "square open7":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE7);
-						incrementSquaresRevealedCount();
-						break;
-					case "square open8":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.SQUARE8);
-						incrementSquaresRevealedCount();
-						break;
-					case "square bombflagged":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.FLAGGED);
-						break;
-					case "square bombrevealed":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.BOMB);
-						break;
-					case "square bombmisflagged":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.FLAGGED);
-						break;
-					case "square bombdeath":
-						super.getObservableCell(row-1, col-1).setCellType(CellType.BOMB);
-						break;
-					default:
-						throw new IllegalArgumentException("Unknown case");
+					switch (classType) {
+						case "square blank" -> super.observableBoard[row - 1][col - 1] = CellType.HIDDEN;
+						case "square open0" -> {
+							super.observableBoard[row - 1][col - 1] = CellType.SQUARE0;
+							incrementSquaresRevealedCount();
+						}
+						case "square open1" -> {
+							super.observableBoard[row - 1][col - 1] = CellType.SQUARE1;
+							incrementSquaresRevealedCount();
+						}
+						case "square open2" -> {
+							super.observableBoard[row - 1][col - 1] = CellType.SQUARE2;
+							incrementSquaresRevealedCount();
+						}
+						case "square open3" -> {
+							super.observableBoard[row - 1][col - 1] = CellType.SQUARE3;
+							incrementSquaresRevealedCount();
+						}
+						case "square open4" -> {
+							super.observableBoard[row - 1][col - 1] = CellType.SQUARE4;
+							incrementSquaresRevealedCount();
+						}
+						case "square open5" -> {
+							super.observableBoard[row - 1][col - 1] = CellType.SQUARE5;
+							incrementSquaresRevealedCount();
+						}
+						case "square open6" -> {
+							super.observableBoard[row - 1][col - 1] = CellType.SQUARE6;
+							incrementSquaresRevealedCount();
+						}
+						case "square open7" -> {
+							super.observableBoard[row - 1][col - 1] = CellType.SQUARE7;
+							incrementSquaresRevealedCount();
+						}
+						case "square open8" -> {
+							super.observableBoard[row - 1][col - 1] = CellType.SQUARE8;
+							incrementSquaresRevealedCount();
+						}
+						case "square bombflagged" -> super.observableBoard[row - 1][col - 1] = CellType.FLAGGED;
+						case "square bombrevealed", "square bombdeath" -> super.observableBoard[row - 1][col - 1] = CellType.BOMB;
+						case "square bombmisflagged" -> super.observableBoard[row - 1][col - 1] = CellType.FLAGGED;
+						default -> throw new IllegalArgumentException("Unknown case");
 					}
 				}
 			}
@@ -203,27 +193,15 @@ public class ScreenReader extends ObservableBoard  {
 	}
 	
 	/*CLICKERS	*/
-	public void playMove(int actionIndex){
-		int [] action = {0, 0, 0};
-		
-		if (actionIndex >= 480){
-			actionIndex-=480;
-			action[0] = actionIndex/COLUMNS;
-			action[1] = actionIndex%COLUMNS;
-			action[2] = 1; 
-			//System.out.println("flagged" + action[0] + " " + action[1]);
-			flagCell(action[0], action[1]);
-			
-		} else {
-			action[0] = actionIndex/COLUMNS;
-			action[1] = actionIndex%COLUMNS;
-			//System.out.println("clicked" + action[0] + " " + action[1]);
-			clickCellInitial(action[0], action[1]);
-		} 
+	public void playMove(Action action){
+		if (action.actionType == ActionType.CLICK)
+			clickCellInitial(action.row, action.col);
+		else
+			flagCell(action.row, action.col);
 		updateObservableBoard();
 		updateGameCondition();
 	}
-	
+
 	public void clickCellInitial(int row, int col){
 		String square = (row+1) + "_" + (col+1);
 		//driver.findElement(By.id(square)).click();

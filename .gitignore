@@ -1,3 +1,3 @@
 *.zip
 /target/
-training_data.txt
+*.txt

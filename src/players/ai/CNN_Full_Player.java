@@ -42,7 +42,7 @@ public class CNN_Full_Player extends AI_Player{
     public Action chooseAction(ObservableBoard board) {
         for (int row = 0; row < board.ROWS; row++) {
             for (int col = 0; col < board.COLUMNS; col++) {
-                if (board.getObservableCell(row, col).getCellType() == CellType.HIDDEN) {
+                if (board.getObservableCell(row, col) == CellType.HIDDEN) {
                     INDArray state = Nd4j.create(board.serializeState5x5(row, col));
                     INDArray qval = model.output(state);
 

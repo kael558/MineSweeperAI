@@ -71,7 +71,7 @@ public class AlgorithmPlayer extends Player {
 		/*KNOWN MOVES*/
 		for (int row = 0; row < board.ROWS; row++){
 			for (int col = 0; col < board.COLUMNS; col++){
-				if (board.getObservableCell(row, col).getCellType() == CellType.HIDDEN){
+				if (board.getObservableCell(row, col) == CellType.HIDDEN){
 					if (satisfyNumbered(board, row, col)){
 						System.out.println("Definite Action");
 						return new Action(ActionType.CLICK, row, col);
@@ -80,7 +80,7 @@ public class AlgorithmPlayer extends Player {
 						System.out.println("Definite Action");
 						return new Action(ActionType.FLAG, row, col);
 					}
-				} else if (board.getObservableCell(row, col).getCellType() != CellType.FLAGGED){ //not hidden && not flagged
+				} else if (board.getObservableCell(row, col) != CellType.FLAGGED){ //not hidden && not flagged
 					isEmpty = false; 
 				}
 			}
@@ -104,7 +104,7 @@ public class AlgorithmPlayer extends Player {
 		
 		for (int row = 0; row < temp.ROWS; row++){
 			for (int col = 0; col < temp.COLUMNS; col++){
-				if (temp.getObservableCell(row, col).getCellType() == CellType.HIDDEN){
+				if (temp.getObservableCell(row, col) == CellType.HIDDEN){
 					if (adjacentIsNumbered(temp, row, col)){
 						if (!contains(hiddenCellPerimeter, row, col)){
 							populateHiddenCellPerimeter(hiddenCellPerimeter, temp, row, col);
@@ -164,7 +164,7 @@ public class AlgorithmPlayer extends Player {
 					for (int col = selectedCol-1; col <= selectedCol+1; col++){
 						if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 							if (!(row==selectedRow && col==selectedCol)){
-								if (board.getObservableCell(row, col).getCellType() != CellType.HIDDEN && board.getObservableCell(row, col).getCellType() != CellType.FLAGGED){
+								if (board.getObservableCell(row, col) != CellType.HIDDEN && board.getObservableCell(row, col) != CellType.FLAGGED){
 									if (!isNumberSatisfied(board, row, col)){
 										allSatisfied = false;
 										break perimeterSatisfiedLoop;
@@ -226,7 +226,7 @@ public class AlgorithmPlayer extends Player {
 					if (!(row==selectedRow && col==selectedCol)){
 						
 						//if one of the surrounding squares is satisfied, then dont flag
-						if (board.getObservableCell(row, col).getCellType()!= CellType.FLAGGED && board.getObservableCell(row, col).getCellType()!= CellType.HIDDEN){
+						if (board.getObservableCell(row, col)!= CellType.FLAGGED && board.getObservableCell(row, col)!= CellType.HIDDEN){
 							if (isNumberSatisfied(board, row, col)){
 								//System.out.println("Cell: " + row + " " + col + " is satisfied");
 								//pause();
@@ -250,10 +250,10 @@ public class AlgorithmPlayer extends Player {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getCellType()== CellType.FLAGGED){
+						if (board.getObservableCell(row, col)== CellType.FLAGGED){
 							count++;
 						}
-						if (CellType.values()[count] == board.getObservableCell(selectedRow, selectedCol).getCellType()){
+						if (CellType.values()[count] == board.getObservableCell(selectedRow, selectedCol)){
 							return true;
 						}
 					}
@@ -270,7 +270,7 @@ public class AlgorithmPlayer extends Player {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getCellType() == CellType.HIDDEN){
+						if (board.getObservableCell(row, col) == CellType.HIDDEN){
 							if (adjacentIsNumbered(board, row, col)){
 								if (!contains(hiddenCellPerimeter, row, col)){
 									//System.out.println("row: " + row + " col: " + col);
@@ -312,7 +312,7 @@ public class AlgorithmPlayer extends Player {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getCellType()!= CellType.HIDDEN && board.getObservableCell(row, col).getCellType()!= CellType.FLAGGED){
+						if (board.getObservableCell(row, col)!= CellType.HIDDEN && board.getObservableCell(row, col)!= CellType.FLAGGED){
 							return true;
 						}
 					}
@@ -329,8 +329,8 @@ public class AlgorithmPlayer extends Player {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getCellType()!= CellType.HIDDEN && board.getObservableCell(row, col).getCellType()!= CellType.FLAGGED){
-							if (board.getObservableCell(row, col).getCellType() == CellType.values()[countHiddenFlagged(board, row, col)]){
+						if (board.getObservableCell(row, col)!= CellType.HIDDEN && board.getObservableCell(row, col)!= CellType.FLAGGED){
+							if (board.getObservableCell(row, col) == CellType.values()[countHiddenFlagged(board, row, col)]){
 								return true;
 							}
 						}
@@ -348,7 +348,7 @@ public class AlgorithmPlayer extends Player {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getCellType() == CellType.HIDDEN || board.getObservableCell(row, col).getCellType() == CellType.FLAGGED){
+						if (board.getObservableCell(row, col) == CellType.HIDDEN || board.getObservableCell(row, col) == CellType.FLAGGED){
 							count++;
 						}
 					}
@@ -365,8 +365,8 @@ public class AlgorithmPlayer extends Player {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getCellType()!= CellType.HIDDEN && board.getObservableCell(row, col).getCellType()!= CellType.FLAGGED){
-							if (board.getObservableCell(row, col).getCellType() == CellType.values()[countBombs(board, row, col)]){
+						if (board.getObservableCell(row, col)!= CellType.HIDDEN && board.getObservableCell(row, col)!= CellType.FLAGGED){
+							if (board.getObservableCell(row, col) == CellType.values()[countBombs(board, row, col)]){
 								return true;
 							}
 						}
@@ -384,7 +384,7 @@ public class AlgorithmPlayer extends Player {
 			for (int col = selectedCol-1; col <= selectedCol+1; col++){
 				if (row >= 0 && row < board.ROWS && col >= 0 && col < board.COLUMNS){
 					if (!(row==selectedRow && col==selectedCol)){
-						if (board.getObservableCell(row, col).getCellType() == CellType.FLAGGED){
+						if (board.getObservableCell(row, col) == CellType.FLAGGED){
 							count++;
 						}
 					}

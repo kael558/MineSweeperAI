@@ -1,5 +1,6 @@
 package neuralnetwork;
 
+import mechanics.Action;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
@@ -7,35 +8,30 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 public class ActionValue implements Serializable {
-    private final boolean [] stateBooleanArray;
-    private final int actionScore;
+    private final boolean [][] stateBooleanArray;
+    private final boolean [][] actionScore;
 
-    public ActionValue(INDArray state, int actionScore) {
-        int[] intVector = state.toIntVector();
-        stateBooleanArray = new boolean[intVector.length];
-        for (int i = 0; i < intVector.length; i++)
-            this.stateBooleanArray[i] = intVector[i] == 1;
-        this.actionScore = actionScore;
+
+    public ActionValue(boolean[][] stateBooleanArray, int actionScore) {
+        this.stateBooleanArray = stateBooleanArray;
+        this.actionScore = new boolean[1][1];
+        this.actionScore[0][0] = actionScore==1;
     }
 
-    public boolean[] getStateBooleanArray(){
+    public boolean[][] getStateBooleanArray(){
         return stateBooleanArray;
     }
 
     public INDArray getStateINDArray(){
-        boolean[][] vector = new boolean[1][stateBooleanArray.length];
-        vector[0] = stateBooleanArray;
-        return Nd4j.create(vector);
+        return Nd4j.create(stateBooleanArray);
     }
 
-    public int getActionScore(){
+    public boolean[][] getActionScore(){
         return actionScore;
     }
 
     public INDArray getActionScoreINDArray(){
-        boolean[][] y = new boolean[1][1];
-        y[0][0] = actionScore == 1;
-        return Nd4j.create(y);
+        return Nd4j.create(actionScore);
     }
 
     public String toString(){
