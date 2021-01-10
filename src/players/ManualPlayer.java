@@ -2,7 +2,7 @@ package players;
 
 import java.util.Scanner;
 
-import interfaces.ActionType;
+import enumerations.ActionType;
 import mechanics.Action;
 import mechanics.ObservableBoard;
 

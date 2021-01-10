@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-import interfaces.ActionType;
-import interfaces.CellType;
+import enumerations.ActionType;
+import enumerations.CellType;
 import mechanics.Action;
+import mechanics.Board;
 import mechanics.ObservableBoard;
 
 public class AlgorithmPlayer extends Player {
@@ -90,9 +91,7 @@ public class AlgorithmPlayer extends Player {
 			System.out.println("Random Action");
 			return action;
 		}
-			
-		
-		
+
 		/*PROBABILITY BASED*/
 		ArrayList<HiddenCell> hiddenCellPerimeter = new ArrayList<>();
 		int clearAmount = 0;
@@ -100,7 +99,7 @@ public class AlgorithmPlayer extends Player {
 		int minimumCountRow = 999;
 		int minimumCountCol = 999;
 		
-		ObservableBoard temp = new ObservableBoard(board);
+		ObservableBoard temp = new Board(board);
 		
 		for (int row = 0; row < temp.ROWS; row++){
 			for (int col = 0; col < temp.COLUMNS; col++){

@@ -1,4 +1,4 @@
-package interfaces;
+package enumerations;
 
 public enum ActionType {
     CLICK,

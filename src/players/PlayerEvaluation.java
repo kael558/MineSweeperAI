@@ -1,6 +1,5 @@
-package neuralnetwork;
+package players;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,11 +7,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 
-import interfaces.PlayerType;
+import enumerations.PlayerType;
 import main.PlayGame;
 import mechanics.Board;
 
-public class TestModel {
+public class PlayerEvaluation {
 
 	Board board;
 	PlayGame play;
@@ -21,7 +20,7 @@ public class TestModel {
 	int agentType;
 	
 	
-	public TestModel(int rows, int cols, int bombs, int agentType) {
+	public PlayerEvaluation(int rows, int cols, int bombs, int agentType) {
 		ROWS = rows;
 		COLUMNS = cols;
 		TOTAL_NUMBER_OF_BOMBS = bombs;

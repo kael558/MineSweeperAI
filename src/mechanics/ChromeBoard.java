@@ -1,4 +1,4 @@
-package screenMechanics;
+package mechanics;
 
 import java.awt.AWTException;
 
@@ -6,19 +6,16 @@ import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.io.Serial;
 
-import interfaces.ActionType;
-import interfaces.CellType;
-import mechanics.Action;
+import enumerations.ActionType;
+import enumerations.CellType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import mechanics.ObservableBoard;
-
 import org.openqa.selenium.WebElement;	
 
-public class ScreenReader extends ObservableBoard  {
+public class ChromeBoard extends ObservableBoard  {
 	
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -26,7 +23,7 @@ public class ScreenReader extends ObservableBoard  {
 	WebDriver driver;
 	Robot robot;
 	
-	public ScreenReader(){
+	public ChromeBoard(){
 		super();
 		createDriver();
 		createRobot();
@@ -180,9 +177,8 @@ public class ScreenReader extends ObservableBoard  {
 							super.observableBoard[row - 1][col - 1] = CellType.SQUARE8;
 							incrementSquaresRevealedCount();
 						}
-						case "square bombflagged" -> super.observableBoard[row - 1][col - 1] = CellType.FLAGGED;
+						case "square bombflagged", "square bombmisflagged" -> super.observableBoard[row - 1][col - 1] = CellType.FLAGGED;
 						case "square bombrevealed", "square bombdeath" -> super.observableBoard[row - 1][col - 1] = CellType.BOMB;
-						case "square bombmisflagged" -> super.observableBoard[row - 1][col - 1] = CellType.FLAGGED;
 						default -> throw new IllegalArgumentException("Unknown case");
 					}
 				}

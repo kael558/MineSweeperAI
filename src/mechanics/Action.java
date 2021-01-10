@@ -1,6 +1,6 @@
 package mechanics;
 
-import interfaces.ActionType;
+import enumerations.ActionType;
 
 import java.util.Random;
 

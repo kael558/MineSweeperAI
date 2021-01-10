@@ -1,14 +1,12 @@
 package mechanics;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import interfaces.CellType;
-import interfaces.GameStatus;
+import enumerations.CellType;
+import enumerations.GameStatus;
 
 //Partially Observable Environment
-public class ObservableBoard implements  Serializable {
+public abstract class ObservableBoard implements  Serializable {
 	/**
 	 * 
 	 */
@@ -165,7 +163,7 @@ public class ObservableBoard implements  Serializable {
 		return squaresRevealedCount;
 	}
 
-	/*
+
 	public boolean[][] serializeState(){
 		int bitsPerSquare = 4;
 		int flagBits = 7;
@@ -175,13 +173,12 @@ public class ObservableBoard implements  Serializable {
 		for (int row = 0; row < ROWS; row++)
 			for (int col = 0; col < COLUMNS; col++) {
 				appendToBooleanArray(state, bitCount, observableBoard[row][col].ordinal());
-				bitCount+=4;
+				bitCount+=bitsPerSquare;
 			}
 
 		appendToBooleanArray(state, bitCount, flagCount);
 		return state;
 	}
-*/
 
 	/**
 	 * 24 squares * 4 bits = 96 bits
@@ -200,11 +197,11 @@ public class ObservableBoard implements  Serializable {
 						hasNonHidden = true;
 					if (!(selectedRow == row && selectedCol == col)) {
 						appendToBooleanArray(state, bitCount, observableBoard[row][col].ordinal());
-						bitCount += 4;
+						bitCount += bitsPerSquare;
 					}
 				} else {
 					appendToBooleanArray(state, bitCount, CellType.INVALID.ordinal());
-					bitCount += 4;
+					bitCount += bitsPerSquare;
 				}
 			}
 		}
@@ -223,42 +220,9 @@ public class ObservableBoard implements  Serializable {
 
 	/* Overridden Methods */
 	/* Actions */
-	public void playMove(Action action) {
+	public abstract void playMove(Action action);
 
-	}
+	public abstract void flagCell(int selectedRow, int selectedCol);
 
-	public void flagCell(int selectedRow, int selectedCol) {
-		if (observableBoard[selectedRow][selectedCol] == CellType.HIDDEN) {
-			observableBoard[selectedRow][selectedCol] = CellType.FLAGGED;
-			decrementFlagCount();
-
-		} else if (observableBoard[selectedRow][selectedCol] == CellType.FLAGGED) {
-			observableBoard[selectedRow][selectedCol] = CellType.HIDDEN;
-			incrementFlagCount();
-
-		} else {
-			// System.out.println("Cannot flag a revealed cell");
-
-		}
-	}
-
-	public void clickCellInitial(int selectedRow, int selectedCol) {
-
-	}
-
-	public void initializeBoard(int row, int col) {
-
-	}
-
-	public boolean isBoardInitialized() {
-		return false;
-	}
-
-	public void drawSecretBoard() {
-		// TODO REMOVE
-	}
-
-	public void updateObservableBoard() {
-
-	}
+	public abstract void clickCellInitial(int selectedRow, int selectedCol);
 }

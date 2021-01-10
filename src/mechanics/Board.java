@@ -1,7 +1,7 @@
 package mechanics;
 
-import interfaces.ActionType;
-import interfaces.CellType;
+import enumerations.ActionType;
+import enumerations.CellType;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -24,6 +24,10 @@ public class Board extends ObservableBoard implements Serializable{
 		super(rows, columns, number_of_bombs);
 		isBoardInitialized = false;
 		board = new CellType[super.ROWS][super.COLUMNS];
+	}
+
+	public Board(ObservableBoard board){
+		super(board);
 	}
 	
 	public void initializeBoard(int selectedRow, int selectedCol){ //initalized after first click
@@ -102,7 +106,6 @@ public class Board extends ObservableBoard implements Serializable{
 	}
 
 
-
 	/* ACTIONS*/
 	public void playMove(Action action){
 		if (action.actionType == ActionType.CLICK)
@@ -151,6 +154,21 @@ public class Board extends ObservableBoard implements Serializable{
 					}
 				}
 			}
+		}
+	}
+
+	public void flagCell(int selectedRow, int selectedCol) {
+		if (observableBoard[selectedRow][selectedCol] == CellType.HIDDEN) {
+			observableBoard[selectedRow][selectedCol] = CellType.FLAGGED;
+			decrementFlagCount();
+
+		} else if (observableBoard[selectedRow][selectedCol] == CellType.FLAGGED) {
+			observableBoard[selectedRow][selectedCol] = CellType.HIDDEN;
+			incrementFlagCount();
+
+		} else {
+			// System.out.println("Cannot flag a revealed cell");
+
 		}
 	}
 

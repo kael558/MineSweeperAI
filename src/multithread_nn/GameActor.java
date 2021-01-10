@@ -1,10 +1,10 @@
-package neuralnetwork;
+package multithread_nn;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import interfaces.ActionType;
-import interfaces.CellType;
+import enumerations.ActionType;
+import enumerations.CellType;
 import mechanics.Action;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -17,9 +17,8 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import mechanics.Board;
-import mechanics.ObservableBoard;
 
-public class Game extends AbstractBehavior<Game.Command>  {
+public class GameActor extends AbstractBehavior<GameActor.Command>  {
 
 	/*
 	 * runs game of minesweeper sends data to neural network, sends message to
@@ -35,7 +34,7 @@ public class Game extends AbstractBehavior<Game.Command>  {
 	private double epsilon;
 	private Random r;
 
-	private ActorRef<NeuralNetwork.ReceiveData> neuralNetworkActor;
+	private ActorRef<ModelActor.ReceiveData> neuralNetworkActor;
 	
 	// Types of messages received
 	public enum StartGame implements Command {
@@ -129,9 +128,9 @@ public class Game extends AbstractBehavior<Game.Command>  {
 
 		//getContext().getLog().info("{} has finished a game", getContext().getSelf().path().name());
 		
-		neuralNetworkActor.tell(new NeuralNetwork.ReceiveData(data));
+		neuralNetworkActor.tell(new ModelActor.ReceiveData(data));
 		
-		getContext().getSelf().tell(Game.StartGame.INSTANCE);
+		getContext().getSelf().tell(GameActor.StartGame.INSTANCE);
 		
 		return this;
 	}
@@ -157,7 +156,7 @@ public class Game extends AbstractBehavior<Game.Command>  {
 		return this;
 	}
 
-	private Game(ActorContext<Command> context, MultiLayerNetwork model, ActorRef<NeuralNetwork.ReceiveData> neuralNetwork, int rows, int columns, int number_of_bombs) {
+	private GameActor(ActorContext<Command> context, MultiLayerNetwork model, ActorRef<ModelActor.ReceiveData> neuralNetwork, int rows, int columns, int number_of_bombs) {
 		super(context);
 		this.model = model;
 		this.neuralNetworkActor = neuralNetwork;
@@ -169,8 +168,8 @@ public class Game extends AbstractBehavior<Game.Command>  {
 		getContext().getLog().info("Creating game actor");
 	}
 
-	public static Behavior<Command> create(MultiLayerNetwork model, ActorRef<NeuralNetwork.ReceiveData> neuralNetwork, int rows, int columns, int number_of_bombs) {
-		return Behaviors.setup(context -> new Game(context, model, neuralNetwork, rows, columns, number_of_bombs));
+	public static Behavior<Command> create(MultiLayerNetwork model, ActorRef<ModelActor.ReceiveData> neuralNetwork, int rows, int columns, int number_of_bombs) {
+		return Behaviors.setup(context -> new GameActor(context, model, neuralNetwork, rows, columns, number_of_bombs));
 	}
 
 }

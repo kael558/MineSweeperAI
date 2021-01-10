@@ -1,138 +1,123 @@
 package players.ai;
 
-import interfaces.ActionType;
-import interfaces.CellType;
-import main.GetConfig;
+import enumerations.ActionType;
+import enumerations.CellType;
+import enumerations.ModelVersion;
 import mechanics.Action;
+import mechanics.Board;
 import mechanics.ObservableBoard;
-import neuralnetwork.ActionValue;
-import org.deeplearning4j.nn.api.OptimizationAlgorithm;
-import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
-import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
-import org.deeplearning4j.nn.conf.layers.DenseLayer;
-import org.deeplearning4j.nn.conf.layers.OutputLayer;
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.deeplearning4j.nn.weights.WeightInit;
-import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
-import org.nd4j.linalg.learning.config.Adam;
-import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.Random;
-import java.util.zip.ZipException;
 
 public class CNN_Full_Player extends AI_Player{
-    private final MultiLayerNetwork model;
-    private final Random r;
-
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        new CNN_Full_Player().train();
+        new CNN_Full_Player().generateTrainingData();
     }
 
     public CNN_Full_Player(){
-        model = denseModel();
+        super();
+        modelVersion = ModelVersion.AI_Full;
         r = new Random();
+        //init();
+    }
+
+    public long countData() throws IOException, ClassNotFoundException {
+        File trainingFilename = new File(modelVersion.trainingFilename);
+        FileInputStream fis = new FileInputStream(trainingFilename);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+
+        long count = 0;
+        for (; fis.available()!=0; count++){
+            ActionValue av = (ActionValue) ois.readObject();
+            if (av == null)
+                break;
+            if (count%100000==0)
+                System.out.println("Count: " + count);
+        }
+        return count;
     }
 
     public Action chooseAction(ObservableBoard board) {
-        for (int row = 0; row < board.ROWS; row++) {
-            for (int col = 0; col < board.COLUMNS; col++) {
-                if (board.getObservableCell(row, col) == CellType.HIDDEN) {
-                    INDArray state = Nd4j.create(board.serializeState5x5(row, col));
-                    INDArray qval = model.output(state);
-
-                    double val = qval.getDouble(0);
-                    if (val > 0.9)
-                        return new Action(ActionType.CLICK, row, col);
-                    else if (val < -0.9)
-                        return new Action(ActionType.FLAG, row, col);
-                }
-            }
-        }
-
+        INDArray state = Nd4j.create(board.serializeState());
+        double[] qval = model.output(state).toDoubleVector();
+        for (int i = 0; i < qval.length; i++)
+            if (qval[i] > 0.9)
+                return new Action(ActionType.CLICK, i/board.COLUMNS, i%board.COLUMNS);
+            else if (qval[i] < 0.1)
+                return new Action(ActionType.FLAG, i/board.COLUMNS, i%board.COLUMNS);
         return new Action(board.ROWS,board.COLUMNS); //random action lul
     }
 
-    public void train() throws IOException, ClassNotFoundException {
-        saveModel();
+    public void generateTrainingData() throws IOException {
+        int rows = 16, columns = 30, num_bombs = 99;
 
-        System.out.println("Begin Training");
-        File file = new File(GetConfig.getInstance().getPropertyAsString("trainingdata"));
-        System.out.println(file.getName());
-        FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(fis);
+        int numDataCount = 5000000;
+        int numGames = Integer.MAX_VALUE;
+        File file = new File(modelVersion.trainingFilename);
+        if (file.createNewFile())
+            System.out.println("Created new file: " + file.getName());
+        Random r = new Random();
 
-        for (int i = 0; fis.available()!=0; i++){
-            ActionValue av = (ActionValue) ois.readObject();
-            model.fit(av.getStateINDArray(), av.getActionScoreINDArray());
-            if (i%100000==0)
-                System.out.println("Game: "  + i);
-        }
+        int dataCount = 0;
+        FileOutputStream fos = new FileOutputStream(file, true);
+        ObjectOutputStream oos = new ObjectOutputStream(fos){
+            @Override
+            protected void writeStreamHeader() throws IOException {
+                reset();
+            }
+        };
 
-        saveModel();
-        ois.close();
-        System.out.println("End Training");
-    }
+        for (int i = 0; i < numGames && dataCount < numDataCount; i++) {
+            Board trainingBoard = new Board(rows, columns, num_bombs);
 
-    private MultiLayerNetwork denseModel() {
-        GetConfig gc = GetConfig.getInstance();
+            //initialize board with random click
+            trainingBoard.clickCellInitial(r.nextInt(rows), r.nextInt(columns));
 
-        int seed = gc.getPropertyAsInt("seed");
-        double learningRate = gc.getPropertyAsDouble("learningRate");
-        int numInputs = gc.getPropertyAsInt("numInputs");
-        int numHiddenNodes = gc.getPropertyAsInt("numHiddenNodes");
-        int numOutputs = gc.getPropertyAsInt("numOutputs");
-        File file = new File(gc.getPropertyAsString("modelname"));
+            while (trainingBoard.isRunning()) {
+                boolean[][] state = trainingBoard.serializeState();
+                boolean[][] actionScore = new boolean[1][rows * columns];
+                int index = 0;
+                for (int row = 0; row < trainingBoard.ROWS; row++)
+                    for (int col = 0; col < trainingBoard.COLUMNS; col++)
+                        actionScore[0][index++] = trainingBoard.getCell(row, col) != CellType.BOMB;
 
-        try {
-            if (file.createNewFile()) {
-                System.out.println("New Model Created: " + file.getName());
-                return createNewDenseModel(seed, learningRate, numInputs, numHiddenNodes, numOutputs);
-            } else {
-                try {
-                    System.out.println("Model loaded: " + file.getName());
-                    return MultiLayerNetwork.load(file, true);
-                } catch (ZipException e) {
-                    System.out.println("New Model Created: " + file.getName());
-                    return createNewDenseModel(seed, learningRate, numInputs, numHiddenNodes, numOutputs);
+                ActionValue av = new ActionValue(state, actionScore);
+                oos.writeObject(av);
+                dataCount++;
+
+                boolean foundMove = false;
+                int row = r.nextInt(rows), col = r.nextInt(columns);
+                if (trainingBoard.getSquaresRevealedCount() < 200) {
+                    while (trainingBoard.getObservableCell(row, col) != CellType.HIDDEN) {
+                        row = r.nextInt(rows);
+                        col = r.nextInt(columns);
+                    }
+                    foundMove = true;
+                } else{
+                    searchForHiddenCell:
+                    for (; row < trainingBoard.ROWS; row++)
+                        for (; col < trainingBoard.COLUMNS; col++)
+                            if (trainingBoard.getObservableCell(row, col) == CellType.HIDDEN) {
+                                foundMove = true;
+                                break searchForHiddenCell;
+                            }
+                }
+
+                if (foundMove) {
+                    Action action = new Action(
+                            trainingBoard.getCell(row, col) == CellType.BOMB
+                                    ? ActionType.FLAG : ActionType.CLICK,
+                            row, col);
+
+                    trainingBoard.playMove(action);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(0);
+
+            if (i%100==0)
+                System.out.println("Game: " + i + " -> Size: " + dataCount + " -> " + trainingBoard.getSquaresRevealedCount());
         }
-
-        return null;
-    }
-
-    private MultiLayerNetwork createNewDenseModel(int seed, double learningRate, int numInputs, int numHiddenNodes,
-                                                  int numOutputs) {
-        MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder().seed(seed).weightInit(WeightInit.XAVIER)
-                .updater(new Adam(learningRate)).optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
-                .list()
-                .layer(new DenseLayer.Builder().nIn(numInputs).nOut(numHiddenNodes).activation(Activation.RELU).build())
-                .layer(new OutputLayer.Builder(LossFunction.MSE).activation(Activation.TANH).nIn(numHiddenNodes)
-                        .nOut(numOutputs).build())
-                .build();
-
-
-        return new MultiLayerNetwork(conf);
-    }
-
-    private void saveModel() {
-        System.out.println("Saving model. Do not close.");
-        String fileName = GetConfig.getInstance().getPropertyAsString("modelname");
-        File locationToSave = new File(fileName);
-        try {
-            model.save(locationToSave, true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Model Saved");
     }
 }

@@ -2,14 +2,13 @@ package main;
 
 import java.util.Scanner;
 
-import interfaces.PlayerType;
+import enumerations.PlayerType;
 import mechanics.Action;
 import mechanics.Board;
 import mechanics.ObservableBoard;
 import players.*;
 import players.ai.CNN_5x5_Player;
 import players.ai.CNN_Full_Player;
-import players.ai.MCTS_Player;
 
 public class PlayGame  {
 	ObservableBoard board;
@@ -31,7 +30,6 @@ public class PlayGame  {
 		switch(playerType){
 			case AI_5x5 -> player = new CNN_5x5_Player();
 			case AI_Full -> player = new CNN_Full_Player();
-			case AI_MCTS -> player = new MCTS_Player();
 			case HUMAN -> player = new ManualPlayer();
 			case ALGORITHM -> player = new AlgorithmPlayer();
 			case RANDOM -> player = new RandomPlayer();
